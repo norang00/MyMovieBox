@@ -16,7 +16,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let scene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: scene)
 
-        let isNewUser = !User.nickname.isEmpty
+        let isNewUser = User.nickname.isEmpty
         let nextVC = isNewUser ? OnboardingViewController() : MainViewController()
         window?.rootViewController = UINavigationController(rootViewController: nextVC)
         window?.makeKeyAndVisible()
