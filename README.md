@@ -2,4 +2,4 @@
 
 #### App Flow
 
-<img src="https://github.com/user-attachments/assets/67a5b7bc-ffb2-45aa-9706-bcd60d3adbfd" width="600">
+<img src="https://github.com/user-attachments/assets/5e0e50ad-d087-4716-8fed-df4a6dcde082" width="600">
