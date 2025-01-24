@@ -28,3 +28,4 @@ struct Poster: Decodable {
         case filePath = "file_path"
     }
 }
+

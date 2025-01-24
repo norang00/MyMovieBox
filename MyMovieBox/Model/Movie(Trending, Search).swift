@@ -47,3 +47,4 @@ struct Search: Decodable {
         case totalResults = "total_results"
     }
 }
+

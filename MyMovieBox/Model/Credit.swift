@@ -23,3 +23,4 @@ struct Cast: Decodable {
         case profilePath = "profile_path"
     }
 }
+
