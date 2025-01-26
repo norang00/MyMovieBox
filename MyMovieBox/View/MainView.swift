@@ -27,7 +27,7 @@ final class MainView: BaseView {
     }
     
     override func configureView() {
-        backgroundColor = .black
+        super.configureView()
     }
     
 }

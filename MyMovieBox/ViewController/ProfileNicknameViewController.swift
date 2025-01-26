@@ -10,7 +10,11 @@ import UIKit
 final class ProfileNicknameViewController: UIViewController {
 
     private let profileNicknameView = ProfileNicknameView()
+
     var isNewUser: Bool = true
+    var profileImageName = ""
+    var profileNickname = ""
+
     private var isConfirmed: Bool = false {
         didSet {
             configureConfirmButton(isConfirmed)
@@ -25,6 +29,7 @@ final class ProfileNicknameViewController: UIViewController {
         super.viewDidLoad()
         configureNavigation(isNewUser ? "프로필 설정" : "프로필 편집")
         
+        configureImageView()
         configureNicknameTextField()
         configureConfirmButton(isConfirmed)
     }
@@ -34,10 +39,17 @@ final class ProfileNicknameViewController: UIViewController {
 // MARK: - profileImageView
 extension ProfileNicknameViewController {
     
-
+    func configureImageView() {
+        profileImageName = "profile_\(Int.random(in: 0...11))"
+        profileNicknameView.profileImageView.image = UIImage(named: profileImageName)
+        
+        profileNicknameView.profileImageOverlayButton.addTarget(self, action: #selector(profileImageViewTapped), for: .touchUpInside)
+    }
     
-    private func profileSectionTapped() {
+    @objc
+    private func profileImageViewTapped() {
         let nextVC = ProfileImageViewController()
+        nextVC.profileImageName = profileImageName
         nextVC.isNewUser = true
         navigationController?.pushViewController(nextVC, animated: true)
     }
@@ -73,6 +85,7 @@ extension ProfileNicknameViewController: UITextFieldDelegate {
             guideText = "닉네임에 숫자는 포함할 수 없어요"
         }else {
             guideText = "사용할 수 있는 닉네임이에요"
+            profileNickname = inputText
             result = true
         }
         
@@ -96,13 +109,13 @@ extension ProfileNicknameViewController {
     private func confirmButtonTapped() {
         print(#function)
         
-        guard let profileImageName = profileNicknameView.profileImageView.image?.description else { return }
-        guard let profileNickname = profileNicknameView.nicknameTextField.text else { return }
         User.profileImageName = profileImageName
         User.nickname = profileNickname
-        
-        print(User.self)
+ 
+        guard let windowsScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else { return }
+        let window = windowsScene.windows.first
         let nextVC = MainViewController()
-        navigationController?.pushViewController(nextVC, animated: true)
+        window?.rootViewController = UINavigationController(rootViewController: nextVC)
+        window?.makeKeyAndVisible()
     }
 }

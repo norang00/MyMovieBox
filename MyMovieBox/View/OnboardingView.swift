@@ -48,8 +48,8 @@ final class OnboardingView: BaseView {
     }
     
     override func configureView() {
-        backgroundColor = .black
-        
+        super.configureView()
+
         onboardImageView.image = UIImage(named: "onboarding")
         onboardImageView.contentMode = .scaleAspectFit
         

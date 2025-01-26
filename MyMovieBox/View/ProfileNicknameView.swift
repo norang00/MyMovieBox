@@ -10,9 +10,9 @@ import UIKit
 final class ProfileNicknameView: BaseView {
 
     private let profileImageSectionView = UIView()
-    let profileImageView = UIImageView()
+    let profileImageView = CircleImageView(frame: .zero)
     private let cameraImageView = UIImageView()
-    private let profileImageOverlayButton = UIButton()
+    let profileImageOverlayButton = UIButton()
     
     private let nicknameInputView = UIView()
     let nicknameTextField = UITextField()
@@ -93,14 +93,7 @@ final class ProfileNicknameView: BaseView {
     }
     
     override func configureView() {
-        backgroundColor = .black
-
-        profileImageView.image = UIImage(named: "profile_\(Int.random(in: 0...11))")
-        profileImageView.contentMode = .scaleAspectFit
-        profileImageView.layer.borderWidth = 3
-        profileImageView.layer.borderColor = UIColor.accent.cgColor
-        profileImageView.layer.cornerRadius = 50
-        profileImageView.clipsToBounds = true
+        super.configureView()
         
         // SFSymbol 사용법 참고:
         // https://jimmy-ios.tistory.com/31,

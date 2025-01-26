@@ -11,6 +11,7 @@ final class ProfileImageViewController: UIViewController {
 
     private let profileImageView = ProfileImageView()
     var isNewUser: Bool = true
+    var profileImageName = ""
 
     override func loadView() {
         view = profileImageView
@@ -20,18 +21,12 @@ final class ProfileImageViewController: UIViewController {
         super.viewDidLoad()
         configureNavigation(isNewUser ? "프로필 이미지 설정" : "프로필 이미지 편집")
 
-        // Do any additional setup after loading the view.
+        configureMainImage()
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    func configureMainImage() {
+        profileImageView.profileImageView.image = UIImage(named: profileImageName)
     }
-    */
-
+    
+    
 }
