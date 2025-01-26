@@ -9,24 +9,18 @@ import UIKit
 
 class ProfileNicknameViewController: UIViewController {
 
+    let profileNicknameView = ProfileNicknameView()
+    var isNewUser: Bool = true
+    
+    override func loadView() {
+        view = profileNicknameView
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        
-        view.backgroundColor = .accent
-        print("ProfileNicknameViewController")
-        // Do any additional setup after loading the view.
+        navigationItem.title = isNewUser ? "프로필 설정" : "프로필 편집"
     }
     
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

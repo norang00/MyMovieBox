@@ -17,18 +17,15 @@ class OnboardingViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationItem.title = ""
 
-        print("OnboardingViewController")
         onboardingView.startButton.addTarget(self, action: #selector(startButtonTapped), for: .touchUpInside)
-        
     }
     
     @objc
     func startButtonTapped() {
-        guard let windowsScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else { return }
-        let window = windowsScene.windows.first
-        window?.rootViewController = UINavigationController(rootViewController: ProfileNicknameViewController())
-        window?.makeKeyAndVisible()
+        let nextVC = ProfileNicknameViewController()
+        nextVC.isNewUser = true
+        navigationController?.pushViewController(nextVC, animated: true)        
     }
-
 }

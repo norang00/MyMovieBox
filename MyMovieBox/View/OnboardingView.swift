@@ -23,19 +23,23 @@ class OnboardingView: BaseView {
     }
 
     override func configureLayout() {
+        
         onboardImageView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(safeAreaLayoutGuide)
             make.horizontalEdges.equalToSuperview()
         }
+        
         onboardingLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(onboardImageView.snp.bottom)
         }
+        
         welcomeLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(onboardingLabel.snp.bottom).offset(10)
         }
+        
         startButton.snp.makeConstraints { make in
             make.horizontalEdges.equalToSuperview().inset(24)
             make.bottom.equalToSuperview().inset(100)
@@ -54,17 +58,18 @@ class OnboardingView: BaseView {
         onboardingLabel.font = .italicSystemFont(ofSize: 30) // TODO: font bold 조절
         
         welcomeLabel.text = "당신만의 영화 상자,\nMyMovieBox를 시작해보세요."
-        welcomeLabel.textColor = UIColor.titleGray // TODO: 색상 적용 안되는 issue
+        welcomeLabel.textColor = .white
         welcomeLabel.textAlignment = .center
         welcomeLabel.font = .systemFont(ofSize: 16, weight: .medium)
         welcomeLabel.numberOfLines = 2
         
+        startButton.setTitleColor(.accent, for: .normal)
+        startButton.setTitle("시작하기", for: .normal)
+        startButton.titleLabel?.font = .systemFont(ofSize: 16, weight: .bold)
         startButton.layer.cornerRadius = 25
         startButton.layer.borderWidth = 2
         startButton.layer.borderColor = UIColor.accent.cgColor
         startButton.backgroundColor = .clear
-        startButton.setTitleColor(.accent, for: .normal)
-        startButton.setTitle("시작하기", for: .normal)
     }
 
 }
