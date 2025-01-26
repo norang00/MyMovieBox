@@ -10,7 +10,7 @@ import UIKit
 final class ProfileNicknameView: BaseView {
 
     private let profileImageSectionView = UIView()
-    private let profileImageView = UIImageView()
+    let profileImageView = UIImageView()
     private let cameraImageView = UIImageView()
     private let profileImageOverlayButton = UIButton()
     

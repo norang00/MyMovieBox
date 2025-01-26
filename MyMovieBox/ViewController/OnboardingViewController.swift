@@ -17,7 +17,7 @@ final class OnboardingViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = ""
+        configureNavigation("")
 
         onboardingView.startButton.addTarget(self, action: #selector(startButtonTapped), for: .touchUpInside)
     }

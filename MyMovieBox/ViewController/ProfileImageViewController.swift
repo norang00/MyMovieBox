@@ -18,6 +18,7 @@ final class ProfileImageViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureNavigation(isNewUser ? "프로필 이미지 설정" : "프로필 이미지 편집")
 
         // Do any additional setup after loading the view.
     }

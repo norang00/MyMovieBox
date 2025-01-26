@@ -9,6 +9,11 @@ import UIKit
 
 extension UIViewController {
     
+    func configureNavigation(_ title: String) {
+        navigationItem.title = title
+        navigationItem.backButtonTitle = ""
+    }
+    
     func showAlert(title: String, message: String) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let confirmAction = UIAlertAction(title: "확인", style: .default) { _ in

@@ -11,7 +11,7 @@ final class ProfileNicknameViewController: UIViewController {
 
     private let profileNicknameView = ProfileNicknameView()
     var isNewUser: Bool = true
-    var isConfirmed: Bool = false {
+    private var isConfirmed: Bool = false {
         didSet {
             configureConfirmButton(isConfirmed)
         }
@@ -23,7 +23,7 @@ final class ProfileNicknameViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = isNewUser ? "프로필 설정" : "프로필 편집"
+        configureNavigation(isNewUser ? "프로필 설정" : "프로필 편집")
         
         configureNicknameTextField()
         configureConfirmButton(isConfirmed)
@@ -36,7 +36,7 @@ extension ProfileNicknameViewController {
     
 
     
-    func profileSectionTapped() {
+    private func profileSectionTapped() {
         let nextVC = ProfileImageViewController()
         nextVC.isNewUser = true
         navigationController?.pushViewController(nextVC, animated: true)
@@ -46,7 +46,7 @@ extension ProfileNicknameViewController {
 // MARK: - nicknameTextField
 extension ProfileNicknameViewController: UITextFieldDelegate {
     
-    func configureNicknameTextField() {
+    private func configureNicknameTextField() {
         profileNicknameView.nicknameTextField.delegate = self
     }
     
@@ -55,7 +55,7 @@ extension ProfileNicknameViewController: UITextFieldDelegate {
         isConfirmed = checkNicknameConstraints(inputText)
     }
 
-    func checkNicknameConstraints(_ inputText: String) -> Bool {
+    private func checkNicknameConstraints(_ inputText: String) -> Bool {
         var result = false
         var guideText = ""
 
@@ -80,17 +80,29 @@ extension ProfileNicknameViewController: UITextFieldDelegate {
         return result
     }
     
-    
 }
 
 // MARK: - confirmButton
 extension ProfileNicknameViewController {
     
-    func configureConfirmButton(_ isConfirmed: Bool) {
+    private func configureConfirmButton(_ isConfirmed: Bool) {
+        profileNicknameView.confirmButton.addTarget(self, action: #selector(confirmButtonTapped), for: .touchUpInside)
         profileNicknameView.confirmButton.isEnabled = isConfirmed
         profileNicknameView.confirmButton.setTitleColor(isConfirmed ? .accent : .bgGray, for: .normal)
         profileNicknameView.confirmButton.layer.borderColor = isConfirmed ? UIColor.accent.cgColor : UIColor.bgGray.cgColor
     }
     
-    
+    @objc
+    private func confirmButtonTapped() {
+        print(#function)
+        
+        guard let profileImageName = profileNicknameView.profileImageView.image?.description else { return }
+        guard let profileNickname = profileNicknameView.nicknameTextField.text else { return }
+        User.profileImageName = profileImageName
+        User.nickname = profileNickname
+        
+        print(User.self)
+        let nextVC = MainViewController()
+        navigationController?.pushViewController(nextVC, animated: true)
+    }
 }
