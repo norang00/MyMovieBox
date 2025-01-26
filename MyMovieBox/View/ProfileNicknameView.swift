@@ -7,21 +7,20 @@
 
 import UIKit
 
-class ProfileNicknameView: BaseView {
+final class ProfileNicknameView: BaseView {
 
-    let profileImageSectionView = UIView()
-    let profileImageView = UIImageView()
-    let cameraImageView = UIImageView()
-    let profileImageOverlayButton = UIButton()
+    private let profileImageSectionView = UIView()
+    private let profileImageView = UIImageView()
+    private let cameraImageView = UIImageView()
+    private let profileImageOverlayButton = UIButton()
     
-    let nicknameInputView = UIView()
+    private let nicknameInputView = UIView()
     let nicknameTextField = UITextField()
-    let underlineView = UIView()
-    
+    private let underlineView = UIView()
+
     let guideLabel = UILabel()
-    
+
     let confirmButton = UIButton()
-    var isConfirmed: Bool = true
     
     override func configureHierarchy() {
         
@@ -126,16 +125,14 @@ class ProfileNicknameView: BaseView {
         
         underlineView.backgroundColor = .white
         
-        guideLabel.text = "guide label"
+        guideLabel.text = ""
         guideLabel.textColor = .accent
         guideLabel.textAlignment = .left
         
-        confirmButton.setTitleColor(isConfirmed ? .accent : .bgGray, for: .normal)
         confirmButton.setTitle("완료", for: .normal)
         confirmButton.titleLabel?.font = .systemFont(ofSize: 16, weight: .bold)
         confirmButton.layer.cornerRadius = 25
         confirmButton.layer.borderWidth = 1
-        confirmButton.layer.borderColor = isConfirmed ? UIColor.accent.cgColor : UIColor.bgGray.cgColor
         confirmButton.backgroundColor = .clear
     }
     

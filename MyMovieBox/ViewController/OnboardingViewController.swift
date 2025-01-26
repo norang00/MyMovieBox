@@ -7,9 +7,9 @@
 
 import UIKit
 
-class OnboardingViewController: UIViewController {
+final class OnboardingViewController: UIViewController {
     
-    let onboardingView = OnboardingView()
+    private let onboardingView = OnboardingView()
     
     override func loadView() {
         view = onboardingView

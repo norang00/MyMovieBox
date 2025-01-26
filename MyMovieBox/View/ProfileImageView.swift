@@ -1,18 +1,17 @@
 //
-//  MainView.swift
+//  ProfileImageView.swift
 //  MyMovieBox
 //
-//  Created by Kyuhee hong on 1/24/25.
+//  Created by Kyuhee hong on 1/26/25.
 //
 
 import UIKit
-import SnapKit
 
-final class MainView: BaseView {
-
+final class ProfileImageView: BaseView {
+    
     let label = {
         let label = UILabel()
-        label.text = "메인"
+        label.text = "프로필 이미지 뷰"
         return label
     }()
     

@@ -8,11 +8,11 @@
 import UIKit
 import SnapKit
 
-class OnboardingView: BaseView {
+final class OnboardingView: BaseView {
    
-    let onboardImageView = UIImageView()
-    let onboardingLabel = UILabel()
-    let welcomeLabel = UILabel()
+    private let onboardImageView = UIImageView()
+    private let onboardingLabel = UILabel()
+    private let welcomeLabel = UILabel()
     let startButton = UIButton()
     
     override func configureHierarchy() {
