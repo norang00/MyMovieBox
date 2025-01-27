@@ -15,7 +15,7 @@ struct Movie: Decodable {
     let backdropPath: String
     let releaseDate: String
     let genreIds: [Int]
-    let voteAverage: Int
+    let voteAverage: Double
     
     enum CodingKeys: String, CodingKey {
         case id

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 class TodayMovieCollectionViewCell: UICollectionViewCell {
     
@@ -51,6 +52,7 @@ class TodayMovieCollectionViewCell: UICollectionViewCell {
         posterImageView.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.horizontalEdges.equalToSuperview()
+            make.height.equalTo(310)
         }
         
         titleStackView.snp.makeConstraints { make in
@@ -72,25 +74,32 @@ class TodayMovieCollectionViewCell: UICollectionViewCell {
         posterImageView.layer.cornerRadius = 8
         posterImageView.backgroundColor = .bgGray
         
+        titleStackView.distribution = .fillProportionally
+        
         titleLabel.text = "movie title"
         titleLabel.textColor = .white
         titleLabel.font = .systemFont(ofSize: 16, weight: .bold)
-        titleLabel.backgroundColor = .gray
         
         likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
+        likeButton.imageView?.contentMode = .scaleAspectFit
+        likeButton.imageView?.frame.size = CGSize(width: 30, height: 30)
         likeButton.tintColor = .accent
         
         descriptionLabel.text = "movie description\nmovie description"
         descriptionLabel.textColor = .white
         descriptionLabel.numberOfLines = 2
         descriptionLabel.font = .systemFont(ofSize: 14, weight: .medium)
-        descriptionLabel.backgroundColor = .cardBgGray
     }
     
     // MARK: - Data Setting
     func configureData(_ movie: Movie, _ isLiked: Bool){
-        posterImageView.image = UIImage(systemName: "star")
-
+        let url = "https://image.tmdb.org/t/p/w500"+movie.posterPath
+        guard let imageURL = URL(string: url) else { return }
+        posterImageView.kf.setImage(with: imageURL)
+        
+        titleLabel.text = movie.title
+        descriptionLabel.text = movie.overview
+        
         if isLiked {
             likeButton.setImage(UIImage(systemName: isLiked ? "heart.fill" : "heart"), for: .normal)
         }

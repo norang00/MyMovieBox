@@ -12,7 +12,9 @@ final class MainViewController: UIViewController {
     
     private let mainView = MainView()
     
-    var searchList: [String] = ["aa", "bb", "cc"]
+    var recentSearchList: [String] = ["aa", "bb", "cc"]
+    var todayMovieList: [Movie] = []
+    let dispatchGroup = DispatchGroup()
     
     override func loadView() {
         view = mainView
@@ -27,7 +29,7 @@ final class MainViewController: UIViewController {
         configureRecentSearchWords()
         configureCollectionView()
         
-        
+        getTodayMovie()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -67,15 +69,15 @@ extension MainViewController {
     func configureRecentSearchWords() {
 //       searchList = User.recentSearch
         
-        if searchList.isEmpty {
+        if recentSearchList.isEmpty {
             mainView.recentSearchEmptyView.isHidden = false
             
         } else {
             mainView.recentSearchEmptyView.isHidden = true
             
-            for index in 0..<searchList.count {
+            for index in 0..<recentSearchList.count {
                 let button = SearchWordSegment(frame: .zero)
-                button.searchButton.setTitle(searchList[index], for: .normal)
+                button.searchButton.setTitle(recentSearchList[index], for: .normal)
                 button.searchButton.tag = index
                 button.searchButton.addTarget(self, action: #selector(wordButtonTapped), for: .touchUpInside)
                 button.xButton.tag = index
@@ -115,22 +117,42 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        20
+        return todayMovieList.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TodayMovieCollectionViewCell.identifier, for: indexPath) as! TodayMovieCollectionViewCell
-  
-        
-        
-//        cell.configureData(<#T##movie: Movie##Movie#>, <#T##isLiked: Bool##Bool#>)
-     
-        
+        let movie = todayMovieList[indexPath.item]
+        cell.configureData(movie, false)
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print(#function, indexPath)
     }
+
+// TODO : Like 관리
+//    func checkMovieLiked() {
+//        
+//    }
+}
+
+// MARK: - Network
+extension MainViewController {
     
+    private func getTodayMovie() {
+        
+        dispatchGroup.enter()
+        NetworkManager.shared.callRequest(.trending, Trending.self) { Result in
+            self.todayMovieList = Result.results
+            self.dispatchGroup.leave()
+        } failureHandler: { errorMessage in
+            self.showAlert(title: "이런! 문제가 발생했어요", message: errorMessage)
+            self.dispatchGroup.leave()
+        }
+        
+        dispatchGroup.notify(queue: .main) {
+            self.mainView.collectionView.reloadData()
+        }
+    }
 }
