@@ -19,7 +19,7 @@ final class SearchWordSegment: BaseView {
     
     override func configureLayout() {
         snp.makeConstraints { make in
-            make.verticalEdges.equalToSuperview().inset(4)
+            make.height.equalTo(40)
         }
         searchButton.snp.makeConstraints { make in
             make.centerY.equalToSuperview()

@@ -82,7 +82,7 @@ final class MainView: BaseView {
         }
         
         recentSearchStackView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.horizontalEdges.equalToSuperview()
             make.width.equalToSuperview()
         }
 

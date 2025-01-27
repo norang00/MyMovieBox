@@ -16,9 +16,28 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let scene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: scene)
         
+       
+        
+        let mainVC = UINavigationController(rootViewController: MainViewController())
+        let upcomingVC = UINavigationController(rootViewController: UpcomingViewController())
+        let profileVC = UINavigationController(rootViewController: ProfileViewController())
+        
+        let tabBarController = UITabBarController()
+        tabBarController.setViewControllers([mainVC, upcomingVC, profileVC], animated: true)
+//        tabBarController.modalPresentationStyle = .fullScreen
+        tabBarController.tabBar.backgroundColor = .black
+        tabBarController.tabBar.tintColor = .accent
+        tabBarController.tabBar.items![0].title = "CINEMA"
+        tabBarController.tabBar.items![0].image = UIImage(systemName: "popcorn")
+        tabBarController.tabBar.items![1].title = "UPCOMING"
+        tabBarController.tabBar.items![1].image = UIImage(systemName: "film.stack")
+        tabBarController.tabBar.items![2].title = "PROFILE"
+        tabBarController.tabBar.items![2].image = UIImage(systemName: "person.crop.circle")
+        
         let isNewUser = User.nickname.isEmpty
-        let nextVC = isNewUser ? OnboardingViewController() : MainViewController()        
-        window?.rootViewController = UINavigationController(rootViewController: nextVC)
+        let nextVC = isNewUser ? OnboardingViewController() : tabBarController
+
+        window?.rootViewController = nextVC
         window?.makeKeyAndVisible()
     }
 
