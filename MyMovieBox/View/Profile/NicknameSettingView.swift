@@ -60,15 +60,13 @@ final class NicknameSettingView: BaseView {
         
         nicknameInputView.snp.makeConstraints { make in
             make.top.equalTo(profileImageSectionView.snp.bottom).offset(24)
-            make.leading.equalToSuperview().offset(16)
-            make.trailing.equalToSuperview().inset(16)
+            make.horizontalEdges.equalToSuperview().inset(16)
             make.height.equalTo(89)
         }
         
         nicknameTextField.snp.makeConstraints { make in
             make.top.equalToSuperview()
-            make.leading.equalToSuperview().offset(8)
-            make.trailing.equalToSuperview().inset(8)
+            make.horizontalEdges.equalToSuperview().inset(8)
             make.height.equalTo(44)
         }
         
@@ -80,8 +78,7 @@ final class NicknameSettingView: BaseView {
         
         guideLabel.snp.makeConstraints { make in
             make.top.equalTo(underlineView.snp.bottom)
-            make.leading.equalToSuperview().offset(8)
-            make.trailing.equalToSuperview().inset(8)
+            make.horizontalEdges.equalToSuperview().inset(8)
             make.height.equalTo(44)
         }
         

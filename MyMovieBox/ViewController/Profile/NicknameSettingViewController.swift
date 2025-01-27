@@ -9,7 +9,7 @@ import UIKit
 
 final class NicknameSettingViewController: UIViewController {
 
-    private let profileNicknameView = NicknameSettingView()
+    private let nicknameSettingView = NicknameSettingView()
 
     var isNewUser: Bool = true
     var profileImageName = ""
@@ -22,12 +22,22 @@ final class NicknameSettingViewController: UIViewController {
     }
     
     override func loadView() {
-        view = profileNicknameView
+        view = nicknameSettingView
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureNavigation(isNewUser ? "프로필 설정" : "프로필 편집")
+        
+        if !isNewUser {
+            // TODO: 신규가입이 아닐때의 네비게이션
+            navigationController?.navigationItem.leftBarButtonItem?.image = UIImage(systemName: "xmark")
+            navigationController?.navigationItem.leftBarButtonItem?.action = #selector(dismiss)
+            navigationController?.navigationItem.rightBarButtonItem?.title = "저장"
+            navigationController?.navigationItem.rightBarButtonItem?.action = #selector(confirmButtonTapped)
+            
+            nicknameSettingView.confirmButton.isHidden = true
+        }
         
         configureProfileImageView()
         configureNicknameTextField()
@@ -40,18 +50,18 @@ extension NicknameSettingViewController {
     
     func configureProfileImageView() {
         profileImageName = "profile_\(Int.random(in: 0...11))"
-        profileNicknameView.profileImageView.image = UIImage(named: profileImageName)
-        profileNicknameView.profileImageOverlayButton.addTarget(self, action: #selector(profileImageViewTapped), for: .touchUpInside)
+        nicknameSettingView.profileImageView.image = UIImage(named: profileImageName)
+        nicknameSettingView.profileImageOverlayButton.addTarget(self, action: #selector(profileImageViewTapped), for: .touchUpInside)
     }
     
     @objc
     private func profileImageViewTapped() {
         let nextVC = ImageSettingViewController()
-        nextVC.isNewUser = true
+        nextVC.isNewUser = isNewUser
         nextVC.profileImageName = profileImageName
         nextVC.selectedImageName = { value in
             self.profileImageName = value
-            self.profileNicknameView.profileImageView.image = UIImage(named: value)
+            self.nicknameSettingView.profileImageView.image = UIImage(named: value)
         }
         navigationController?.pushViewController(nextVC, animated: true)
     }
@@ -61,7 +71,7 @@ extension NicknameSettingViewController {
 extension NicknameSettingViewController: UITextFieldDelegate {
     
     private func configureNicknameTextField() {
-        profileNicknameView.nicknameTextField.delegate = self
+        nicknameSettingView.nicknameTextField.delegate = self
     }
     
     func textFieldDidChangeSelection(_ textField: UITextField) {
@@ -91,7 +101,7 @@ extension NicknameSettingViewController: UITextFieldDelegate {
             result = true
         }
         
-        profileNicknameView.guideLabel.text = guideText
+        nicknameSettingView.guideLabel.text = guideText
         return result
     }
 }
@@ -100,21 +110,26 @@ extension NicknameSettingViewController: UITextFieldDelegate {
 extension NicknameSettingViewController {
     
     private func configureConfirmButton(_ isConfirmed: Bool) {
-        profileNicknameView.confirmButton.addTarget(self, action: #selector(confirmButtonTapped), for: .touchUpInside)
-        profileNicknameView.confirmButton.isEnabled = isConfirmed
-        profileNicknameView.confirmButton.setTitleColor(isConfirmed ? .accent : .bgGray, for: .normal)
-        profileNicknameView.confirmButton.layer.borderColor = isConfirmed ? UIColor.accent.cgColor : UIColor.bgGray.cgColor
+        nicknameSettingView.confirmButton.addTarget(self, action: #selector(confirmButtonTapped), for: .touchUpInside)
+        nicknameSettingView.confirmButton.isEnabled = isConfirmed
+        nicknameSettingView.confirmButton.setTitleColor(isConfirmed ? .accent : .bgGray, for: .normal)
+        nicknameSettingView.confirmButton.layer.borderColor = isConfirmed ? UIColor.accent.cgColor : UIColor.bgGray.cgColor
     }
     
     @objc
     private func confirmButtonTapped() {
         User.profileImageName = profileImageName
         User.nickname = profileNickname
- 
-        guard let windowsScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else { return }
-        let window = windowsScene.windows.first
-        window?.rootViewController = UINavigationController(rootViewController: MainViewController())
-        window?.makeKeyAndVisible()
+        User.signUpDate = DateFormatter.profileDateFormatter.string(from: Date())
+
+        if isNewUser {
+            guard let windowsScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else { return }
+            let window = windowsScene.windows.first
+            window?.rootViewController = UINavigationController(rootViewController: MainViewController())
+            window?.makeKeyAndVisible()
+        } else {
+            dismiss(animated: true)
+        }
     }
 }
 

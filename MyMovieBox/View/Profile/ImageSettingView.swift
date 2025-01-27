@@ -41,8 +41,7 @@ final class ImageSettingView: BaseView {
         
         collectionView.snp.makeConstraints { make in
             make.top.equalTo(profileImageSectionView.snp.bottom).offset(40)
-            make.leading.equalToSuperview()
-            make.trailing.equalToSuperview()
+            make.horizontalEdges.equalToSuperview()
             make.height.equalTo(400)
         }
     }
