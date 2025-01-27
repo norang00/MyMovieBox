@@ -19,15 +19,8 @@ final class MainView: BaseView {
     let recentSearchScrollView = UIScrollView()
     let recentSearchStackView = UIStackView()
     
-    let todayMovieView = UIView()
     let todayMovieLabel = UILabel()
-//    let todayMovieCollectionView = UICollectionView()
-    
-    let tempButton = {
-        let button = UIButton()
-        button.setTitle("user 지우기", for: .normal)
-        return button
-    }()
+    let collectionView = TodayMovieCollectionView(frame: .zero, collectionViewLayout: TodayMovieCollectionView.createCollectionViewLayout())
     
     override func configureHierarchy() {
         addSubview(profileCard)
@@ -41,9 +34,7 @@ final class MainView: BaseView {
         recentSearchScrollView.addSubview(recentSearchStackView)
         
         addSubview(todayMovieLabel)
-        addSubview(todayMovieView)
-        
-        addSubview(tempButton)
+        addSubview(collectionView)
     }
 
     override func configureLayout() {
@@ -92,15 +83,10 @@ final class MainView: BaseView {
             make.horizontalEdges.equalTo(safeAreaLayoutGuide).inset(12)
         }
         
-        todayMovieView.snp.makeConstraints { make in
-            make.top.equalTo(todayMovieLabel.snp.bottom).offset(12)
-            make.horizontalEdges.equalTo(safeAreaLayoutGuide).inset(12)
-            make.bottom.equalToSuperview()
-        }
-
-        tempButton.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().inset(16)
+        collectionView.snp.makeConstraints { make in
+            make.top.equalTo(todayMovieLabel.snp.bottom)
+            make.horizontalEdges.equalTo(safeAreaLayoutGuide)
+            make.bottom.equalTo(safeAreaLayoutGuide)
         }
     }
     
@@ -127,7 +113,6 @@ final class MainView: BaseView {
         
         todayMovieLabel.text = "오늘의 영화"
         todayMovieLabel.font = .systemFont(ofSize: 20, weight: .bold)
-        todayMovieView.backgroundColor = .blue
     }
     
 }

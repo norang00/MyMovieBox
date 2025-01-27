@@ -23,12 +23,11 @@ final class MainViewController: UIViewController {
         
         configureNavigation("My Movie Box")
         
+        configureProfileCard()
         configureRecentSearchWords()
+        configureCollectionView()
         
         
-        
-        mainView.profileCard.overlayButton.addTarget(self, action: #selector(profileTapped), for: .touchUpInside)
-        mainView.tempButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -41,7 +40,11 @@ final class MainViewController: UIViewController {
 
 // MARK: - Profile
 extension MainViewController {
-  
+ 
+    func configureProfileCard() {
+        mainView.profileCard.overlayButton.addTarget(self, action: #selector(profileTapped), for: .touchUpInside)
+    }
+    
     @objc func profileTapped() {
         let nicknameVC = NicknameSettingViewController()
         nicknameVC.isNewUser = false
@@ -58,7 +61,7 @@ extension MainViewController {
     }
 }
 
-// MARK: - Recent Search
+// MARK: - Recent Search // TODO: 레이아웃 조정중
 extension MainViewController {
     
     func configureRecentSearchWords() {
@@ -71,7 +74,6 @@ extension MainViewController {
             mainView.recentSearchEmptyView.isHidden = true
             
             for index in 0..<searchList.count {
-                print(#function, index)
                 let button = SearchWordSegment(frame: .zero)
                 button.searchButton.setTitle(searchList[index], for: .normal)
                 button.searchButton.tag = index
@@ -105,19 +107,30 @@ extension MainViewController {
 }
 
 // MARK: - Today's Movie
-extension MainViewController {
+extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     
-    
-}
-
-// MARK: - temporary
-extension MainViewController {
-    
-    @objc func buttonTapped() {
-        User.reset()
-        guard let windowsScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else { return }
-        let window = windowsScene.windows.first
-        window?.rootViewController = UINavigationController(rootViewController: OnboardingViewController())
-        window?.makeKeyAndVisible()
+    func configureCollectionView() {
+        mainView.collectionView.delegate = self
+        mainView.collectionView.dataSource = self
     }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        20
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TodayMovieCollectionViewCell.identifier, for: indexPath) as! TodayMovieCollectionViewCell
+  
+        
+        
+//        cell.configureData(<#T##movie: Movie##Movie#>, <#T##isLiked: Bool##Bool#>)
+     
+        
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print(#function, indexPath)
+    }
+    
 }
