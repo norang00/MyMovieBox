@@ -24,7 +24,7 @@ final class OnboardingViewController: UIViewController {
     
     @objc
     func startButtonTapped() {
-        let nextVC = ProfileNicknameViewController()
+        let nextVC = NicknameSettingViewController()
         nextVC.isNewUser = true
         navigationController?.pushViewController(nextVC, animated: true)        
     }

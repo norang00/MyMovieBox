@@ -1,5 +1,5 @@
 //
-//  ProfileNicknameViewController.swift
+//  NicknameSettingViewController.swift
 //  MyMovieBox
 //
 //  Created by Kyuhee hong on 1/25/25.
@@ -7,9 +7,9 @@
 
 import UIKit
 
-final class ProfileNicknameViewController: UIViewController {
+final class NicknameSettingViewController: UIViewController {
 
-    private let profileNicknameView = ProfileNicknameView()
+    private let profileNicknameView = NicknameSettingView()
 
     var isNewUser: Bool = true
     var profileImageName = ""
@@ -29,34 +29,36 @@ final class ProfileNicknameViewController: UIViewController {
         super.viewDidLoad()
         configureNavigation(isNewUser ? "프로필 설정" : "프로필 편집")
         
-        configureImageView()
+        configureProfileImageView()
         configureNicknameTextField()
         configureConfirmButton(isConfirmed)
     }
-    
 }
 
 // MARK: - profileImageView
-extension ProfileNicknameViewController {
+extension NicknameSettingViewController {
     
-    func configureImageView() {
+    func configureProfileImageView() {
         profileImageName = "profile_\(Int.random(in: 0...11))"
         profileNicknameView.profileImageView.image = UIImage(named: profileImageName)
-        
         profileNicknameView.profileImageOverlayButton.addTarget(self, action: #selector(profileImageViewTapped), for: .touchUpInside)
     }
     
     @objc
     private func profileImageViewTapped() {
-        let nextVC = ProfileImageViewController()
-        nextVC.profileImageName = profileImageName
+        let nextVC = ImageSettingViewController()
         nextVC.isNewUser = true
+        nextVC.profileImageName = profileImageName
+        nextVC.selectedImageName = { value in
+            self.profileImageName = value
+            self.profileNicknameView.profileImageView.image = UIImage(named: value)
+        }
         navigationController?.pushViewController(nextVC, animated: true)
     }
 }
 
 // MARK: - nicknameTextField
-extension ProfileNicknameViewController: UITextFieldDelegate {
+extension NicknameSettingViewController: UITextFieldDelegate {
     
     private func configureNicknameTextField() {
         profileNicknameView.nicknameTextField.delegate = self
@@ -92,11 +94,10 @@ extension ProfileNicknameViewController: UITextFieldDelegate {
         profileNicknameView.guideLabel.text = guideText
         return result
     }
-    
 }
 
 // MARK: - confirmButton
-extension ProfileNicknameViewController {
+extension NicknameSettingViewController {
     
     private func configureConfirmButton(_ isConfirmed: Bool) {
         profileNicknameView.confirmButton.addTarget(self, action: #selector(confirmButtonTapped), for: .touchUpInside)
@@ -107,15 +108,19 @@ extension ProfileNicknameViewController {
     
     @objc
     private func confirmButtonTapped() {
-        print(#function)
-        
         User.profileImageName = profileImageName
         User.nickname = profileNickname
  
         guard let windowsScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else { return }
         let window = windowsScene.windows.first
-        let nextVC = MainViewController()
-        window?.rootViewController = UINavigationController(rootViewController: nextVC)
+        window?.rootViewController = UINavigationController(rootViewController: MainViewController())
         window?.makeKeyAndVisible()
+    }
+}
+
+// MARK: - Hide Keyboard
+extension NicknameSettingViewController {
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
     }
 }

@@ -1,5 +1,5 @@
 //
-//  ProfileNicknameView.swift
+//  NicknameSettingView.swift
 //  MyMovieBox
 //
 //  Created by Kyuhee hong on 1/25/25.
@@ -7,11 +7,11 @@
 
 import UIKit
 
-final class ProfileNicknameView: BaseView {
+final class NicknameSettingView: BaseView {
 
     private let profileImageSectionView = UIView()
-    let profileImageView = CircleImageView(frame: .zero)
-    private let cameraImageView = UIImageView()
+    let profileImageView = CircleImage(frame: .zero)
+    private let cameraIconView = CameraIcon(frame: .zero)
     let profileImageOverlayButton = UIButton()
     
     private let nicknameInputView = UIView()
@@ -25,7 +25,7 @@ final class ProfileNicknameView: BaseView {
     override func configureHierarchy() {
         
         profileImageSectionView.addSubview(profileImageView)
-        profileImageSectionView.addSubview(cameraImageView)
+        profileImageSectionView.addSubview(cameraIconView)
         addSubview(profileImageSectionView)
         addSubview(profileImageOverlayButton)
         
@@ -48,7 +48,7 @@ final class ProfileNicknameView: BaseView {
             make.edges.equalToSuperview()
         }
         
-        cameraImageView.snp.makeConstraints { make in
+        cameraIconView.snp.makeConstraints { make in
             make.trailing.equalToSuperview()
             make.bottom.equalToSuperview()
             make.size.equalTo(30)
@@ -94,22 +94,6 @@ final class ProfileNicknameView: BaseView {
     
     override func configureView() {
         super.configureView()
-        
-        // SFSymbol 사용법 참고:
-        // https://jimmy-ios.tistory.com/31,
-        // https://developer.apple.com/documentation/uikit/uiimage/symbolconfiguration-swift.class
-        let symbolConfig = UIImage.SymbolConfiguration(pointSize: 13)
-        let cameraImage = UIImage(systemName: "camera.fill", withConfiguration: symbolConfig)
-
-        cameraImageView.image = cameraImage
-        cameraImageView.contentMode = .center
-        cameraImageView.tintColor = .white
-        cameraImageView.layer.cornerRadius = 15
-        cameraImageView.layer.backgroundColor = UIColor.accent.cgColor
-        
-        profileImageOverlayButton.layer.cornerRadius = 16
-        
-        nicknameInputView.backgroundColor = .clear
         
         nicknameTextField.textColor = .white
         nicknameTextField.placeholder = "닉네임을 입력해보세요"

@@ -1,5 +1,5 @@
 //
-//  CircleImageView.swift
+//  CircleImage.swift
 //  MyMovieBox
 //
 //  Created by Kyuhee hong on 1/26/25.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class CircleImageView: UIImageView {
+final class CircleImage: UIImageView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
