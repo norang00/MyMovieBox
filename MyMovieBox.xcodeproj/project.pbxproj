@@ -8,9 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		EE1D9DAD2D437A0100BAF768 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = EE1D9DAC2D437A0100BAF768 /* .gitignore */; };
-		EEEC83582D47971E009808B3 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = EEEC83572D47971E009808B3 /* SnapKit */; };
-		EEEC835B2D479728009808B3 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = EEEC835A2D479728009808B3 /* Kingfisher */; };
-		EEEC835E2D479735009808B3 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = EEEC835D2D479735009808B3 /* Alamofire */; };
+		EE20D03C2D47C15100D44A78 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = EE20D03B2D47C15100D44A78 /* Alamofire */; };
+		EE20D03F2D47C15A00D44A78 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = EE20D03E2D47C15A00D44A78 /* Kingfisher */; };
+		EE20D0422D47C16300D44A78 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = EE20D0412D47C16300D44A78 /* SnapKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,9 +44,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EEEC835E2D479735009808B3 /* Alamofire in Frameworks */,
-				EEEC835B2D479728009808B3 /* Kingfisher in Frameworks */,
-				EEEC83582D47971E009808B3 /* SnapKit in Frameworks */,
+				EE20D0422D47C16300D44A78 /* SnapKit in Frameworks */,
+				EE20D03F2D47C15A00D44A78 /* Kingfisher in Frameworks */,
+				EE20D03C2D47C15100D44A78 /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -90,9 +90,9 @@
 			);
 			name = MyMovieBox;
 			packageProductDependencies = (
-				EEEC83572D47971E009808B3 /* SnapKit */,
-				EEEC835A2D479728009808B3 /* Kingfisher */,
-				EEEC835D2D479735009808B3 /* Alamofire */,
+				EE20D03B2D47C15100D44A78 /* Alamofire */,
+				EE20D03E2D47C15A00D44A78 /* Kingfisher */,
+				EE20D0412D47C16300D44A78 /* SnapKit */,
 			);
 			productName = MyMovieBox;
 			productReference = EE1D9D942D4364B900BAF768 /* MyMovieBox.app */;
@@ -123,9 +123,9 @@
 			mainGroup = EE1D9D8B2D4364B900BAF768;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				EEEC83562D47971E009808B3 /* XCRemoteSwiftPackageReference "SnapKit" */,
-				EEEC83592D479728009808B3 /* XCRemoteSwiftPackageReference "Kingfisher" */,
-				EEEC835C2D479735009808B3 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				EE20D03A2D47C15100D44A78 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				EE20D03D2D47C15A00D44A78 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				EE20D0402D47C16300D44A78 /* XCRemoteSwiftPackageReference "SnapKit" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = EE1D9D952D4364B900BAF768 /* Products */;
@@ -166,6 +166,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MyMovieBox/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "홍규희";
@@ -199,6 +200,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MyMovieBox/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "홍규희";
@@ -368,23 +370,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		EEEC83562D47971E009808B3 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.7.1;
-			};
-		};
-		EEEC83592D479728009808B3 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 8.1.3;
-			};
-		};
-		EEEC835C2D479735009808B3 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+		EE20D03A2D47C15100D44A78 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire";
 			requirement = {
@@ -392,23 +378,39 @@
 				minimumVersion = 5.10.2;
 			};
 		};
+		EE20D03D2D47C15A00D44A78 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.1.3;
+			};
+		};
+		EE20D0402D47C16300D44A78 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		EEEC83572D47971E009808B3 /* SnapKit */ = {
+		EE20D03B2D47C15100D44A78 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = EEEC83562D47971E009808B3 /* XCRemoteSwiftPackageReference "SnapKit" */;
-			productName = SnapKit;
+			package = EE20D03A2D47C15100D44A78 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
 		};
-		EEEC835A2D479728009808B3 /* Kingfisher */ = {
+		EE20D03E2D47C15A00D44A78 /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = EEEC83592D479728009808B3 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			package = EE20D03D2D47C15A00D44A78 /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
 		};
-		EEEC835D2D479735009808B3 /* Alamofire */ = {
+		EE20D0412D47C16300D44A78 /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = EEEC835C2D479735009808B3 /* XCRemoteSwiftPackageReference "Alamofire" */;
-			productName = Alamofire;
+			package = EE20D0402D47C16300D44A78 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
