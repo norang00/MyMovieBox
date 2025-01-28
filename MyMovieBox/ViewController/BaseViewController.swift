@@ -16,7 +16,6 @@ class BaseViewController: UIViewController {
     }
     
     func configureNavigation(_ title: String) {
-        print(#function, title)
         navigationItem.title = title
         navigationItem.backButtonTitle = ""
         navigationController?.navigationBar.tintColor = .accent

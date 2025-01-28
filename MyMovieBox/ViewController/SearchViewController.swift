@@ -11,7 +11,8 @@ final class SearchViewController: BaseViewController {
     
     let searchView = SearchView()
     
-    var query: String? = "어벤"
+    var previousQuery: String = ""
+    var currentQuery: String = ""
     var page: Int = 1
     var totalPage: Int?
     var searchResults: [Movie] = []
@@ -25,12 +26,39 @@ final class SearchViewController: BaseViewController {
         super.viewDidLoad()
 
         configureNavigation("영화 검색")
-
-        if let query {
-            getSearchResult(query, page)
-        }
+        configureSearchBar()
         configureTableView()
+        
+        if !currentQuery.isEmpty {
+            getSearchResult(currentQuery, page)
+        }
     }
+}
+
+// MARK: - SearchBar
+extension SearchViewController: UISearchBarDelegate {
+    
+    private func configureSearchBar() {
+        searchView.searchBar.delegate = self
+    }
+
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        guard let inputText = searchBar.text else { return }
+        if previousQuery != inputText {
+            previousQuery = currentQuery
+            currentQuery = inputText
+            page = 1
+            print(#function, previousQuery, currentQuery)
+            getSearchResult(currentQuery, page)
+        } else {
+            searchView.tableView.reloadData()
+            searchView.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+        }
+    }
+    
+//    private func clearSearchBar() {
+//        searchView.endEditing(true)
+//    }
 }
 
 // MARK: - TableView, Pagination
@@ -53,21 +81,21 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource, UITa
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = searchView.tableView.dequeueReusableCell(withIdentifier: SearchTableViewCell.identifier, for: indexPath) as! SearchTableViewCell
-        let movie = searchResults[indexPath.row]
-        cell.configureData(movie, false)
-        
+    
+        if !self.searchResults.isEmpty {
+            let movie = searchResults[indexPath.row]
+            cell.configureData(movie, false)
+        }
         return cell
     }
     
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
         guard let totalPage = totalPage else { return }
-        guard let query = query else { return }
         
-        print(#function, indexPaths)
         for item in indexPaths {
             if searchResults.count - 2 == item.row && page < totalPage {
                 page += 1
-                getSearchResult(query, page)
+                getSearchResult(currentQuery, page)
             }
         }
     }
@@ -80,7 +108,7 @@ extension SearchViewController {
     private func getSearchResult(_ query: String, _ page: Int) {
         dispatchGroup.enter()
         NetworkManager.shared.callRequest(.search(query: query, page: page), Search.self) { Result in
-            if page == 1{
+            if page == 1 {
                 self.totalPage = Result.totalPages
                 self.searchResults = Result.results
             } else {
@@ -88,13 +116,25 @@ extension SearchViewController {
             }
             self.dispatchGroup.leave()
         } failureHandler: { errorMessage in
-            print(#function, TMDBRequest.search(query: query, page: self.page))
             self.showAlert(title: "이런! 문제가 발생했어요", message: errorMessage)
             self.dispatchGroup.leave()
         }
         
         dispatchGroup.notify(queue: .main) {
-            self.searchView.tableView.reloadData()
+            if self.searchResults.isEmpty {
+                self.searchView.emptyLabel.isHidden = false
+                self.searchView.tableView.isHidden = true
+                self.searchView.emptyLabel.text = "원하는 검색결과를 찾지 못했습니다"
+            } else {
+                self.searchView.emptyLabel.isHidden = true
+                self.searchView.tableView.isHidden = false
+                self.searchView.tableView.reloadData()
+                
+                if page == 1 {
+                    self.searchView.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+                }
+            }
+            self.searchView.endEditing(true)
         }
     }
 }

@@ -130,11 +130,12 @@ class SearchTableViewCell: UITableViewCell {
         let url = "https://image.tmdb.org/t/p/w500"+posterPath
 
         guard let imageURL = URL(string: url) else { return }
-        
         posterImageView.kf.setImage(with: imageURL)
         
         titleLabel.text = movie.title
-        dateLabel.text = movie.releaseDate.replacingOccurrences(of: "-", with: ". ")
+        
+        guard let date = movie.releaseDate else { return }
+        dateLabel.text = date.replacingOccurrences(of: "-", with: ". ")
         
         if isLiked {
             likeButton.setImage(UIImage(systemName: isLiked ? "heart.fill" : "heart"), for: .normal)

@@ -11,36 +11,42 @@ final class SearchView: BaseView {
 
     let searchBar = UISearchBar()
     let tableView = SearchTableView()
+    let emptyLabel = UILabel()
 
     override func configureHierarchy() {
         addSubview(searchBar)
         addSubview(tableView)
+        addSubview(emptyLabel)
     }
     
     override func configureLayout() {
-        // MARK: Search Bar
         searchBar.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(safeAreaLayoutGuide)
             make.horizontalEdges.equalToSuperview().inset(8)
         }
         
-        // MARK: TableView
         tableView.snp.makeConstraints { make in
             make.top.equalTo(searchBar.snp.bottom)
             make.horizontalEdges.equalTo(safeAreaLayoutGuide)
             make.bottom.equalTo(safeAreaLayoutGuide)
+        }
+        
+        emptyLabel.snp.makeConstraints { make in
+            make.centerX.centerY.equalToSuperview()
         }
     }
     
     override func configureView() {
         super.configureView()
         
-        configureSearchBar()
-    }
-    
-    private func configureSearchBar() {
-        searchBar.placeholder = "키워드 검색"
+        searchBar.placeholder = "영화를 검색해보세요."
         searchBar.searchBarStyle = .minimal
+        searchBar.tintColor = .accent
+
+        emptyLabel.text = ""
+        emptyLabel.textColor = .titleGray
+        emptyLabel.font = .systemFont(ofSize: 16, weight: .medium)
+        emptyLabel.isHidden = true
     }
 }
