@@ -18,7 +18,7 @@ class TodayMovieCollectionViewCell: UICollectionViewCell {
     
     let titleStackView = UIStackView()
     let titleLabel = UILabel()
-    let likeButton = UIButton()
+    let likeButton = LikeButton()
  
     let descriptionLabel = UILabel()
     
@@ -79,11 +79,6 @@ class TodayMovieCollectionViewCell: UICollectionViewCell {
         titleLabel.text = "movie title"
         titleLabel.textColor = .white
         titleLabel.font = .systemFont(ofSize: 16, weight: .bold)
-        
-        likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
-        likeButton.imageView?.contentMode = .scaleAspectFit
-        likeButton.imageView?.frame.size = CGSize(width: 30, height: 30)
-        likeButton.tintColor = .accent
         
         descriptionLabel.text = "movie description\nmovie description"
         descriptionLabel.textColor = .white

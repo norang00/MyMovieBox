@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class NicknameSettingViewController: UIViewController {
+final class NicknameSettingViewController: BaseViewController {
 
     private let nicknameSettingView = NicknameSettingView()
 

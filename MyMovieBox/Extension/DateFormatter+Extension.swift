@@ -14,5 +14,5 @@ extension DateFormatter {
         formatter.dateFormat = "yy.MM.dd 가입"
         return formatter
     }()
-
+    
 }

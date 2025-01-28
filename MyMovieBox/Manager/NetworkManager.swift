@@ -27,6 +27,7 @@ final class NetworkManager {
                     successHandler(value)
                 case .failure(let error):
                     print("failure", error)
+                    print(api)
                     var errorMessage: String = ""
                     if let urlError = error.asAFError?.underlyingError as? URLError {
                         errorMessage = self.getErrorMessage(urlError)

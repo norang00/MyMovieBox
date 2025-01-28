@@ -11,23 +11,27 @@ import Alamofire
 enum TMDBRequest {
     
     case trending
-    //    case search
+    case search(query: String, page: Int)
     //    case image
     //    case credit
     
     var baseURL: String {
-        return "https://api.themoviedb.org/3/"
+        return "https://api.themoviedb.org/3"
     }
     
     var endpoint: URL {
         switch self {
         case .trending:
-            return URL(string: baseURL+"trending/movie/day?language=ko-KR&page=1")!
+            return URL(string: baseURL+"/trending/movie/day?language=ko-KR&page=1")!
+        case .search:
+            return URL(string: baseURL+"/search/movie")!
         }
     }
     var method: HTTPMethod {
         switch self {
         case .trending:
+            return .get
+        case .search:
             return .get
         }
     }
@@ -39,7 +43,12 @@ enum TMDBRequest {
     var parameters: Parameters {
         switch self {
         case .trending:
-            return [:] // 별도 전달 파라미터 없음
+            return [:]
+        case .search(let query, let page):
+            return ["query": query,
+                    "include_adult": false,
+                    "language": "ko-KR",
+                    "page": page]
         }
     }
     

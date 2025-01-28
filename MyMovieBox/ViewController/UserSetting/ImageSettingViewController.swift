@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class ImageSettingViewController: UIViewController {
+final class ImageSettingViewController: BaseViewController {
 
     private let profileImageSettingView = ImageSettingView()
 

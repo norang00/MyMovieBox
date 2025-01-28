@@ -11,7 +11,7 @@ final class TodayMovieCollectionView: UICollectionView {
 
     static func createCollectionViewLayout() -> UICollectionViewLayout {
         let sectionInset: CGFloat = 12
-        let spacing: CGFloat = 18
+        let spacing: CGFloat = 20
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.minimumInteritemSpacing = spacing

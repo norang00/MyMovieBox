@@ -1,17 +1,25 @@
 //
-//  UIViewController+Extension.swift
+//  BaseViewController.swift
 //  MyMovieBox
 //
-//  Created by Kyuhee hong on 1/25/25.
+//  Created by Kyuhee hong on 1/28/25.
 //
 
 import UIKit
 
-extension UIViewController {
+class BaseViewController: UIViewController {
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        configureNavigation("")
+    }
     
     func configureNavigation(_ title: String) {
+        print(#function, title)
         navigationItem.title = title
         navigationItem.backButtonTitle = ""
+        navigationController?.navigationBar.tintColor = .accent
     }
     
     func showAlert(title: String, message: String) {
@@ -23,4 +31,5 @@ extension UIViewController {
         present(alertController, animated: true)
     }
     
+
 }

@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-final class MainViewController: UIViewController {
+final class MainViewController: BaseViewController {
     
     private let mainView = MainView()
     
@@ -36,6 +36,13 @@ final class MainViewController: UIViewController {
         super.viewWillAppear(animated)
         
         reloadProfileCard()
+    }
+    
+    override func configureNavigation(_ title: String) {
+        super.configureNavigation(title)
+        
+        let searchButton = UIBarButtonItem(image: UIImage(systemName: "magnifyingglass"), style: .plain, target: self, action: #selector(pushToSearchView))
+        self.navigationItem.rightBarButtonItem = searchButton
     }
     
 }
@@ -79,7 +86,7 @@ extension MainViewController {
                 let button = SearchWordSegment(frame: .zero)
                 button.searchButton.setTitle(recentSearchList[index], for: .normal)
                 button.searchButton.tag = index
-                button.searchButton.addTarget(self, action: #selector(wordButtonTapped), for: .touchUpInside)
+                button.searchButton.addTarget(self, action: #selector(pushToSearchView), for: .touchUpInside)
                 button.xButton.tag = index
                 button.xButton.addTarget(self, action: #selector(xButtonTapped), for: .touchUpInside)
 
@@ -87,12 +94,6 @@ extension MainViewController {
             }
 
         }
-    }
-    
-    @objc
-    func wordButtonTapped(_ sender: UIButton) {
-        print(#function)
-        // 검색뷰로 이동
     }
     
     @objc
@@ -104,6 +105,15 @@ extension MainViewController {
     @objc
     func deleteAllButtonTapped() {
         
+    }
+    
+    @objc
+    func pushToSearchView(_ sender: UIButton) {
+        print(#function, sender.tag)
+        
+        
+        // 검색뷰로 이동
+        navigationController?.pushViewController(SearchViewController(), animated: true)
     }
     
 }
@@ -141,7 +151,6 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
 extension MainViewController {
     
     private func getTodayMovie() {
-        
         dispatchGroup.enter()
         NetworkManager.shared.callRequest(.trending, Trending.self) { Result in
             self.todayMovieList = Result.results
