@@ -71,6 +71,7 @@ class SearchTableViewCell: UITableViewCell {
         
         bottomView.snp.makeConstraints { make in
             make.leading.equalTo(posterImageView.snp.trailing).offset(12)
+            make.trailing.equalToSuperview().inset(12)
             make.height.equalTo(30)
             make.bottom.equalToSuperview().inset(12)
         }
@@ -81,7 +82,7 @@ class SearchTableViewCell: UITableViewCell {
         
         likeButton.snp.makeConstraints { make in
             make.verticalEdges.equalToSuperview()
-            make.trailing.equalToSuperview().inset(12)
+            make.trailing.equalToSuperview()
         }
         
     }
@@ -125,9 +126,11 @@ class SearchTableViewCell: UITableViewCell {
     
     // MARK: - Data Setting
     func configureData(_ movie: Movie, _ isLiked: Bool){
-        let url = "https://image.tmdb.org/t/p/w500"+movie.posterPath
-        guard let imageURL = URL(string: url) else { return }
+        guard let posterPath = movie.posterPath else { return }
+        let url = "https://image.tmdb.org/t/p/w500"+posterPath
 
+        guard let imageURL = URL(string: url) else { return }
+        
         posterImageView.kf.setImage(with: imageURL)
         
         titleLabel.text = movie.title

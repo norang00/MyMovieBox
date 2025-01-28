@@ -88,7 +88,9 @@ class TodayMovieCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Data Setting
     func configureData(_ movie: Movie, _ isLiked: Bool){
-        let url = "https://image.tmdb.org/t/p/w500"+movie.posterPath
+        guard let posterPath = movie.posterPath else { return }
+        let url = "https://image.tmdb.org/t/p/w500"+posterPath
+
         guard let imageURL = URL(string: url) else { return }
         posterImageView.kf.setImage(with: imageURL)
         

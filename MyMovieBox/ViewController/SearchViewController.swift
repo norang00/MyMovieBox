@@ -26,17 +26,21 @@ final class SearchViewController: BaseViewController {
 
         configureNavigation("영화 검색")
 
-        getSearchResult()
+        if let query {
+            getSearchResult(query, page)
+        }
         configureTableView()
     }
 }
 
-// MARK: - TableView, pagination
-extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
+// MARK: - TableView, Pagination
+extension SearchViewController: UITableViewDelegate, UITableViewDataSource, UITableViewDataSourcePrefetching {
     
     func configureTableView() {
         searchView.tableView.delegate = self
         searchView.tableView.dataSource = self
+        searchView.tableView.prefetchDataSource = self
+        searchView.tableView.keyboardDismissMode = .onDrag
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -55,18 +59,33 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
+    func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
+        guard let totalPage = totalPage else { return }
+        guard let query = query else { return }
+        
+        print(#function, indexPaths)
+        for item in indexPaths {
+            if searchResults.count - 2 == item.row && page < totalPage {
+                page += 1
+                getSearchResult(query, page)
+            }
+        }
+    }
+
 }
 
 // MARK: - Network
 extension SearchViewController {
     
-    private func getSearchResult() {
-        guard let query = query else { return }
-        
+    private func getSearchResult(_ query: String, _ page: Int) {
         dispatchGroup.enter()
         NetworkManager.shared.callRequest(.search(query: query, page: page), Search.self) { Result in
-            self.searchResults = Result.results
-            self.totalPage = Result.totalPages
+            if page == 1{
+                self.totalPage = Result.totalPages
+                self.searchResults = Result.results
+            } else {
+                self.searchResults.append(contentsOf: Result.results)
+            }
             self.dispatchGroup.leave()
         } failureHandler: { errorMessage in
             print(#function, TMDBRequest.search(query: query, page: self.page))
