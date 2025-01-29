@@ -20,7 +20,7 @@ class SearchTableViewCell: UITableViewCell {
     let genreStackView = UIStackView()
     let likeButton = LikeButton()
     
-    private var genreList: [String] = ["aa", "bb", "cc"]
+    private var genreList: [String] = []
     private var movie: Movie?
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -37,6 +37,10 @@ class SearchTableViewCell: UITableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
+        genreList = []
+        genreStackView.subviews.forEach {
+            $0.removeFromSuperview()
+        }
     }
     
     // MARK: - View Setting
@@ -47,7 +51,6 @@ class SearchTableViewCell: UITableViewCell {
         [genreStackView, likeButton].forEach {
             bottomView.addSubview($0)
         }
-        makeGenreBadge()
     }
     
     private func configureLayout() {
@@ -93,12 +96,12 @@ class SearchTableViewCell: UITableViewCell {
         posterImageView.contentMode = .scaleAspectFill
         posterImageView.clipsToBounds = true
         
-        titleLabel.text = "movie title"
+        titleLabel.text = ""
         titleLabel.textColor = .white
         titleLabel.numberOfLines = 2
         titleLabel.font = .systemFont(ofSize: 16, weight: .bold)
         
-        dateLabel.text = "12. 34. 56"
+        dateLabel.text = ""
         dateLabel.textColor = .bgGray
         dateLabel.font = .systemFont(ofSize: 14, weight: .medium)
 
@@ -111,14 +114,9 @@ class SearchTableViewCell: UITableViewCell {
         if genreList.isEmpty {
             print("no genre")
         } else {
-            for genre in genreList.prefix(2) {
-                let label = UILabel()
+            for genre in genreList {
+                let label = GenreBadge()
                 label.text = genre
-                label.textColor = .white
-                label.textAlignment = .center
-                label.font = .systemFont(ofSize: 14, weight: .semibold)
-                label.layer.cornerRadius = 4
-                label.layer.backgroundColor = UIColor.cardBgGray.cgColor
                 genreStackView.addArrangedSubview(label)
             }
         }
@@ -136,6 +134,13 @@ class SearchTableViewCell: UITableViewCell {
         
         guard let date = movie.releaseDate else { return }
         dateLabel.text = date.replacingOccurrences(of: "-", with: ". ")
+        
+        guard let genre = movie.genreIds else { return }
+        genre.prefix(2).forEach {
+            let genre = Genre.mapping[$0]
+            genreList.append(genre!)
+        }
+        makeGenreBadge()
         
         if isLiked {
             likeButton.setImage(UIImage(systemName: isLiked ? "heart.fill" : "heart"), for: .normal)
