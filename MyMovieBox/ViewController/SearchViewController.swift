@@ -89,6 +89,12 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource, UITa
         return cell
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {        
+        let detailVC = DetailViewController()
+        detailVC.movie = searchResults[indexPath.row]
+        navigationController?.pushViewController(detailVC, animated: true)
+    }
+    
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
         guard let totalPage = totalPage else { return }
         
