@@ -98,7 +98,6 @@ extension MainViewController {
     
     @objc
     func xButtonTapped(_ sender: UIButton) {
-        print(#function)
         // 검색어 삭제 및 버튼 재정렬
     }
     
@@ -109,9 +108,6 @@ extension MainViewController {
     
     @objc
     func pushToSearchView(_ sender: UIButton) {
-        print(#function, sender.tag)
-        
-        // 검색뷰로 이동
         navigationController?.pushViewController(SearchViewController(), animated: true)
     }
     
@@ -139,7 +135,6 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print(#function, indexPath)
         let detailVC = DetailViewController()
         detailVC.movie = todayMovieList[indexPath.item]
         navigationController?.pushViewController(detailVC, animated: true)

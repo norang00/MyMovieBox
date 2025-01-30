@@ -52,7 +52,6 @@ final class BackdropCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Data Setting
     func configureData(_ imagePath: String){
-        print(#function, imagePath)
         let url = "https://image.tmdb.org/t/p/w500"+imagePath
         guard let imageURL = URL(string: url) else { return }
         backdropImageView.kf.setImage(with: imageURL)                

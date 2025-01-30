@@ -48,7 +48,6 @@ extension SearchViewController: UISearchBarDelegate {
             previousQuery = currentQuery
             currentQuery = inputText
             page = 1
-            print(#function, previousQuery, currentQuery)
             getSearchResult(currentQuery, page)
         } else {
             searchView.tableView.reloadData()
@@ -84,7 +83,6 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource, UITa
     
         if !self.searchResults.isEmpty {
             let movie = searchResults[indexPath.row]
-            print(indexPath.row, movie.title, User.checkLike(movie.id))
             cell.configureData(movie, User.checkLike(movie.id))
             cell.likeButton.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
             cell.likeButton.tag = indexPath.row
@@ -93,9 +91,6 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource, UITa
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        print(#function, searchResults[indexPath.row].title)
-        
         let detailVC = DetailViewController()
         detailVC.movie = searchResults[indexPath.row]
         navigationController?.pushViewController(detailVC, animated: true)

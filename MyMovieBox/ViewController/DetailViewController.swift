@@ -61,7 +61,6 @@ final class DetailViewController: BaseViewController {
 extension DetailViewController: UICollectionViewDelegate, UICollectionViewDataSource {
 
     func configureCollectionView() {
-        print(#function)
         detailView.backdropCollectionView.delegate = self
         detailView.backdropCollectionView.dataSource = self
         detailView.backdropCollectionView.tag = 0
@@ -96,7 +95,6 @@ extension DetailViewController: UICollectionViewDelegate, UICollectionViewDataSo
                                                       for: indexPath) as! BackdropCollectionViewCell
         cell.configureData(backdropList[indexPath.item].filePath)
         
-        print(#function, backdropList[indexPath.item].filePath)
         return cell
 //        case 1:
 //            return castList.count
@@ -160,13 +158,10 @@ extension DetailViewController {
 extension DetailViewController {
     
     func getData(_ movie: Movie) {
-        print(#function, movie.id, movie.title)
         dispatchGroup.enter()
         NetworkManager.shared.callRequest(.image(query: movie.id), Image.self) { Result in
             self.backdropList = Result.backdrops.count > 5 ? Array(Result.backdrops.prefix(5)) : Result.backdrops
             self.posterList = Result.posters
-            
-            print(#function, self.backdropList)
             self.dispatchGroup.leave()
         } failureHandler: { errorMessage in
             self.showAlert(title: "이런! 문제가 발생했어요", message: errorMessage)
@@ -183,8 +178,6 @@ extension DetailViewController {
 //        }
         
         dispatchGroup.notify(queue: .main) {
-            print(#function, "dispatchGroup.notify")
-
             self.detailView.backdropCollectionView.reloadData()
             self.configurePageControl()
 
