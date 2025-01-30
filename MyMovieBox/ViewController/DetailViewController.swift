@@ -34,6 +34,7 @@ final class DetailViewController: BaseViewController {
         
         configureNavigation(movie!.title)
         configureCollectionView()
+        configureMovieDescription()
         
         getData(movie!)
     }
@@ -119,6 +120,39 @@ extension DetailViewController {
             let width = scrollView.frame.width
             currentPage = Int(scrollView.contentOffset.x/width)
         }
+    }
+}
+
+// MARK: - Movie Description (개봉일, 평점, 장르)
+extension DetailViewController {
+
+    func configureMovieDescription() {
+        guard let movie = movie else { return }
+        
+        let releaseDate: String = movie.releaseDate ?? "-"
+        let voteAverage: String = String(format: "%.1f", movie.voteAverage ?? 0.0)
+        let genres: String = getGenreString(movie)
+        
+        detailView.movieDescriptionLabel.attributedText = detailView.setMovieDescription(releaseDate, voteAverage, genres)
+    }
+    
+    func getGenreString(_ movie: Movie) -> String {
+        let genres = movie.genreIds ?? []
+        var returnString = ""
+
+        if genres.isEmpty {
+            returnString = "-"
+        } else if genres.count == 1 {
+            if let genre = Genre.mapping[genres[0]] {
+                returnString = genre
+            }
+        } else {
+            guard let genre0 = Genre.mapping[genres[0]] else { return "" }
+            returnString = "\(genre0), "
+            guard let genre1 = Genre.mapping[genres[1]] else { return "" }
+            returnString += genre1
+        }
+        return returnString
     }
 }
 

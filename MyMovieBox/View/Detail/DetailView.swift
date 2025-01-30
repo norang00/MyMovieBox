@@ -17,7 +17,7 @@ final class DetailView: BaseView {
                                                         collectionViewLayout: BackdropCollectionView.createCollectionViewLayout())
     // UIPageControl 구현 참고: https://taekki-dev.tistory.com/25
     var backdropPageControl = UIPageControl()
-    let movieDescription = UILabel()
+    let movieDescriptionLabel = UILabel()
 
     let synopsisLabel = UILabel()
     let synopsisButton = UIButton()
@@ -29,11 +29,15 @@ final class DetailView: BaseView {
     let posterLabel = UILabel()
 //    let posterCollectioinView =
     
+    
+    
+    let tempView = UIView()
+    
     override func configureHierarchy() {
         addSubview(scrollView)
         scrollView.addSubview(contentView)
         
-        [backdropCollectionView, backdropPageControl, movieDescription].forEach {
+        [backdropCollectionView, backdropPageControl, movieDescriptionLabel].forEach {
             contentView.addSubview($0)
         }
 
@@ -44,6 +48,8 @@ final class DetailView: BaseView {
         [castLabel/*, castCollectionView*/].forEach {
             contentView.addSubview($0)
         }
+        
+        contentView.addSubview(tempView)
     }
     
     override func configureLayout() {
@@ -66,13 +72,16 @@ final class DetailView: BaseView {
             make.bottom.equalTo(backdropCollectionView).inset(16)
         }
         
-        movieDescription.snp.makeConstraints { make in
+        movieDescriptionLabel.snp.makeConstraints { make in
             make.centerX.equalTo(backdropCollectionView)
-            make.top.equalTo(backdropCollectionView.snp.bottom).offset(12)
-            make.height.equalTo(500)
+            make.top.equalTo(backdropCollectionView.snp.bottom).offset(8)
+            make.horizontalEdges.equalTo(contentView).inset(12)
+        }
+
+        tempView.snp.makeConstraints { make in
+            make.size.equalTo(100)
             make.bottom.equalTo(contentView).offset(-20)
         }
-       
     }
     
     override func configureView() {
@@ -81,32 +90,53 @@ final class DetailView: BaseView {
         scrollView.showsVerticalScrollIndicator = false
         
         backdropPageControl.backgroundStyle = .prominent
-                
-        movieDescription.text = "askflaslkfaslkfmaslkdfalskdfasldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\n"
-        movieDescription.numberOfLines = 0
+  
+        movieDescriptionLabel.font = .systemFont(ofSize: 14, weight: .light)
+        movieDescriptionLabel.textColor = .titleGray
+        movieDescriptionLabel.numberOfLines = 1
+        movieDescriptionLabel.textAlignment = .center
+        movieDescriptionLabel.sizeToFit()
 
         
-        //
-//        recentSearchLabel.text = "최근검색어"
-//        recentSearchLabel.font = .systemFont(ofSize: 20, weight: .bold)
-//        
-//        recentSearchDeleteButton.setTitle("전체 삭제", for: .normal)
-//        recentSearchDeleteButton.setTitleColor(.accent, for: .normal)
-//        
-//        recentSearchEmptyLabel.text = "최근 검색어 내역이 없습니다."
-//        recentSearchEmptyLabel.textColor = .titleGray
-//        recentSearchEmptyLabel.font = .systemFont(ofSize: 16, weight: .medium)
-//        
-//        recentSearchScrollView.isScrollEnabled = true
-//        recentSearchScrollView.showsHorizontalScrollIndicator = false
-//        recentSearchScrollView.contentInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
-//        
-//        recentSearchStackView.axis = .horizontal
-//        recentSearchStackView.spacing = 8
-//        recentSearchStackView.distribution = .equalSpacing
-//        
-//        todayMovieLabel.text = "오늘의 영화"
-//        todayMovieLabel.font = .systemFont(ofSize: 20, weight: .bold)
+        
+        
+        
+        
     }
     
+    // NSTextAttachment 사용법 참고:
+    // https://nsios.tistory.com/204
+    // https://ios-development.tistory.com/1728
+    // https://www.hackingwithswift.com/articles/237/complete-guide-to-sf-symbols
+    func setMovieDescription(_ date: String, _ vote: String, _ genre: String) -> NSAttributedString {
+
+        let calendarString = getSymbolAttachment("calendar")
+        let releaseDate = NSAttributedString(string: "  \(date)")
+        
+        let starString = getSymbolAttachment("star.fill")
+        let voteAverage = NSAttributedString(string: "  \(vote)")
+        
+        let filmString = getSymbolAttachment("film.fill")
+        let genre = NSAttributedString(string: "  \(genre)")
+
+        let fullText = NSMutableAttributedString()
+        fullText.append(calendarString)
+        fullText.append(releaseDate)
+        fullText.append(NSAttributedString(string: "   |   "))
+        fullText.append(starString)
+        fullText.append(voteAverage)
+        fullText.append(NSAttributedString(string: "   |   "))
+        fullText.append(filmString)
+        fullText.append(genre)
+        
+        return fullText
+    }
+    
+    func getSymbolAttachment(_ image: String) -> NSMutableAttributedString {
+        let attachment = NSTextAttachment()
+        attachment.image = UIImage(systemName: image)?.withTintColor(.titleGray)
+        attachment.bounds = .init(x: 0, y: -3, width: 16, height: 16)
+        let attributedString = NSMutableAttributedString(attachment: attachment)
+        return attributedString
+    }
 }
