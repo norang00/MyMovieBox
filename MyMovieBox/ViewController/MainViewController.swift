@@ -66,7 +66,6 @@ extension MainViewController {
     func reloadProfileCard() {
         mainView.profileCard.profileImageView.image = UIImage(named: User.profileImageName)
         mainView.profileCard.nicknameLabel.text = User.nickname
-        mainView.profileCard.SignupDateLabel.text = User.signUpDate
         mainView.profileCard.likeLabel.text = "\(User.likedMovies.count)개의 무비박스 보관중"
     }
 }
@@ -157,7 +156,6 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
     
     func reloadLike() {
         let userLikedMovies = User.likedMovies
-        print(userLikedMovies)
         for index in 0..<todayMovieList.count {
             let movie = todayMovieList[index]
             let cell = mainView.collectionView.cellForItem(at: IndexPath(item: index, section: 0)) as? TodayMovieCollectionViewCell

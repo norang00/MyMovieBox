@@ -8,7 +8,7 @@
 import UIKit
 import Kingfisher
 
-class TodayMovieCollectionViewCell: UICollectionViewCell {
+final class TodayMovieCollectionViewCell: UICollectionViewCell {
     
     static var identifier: String {
         return String(describing: self)
@@ -72,7 +72,6 @@ class TodayMovieCollectionViewCell: UICollectionViewCell {
         posterImageView.contentMode = .scaleAspectFill
         posterImageView.clipsToBounds = true
         posterImageView.layer.cornerRadius = 8
-        posterImageView.backgroundColor = .bgGray
         
         titleStackView.distribution = .fillProportionally
         
