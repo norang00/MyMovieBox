@@ -36,6 +36,7 @@ final class MainViewController: BaseViewController {
         super.viewWillAppear(animated)
         
         reloadProfileCard()
+        reloadLike()
     }
     
     override func configureNavigation(_ title: String) {
@@ -160,6 +161,17 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
         mainView.collectionView.reloadItems(at: [IndexPath(item: sender.tag, section: 0)])
     }
     
+    func reloadLike() {
+        let userLikedMovies = User.likedMovies
+        var indexPaths: [IndexPath] = []
+        for index in 0..<todayMovieList.count {
+            let movie = todayMovieList[index]
+            if userLikedMovies.contains(movie.id) {
+                indexPaths.append(IndexPath(item: index, section: 0))
+            }
+        }
+        mainView.collectionView.reloadItems(at: indexPaths)
+    }
 }
 
 // MARK: - Network

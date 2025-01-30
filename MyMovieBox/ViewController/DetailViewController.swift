@@ -14,20 +14,31 @@ class DetailViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print("DetailViewController")
-        print(#function, movie!)
+        configureNavigation(movie!.title)
 
     }
     
+    override func configureNavigation(_ title: String) {
+        super.configureNavigation(title)
+                
+        let likeButton = LikeButton()
+        likeButton.isSelected = User.checkLike(movie!.id)
+        likeButton.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: likeButton)
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
     }
-    */
+    
+    // MARK: 좋아요 기능
+    @objc
+    func likeButtonTapped(_ sender: UIButton) {
+        print(#function)
+        if let index = User.likedMovies.firstIndex(of: movie!.id) {
+            User.likedMovies.remove(at: index)
+        } else {
+            User.likedMovies.append(movie!.id)
+        }
+        sender.isSelected.toggle()
+    }
 
+    
 }
