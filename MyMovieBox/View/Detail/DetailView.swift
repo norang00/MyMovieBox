@@ -33,7 +33,7 @@ final class DetailView: BaseView {
         addSubview(scrollView)
         scrollView.addSubview(contentView)
         
-        [backdropCollectionView, movieDescription].forEach {
+        [backdropCollectionView, backdropPageControl, movieDescription].forEach {
             contentView.addSubview($0)
         }
 
@@ -52,7 +52,7 @@ final class DetailView: BaseView {
         }
         
         contentView.snp.makeConstraints { make in
-            make.verticalEdges.equalToSuperview()
+            make.verticalEdges.equalTo(scrollView)
             make.width.equalTo(scrollView)
         }
         
@@ -60,13 +60,33 @@ final class DetailView: BaseView {
             make.top.horizontalEdges.equalTo(contentView)
             make.height.equalTo(UIScreen.main.bounds.width*0.8)
         }
+        
+        backdropPageControl.snp.makeConstraints { make in
+            make.centerX.equalTo(backdropCollectionView)
+            make.bottom.equalTo(backdropCollectionView).inset(16)
+        }
+        
+        movieDescription.snp.makeConstraints { make in
+            make.centerX.equalTo(backdropCollectionView)
+            make.top.equalTo(backdropCollectionView.snp.bottom).offset(12)
+            make.height.equalTo(500)
+            make.bottom.equalTo(contentView).offset(-20)
+        }
        
     }
     
     override func configureView() {
         super.configureView()
-            
-//
+        
+        scrollView.showsVerticalScrollIndicator = false
+        
+        backdropPageControl.backgroundStyle = .prominent
+                
+        movieDescription.text = "askflaslkfaslkfmaslkdfalskdfasldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\nsldkfmaslkdf\n"
+        movieDescription.numberOfLines = 0
+
+        
+        //
 //        recentSearchLabel.text = "최근검색어"
 //        recentSearchLabel.font = .systemFont(ofSize: 20, weight: .bold)
 //        

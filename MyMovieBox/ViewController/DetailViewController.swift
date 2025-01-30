@@ -58,7 +58,7 @@ final class DetailViewController: BaseViewController {
 
 // MARK: - CollectionView
 extension DetailViewController: UICollectionViewDelegate, UICollectionViewDataSource {
-    
+
     func configureCollectionView() {
         print(#function)
         detailView.backdropCollectionView.delegate = self
@@ -105,8 +105,21 @@ extension DetailViewController: UICollectionViewDelegate, UICollectionViewDataSo
 //            return 0
 //        }
     }
+}
 
+// MARK: - (BackdropCollectionView) PageControl
+extension DetailViewController {
+
+    func configurePageControl() {
+        detailView.backdropPageControl.numberOfPages = backdropList.count
+    }
     
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView == detailView.backdropCollectionView {
+            let width = scrollView.frame.width
+            currentPage = Int(scrollView.contentOffset.x/width)
+        }
+    }
 }
 
 // MARK: - Network
@@ -139,6 +152,8 @@ extension DetailViewController {
             print(#function, "dispatchGroup.notify")
 
             self.detailView.backdropCollectionView.reloadData()
+            self.configurePageControl()
+
 //            self.detailView.castCollectionView.reloadData()
 //            self.detailView.posterCollectionView.reloadData()
         }
