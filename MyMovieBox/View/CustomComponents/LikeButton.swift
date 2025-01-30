@@ -24,7 +24,6 @@ class LikeButton: UIButton {
     
     override var isSelected: Bool {
         didSet {
-            print(#function, isSelected)
             setImage(UIImage(systemName: isSelected ? "heart.fill" : "heart"), for: .normal)
         }
     }

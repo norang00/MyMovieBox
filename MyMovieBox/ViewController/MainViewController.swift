@@ -163,14 +163,11 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
     
     func reloadLike() {
         let userLikedMovies = User.likedMovies
-        var indexPaths: [IndexPath] = []
         for index in 0..<todayMovieList.count {
             let movie = todayMovieList[index]
-            if userLikedMovies.contains(movie.id) {
-                indexPaths.append(IndexPath(item: index, section: 0))
-            }
+            let cell = mainView.collectionView.cellForItem(at: IndexPath(item: index, section: 0)) as? TodayMovieCollectionViewCell
+            cell?.likeButton.isSelected = userLikedMovies.contains(movie.id)
         }
-        mainView.collectionView.reloadItems(at: indexPaths)
     }
 }
 
