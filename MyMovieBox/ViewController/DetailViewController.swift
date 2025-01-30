@@ -11,8 +11,16 @@ final class DetailViewController: BaseViewController {
     
     let detailView = DetailView()
     var movie: Movie?
+
     var backdropList: [Backdrop] = []
+    var currentPage: Int = 0 {
+        didSet {
+            detailView.backdropPageControl.currentPage = currentPage
+        }
+    }
+    
     var castList: [Cast] = []
+    
     var posterList: [Poster] = []
     
     let dispatchGroup = DispatchGroup()
@@ -97,7 +105,7 @@ extension DetailViewController: UICollectionViewDelegate, UICollectionViewDataSo
 //            return 0
 //        }
     }
-    
+
     
 }
 
