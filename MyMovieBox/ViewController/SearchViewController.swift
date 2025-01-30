@@ -33,6 +33,10 @@ final class SearchViewController: BaseViewController {
             getSearchResult(currentQuery, page)
         }
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+    }
 }
 
 // MARK: - SearchBar
@@ -94,6 +98,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource, UITa
         let detailVC = DetailViewController()
         detailVC.movie = searchResults[indexPath.row]
         navigationController?.pushViewController(detailVC, animated: true)
+        searchView.tableView.deselectRow(at: indexPath, animated: true)
     }
     
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
