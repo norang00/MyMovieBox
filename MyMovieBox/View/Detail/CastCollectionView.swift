@@ -15,7 +15,7 @@ final class CastCollectionView: UICollectionView {
         layout.minimumLineSpacing = 0
         layout.minimumInteritemSpacing = 0
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        layout.itemSize = CGSize(width: 210, height: 70)
+        layout.itemSize = CGSize(width: 210, height: 60)
         return layout
     }
         

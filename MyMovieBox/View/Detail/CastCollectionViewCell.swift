@@ -45,7 +45,7 @@ class CastCollectionViewCell: UICollectionViewCell {
     
     private func configureLayout() {
         castImageView.snp.makeConstraints { make in
-            make.verticalEdges.equalTo(contentView).inset(10)
+            make.verticalEdges.equalTo(contentView).inset(5)
             make.leading.equalTo(contentView).offset(12)
             make.size.equalTo(50)
         }
