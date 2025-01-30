@@ -150,19 +150,14 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
     @objc
     func likeButtonTapped(_ sender: UIButton) {
         let movie = todayMovieList[sender.tag]
-
-        if let index = User.likedMovies.firstIndex(of: movie.id) {
-            User.likedMovies.remove(at: index)
-        } else {
-            User.likedMovies.append(movie.id)
-        }
-
+        User.toggleLike(movie)
         sender.isSelected.toggle()
-        mainView.collectionView.reloadItems(at: [IndexPath(item: sender.tag, section: 0)])
+        mainView.profileCard.likeLabel.text = "\(User.likedMovies.count)개의 무비박스 보관중"
     }
     
     func reloadLike() {
         let userLikedMovies = User.likedMovies
+        print(userLikedMovies)
         for index in 0..<todayMovieList.count {
             let movie = todayMovieList[index]
             let cell = mainView.collectionView.cellForItem(at: IndexPath(item: index, section: 0)) as? TodayMovieCollectionViewCell

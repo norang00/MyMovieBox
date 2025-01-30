@@ -52,4 +52,12 @@ enum User {
         }
         return false
     }
+    
+    static func toggleLike(_ movie: Movie) {
+        if let index = User.likedMovies.firstIndex(of: movie.id) {
+            User.likedMovies.remove(at: index)
+        } else {
+            User.likedMovies.append(movie.id)
+        }
+    }
 }

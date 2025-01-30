@@ -37,10 +37,15 @@ class SearchTableViewCell: UITableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        genreList = []
+        
+        posterImageView.image = UIImage(systemName: "film")
+        posterImageView.contentMode = .scaleAspectFit
+        titleLabel.text = ""
+        dateLabel.text = ""
         genreStackView.subviews.forEach {
             $0.removeFromSuperview()
         }
+        genreList = []
     }
     
     // MARK: - View Setting

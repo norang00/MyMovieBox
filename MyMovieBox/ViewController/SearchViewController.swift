@@ -112,22 +112,12 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource, UITa
         }
     }
 
+    // MARK: 좋아요 기능
     @objc
     func likeButtonTapped(_ sender: UIButton) {
         let movie = searchResults[sender.tag]
-
-        print(#function, sender.tag, movie.title, User.likedMovies, sender.isSelected)
-
-        if let index = User.likedMovies.firstIndex(of: movie.id) {
-            User.likedMovies.remove(at: index)
-        } else {
-            User.likedMovies.append(movie.id)
-        }
-        
+        User.toggleLike(movie)
         sender.isSelected.toggle()
-        searchView.tableView.reloadRows(at: [IndexPath(item: sender.tag, section: 0)], with: .automatic)
-        
-        print(#function, sender.tag, movie.title, User.likedMovies, sender.isSelected)
     }
 }
 

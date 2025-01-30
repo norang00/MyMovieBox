@@ -31,12 +31,7 @@ class DetailViewController: BaseViewController {
     // MARK: 좋아요 기능
     @objc
     func likeButtonTapped(_ sender: UIButton) {
-        print(#function)
-        if let index = User.likedMovies.firstIndex(of: movie!.id) {
-            User.likedMovies.remove(at: index)
-        } else {
-            User.likedMovies.append(movie!.id)
-        }
+        User.toggleLike(movie!)
         sender.isSelected.toggle()
     }
 
