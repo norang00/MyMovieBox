@@ -35,6 +35,7 @@ final class DetailViewController: BaseViewController {
         configureNavigation(movie!.title)
         configureCollectionView()
         configureMovieDescription()
+        configureSynopsis()
         
         getData(movie!)
     }
@@ -151,6 +152,33 @@ extension DetailViewController {
             returnString += genre1
         }
         return returnString
+    }
+}
+
+// MARK: - Synopsis
+extension DetailViewController {
+    
+    func configureSynopsis() {
+        print(#function, movie?.title, movie?.overview)
+        guard let synopsis = movie?.overview else { return }
+        if synopsis.isEmpty {
+            detailView.synopsisButton.isHidden = true
+        } else {
+            detailView.synopsisContentLabel.text = synopsis
+            detailView.synopsisButton.isHidden = false
+            detailView.synopsisButton.addTarget(self, action: #selector(synopsisButtonTapped), for: .touchUpInside)
+        }
+    }
+    
+    @objc
+    func synopsisButtonTapped() {
+        print(#function)
+        let button = detailView.synopsisButton
+        button.isSelected.toggle()
+        detailView.synopsisButton.setTitle(button.isSelected ? "Hide" : "More", for: .normal)
+        detailView.synopsisContentLabel.numberOfLines = button.isSelected ? 0 : 3
+        detailView.layoutSubviews()
+        
     }
 }
 

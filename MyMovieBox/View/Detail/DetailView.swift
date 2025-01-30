@@ -31,7 +31,7 @@ final class DetailView: BaseView {
     
     
     
-    let tempView = UIView()
+    let tempLabel = UILabel()
     
     override func configureHierarchy() {
         addSubview(scrollView)
@@ -49,7 +49,7 @@ final class DetailView: BaseView {
             contentView.addSubview($0)
         }
         
-        contentView.addSubview(tempView)
+        contentView.addSubview(tempLabel)
     }
     
     override func configureLayout() {
@@ -77,13 +77,43 @@ final class DetailView: BaseView {
             make.top.equalTo(backdropCollectionView.snp.bottom).offset(8)
             make.horizontalEdges.equalTo(contentView).inset(12)
         }
-
-        tempView.snp.makeConstraints { make in
-            make.size.equalTo(100)
+        
+        synopsisLabel.snp.makeConstraints { make in
+            make.top.equalTo(movieDescriptionLabel.snp.bottom).offset(24)
+            make.leading.equalTo(contentView).inset(12)
+            make.height.equalTo(30)
+        }
+        
+        synopsisButton.snp.makeConstraints { make in
+            make.top.equalTo(movieDescriptionLabel.snp.bottom).offset(24)
+            make.trailing.equalTo(contentView).inset(12)
+            make.bottom.equalTo(synopsisLabel)
+        }
+        
+        synopsisContentLabel.snp.makeConstraints { make in
+            make.top.equalTo(synopsisLabel.snp.bottom).offset(8)
+            make.horizontalEdges.equalTo(contentView).inset(12)
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        tempLabel.snp.makeConstraints { make in
+            make.top.equalTo(synopsisContentLabel.snp.bottom).offset(50)
             make.bottom.equalTo(contentView).offset(-20)
         }
     }
-    
+        
+  
     override func configureView() {
         super.configureView()
         
@@ -97,11 +127,25 @@ final class DetailView: BaseView {
         movieDescriptionLabel.textAlignment = .center
         movieDescriptionLabel.sizeToFit()
 
+        synopsisLabel.text = "Synopsis"
+        synopsisLabel.textColor = .white
+        synopsisLabel.textAlignment = .left
+        synopsisLabel.font = .systemFont(ofSize: 20, weight: .bold)
+        
+        synopsisButton.setTitle("More", for: .normal)
+        synopsisButton.setTitleColor(.accent, for: .normal)
+        synopsisButton.titleLabel?.font = .systemFont(ofSize: 16, weight: .bold)
+
+        synopsisContentLabel.textColor = .white
+        synopsisContentLabel.font = .systemFont(ofSize: 16, weight: .medium)
+        synopsisContentLabel.textAlignment = .justified
+        synopsisContentLabel.numberOfLines = 3
         
         
         
         
-        
+        tempLabel.text = "asdf\nasdf\nasdf\nasdf\nasdf\nasdf\nasdf\nasdf\nasdf\nasdf\nasdf\nasdf\nasdf\nasdf\nasdf\nasdf\nasdf\nasdf\n"
+        tempLabel.numberOfLines = 0
     }
     
     // NSTextAttachment 사용법 참고:
