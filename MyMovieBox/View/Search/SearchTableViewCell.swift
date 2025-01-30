@@ -91,9 +91,10 @@ class SearchTableViewCell: UITableViewCell {
     }
     
     private func configureView() {
-        posterImageView.image = UIImage(systemName: "star")
+        posterImageView.image = UIImage(systemName: "film")
+        posterImageView.tintColor = .white
+        posterImageView.contentMode = .scaleAspectFit
         posterImageView.layer.cornerRadius = 8
-        posterImageView.contentMode = .scaleAspectFill
         posterImageView.clipsToBounds = true
         
         titleLabel.text = ""
@@ -124,12 +125,6 @@ class SearchTableViewCell: UITableViewCell {
     
     // MARK: - Data Setting
     func configureData(_ movie: Movie, _ isLiked: Bool){
-        guard let posterPath = movie.posterPath else { return }
-        let url = "https://image.tmdb.org/t/p/w500"+posterPath
-
-        guard let imageURL = URL(string: url) else { return }
-        posterImageView.kf.setImage(with: imageURL)
-        
         titleLabel.text = movie.title
         
         guard let date = movie.releaseDate else { return }
@@ -140,10 +135,15 @@ class SearchTableViewCell: UITableViewCell {
             let genre = Genre.mapping[$0]
             genreList.append(genre!)
         }
-        makeGenreBadge()
+
+        guard let posterPath = movie.posterPath else { return }
+        let url = "https://image.tmdb.org/t/p/w500"+posterPath
         
-        if isLiked {
-            likeButton.setImage(UIImage(systemName: isLiked ? "heart.fill" : "heart"), for: .normal)
-        }
+        guard let imageURL = URL(string: url) else { return }
+        posterImageView.kf.setImage(with: imageURL)
+        posterImageView.contentMode = .scaleAspectFill
+        
+        makeGenreBadge()
+        likeButton.isSelected = isLiked
     }
 }

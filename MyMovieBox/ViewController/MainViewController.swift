@@ -132,7 +132,9 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TodayMovieCollectionViewCell.identifier, for: indexPath) as! TodayMovieCollectionViewCell
         let movie = todayMovieList[indexPath.item]
-        cell.configureData(movie, false)
+        cell.configureData(movie, User.checkLike(movie.id))
+        cell.likeButton.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
+        cell.likeButton.tag = indexPath.item
         return cell
     }
     
@@ -142,11 +144,22 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
         detailVC.movie = todayMovieList[indexPath.item]
         navigationController?.pushViewController(detailVC, animated: true)
     }
+    
+    // MARK: 좋아요 기능
+    @objc
+    func likeButtonTapped(_ sender: UIButton) {
+        let movie = todayMovieList[sender.tag]
 
-// TODO : Like 관리
-//    func checkMovieLiked() {
-//        
-//    }
+        if let index = User.likedMovies.firstIndex(of: movie.id) {
+            User.likedMovies.remove(at: index)
+        } else {
+            User.likedMovies.append(movie.id)
+        }
+
+        sender.isSelected.toggle()
+        mainView.collectionView.reloadItems(at: [IndexPath(item: sender.tag, section: 0)])
+    }
+    
 }
 
 // MARK: - Network

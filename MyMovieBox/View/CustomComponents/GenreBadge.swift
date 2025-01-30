@@ -9,10 +9,12 @@ import UIKit
 
 // Label custom 참고 https://jeonyeohun.tistory.com/248
 class GenreBadge: UILabel {
-    var padding = UIEdgeInsets(top: 2, left: 6, bottom: 2, right: 6)
+    let verticalInset: CGFloat = 2
+    let horizontalInset: CGFloat = 6
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+
         textColor = .white
         textAlignment = .center
         font = .systemFont(ofSize: 14, weight: .semibold)
@@ -25,13 +27,13 @@ class GenreBadge: UILabel {
     }
     
     override func drawText(in rect: CGRect) {
-        let insets = padding
+        let insets = UIEdgeInsets(top: verticalInset, left: horizontalInset, bottom: verticalInset, right: horizontalInset)
         super.drawText(in: rect.inset(by: insets))
     }
     
     override var intrinsicContentSize: CGSize {
         let size = super.intrinsicContentSize
-        return CGSize(width: size.width + padding.left + padding.right,
-                      height: size.height + padding.top + padding.bottom)
+        return CGSize(width: size.width + horizontalInset*2,
+                      height: size.height + verticalInset*2)
     }
 }

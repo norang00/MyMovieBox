@@ -84,12 +84,18 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource, UITa
     
         if !self.searchResults.isEmpty {
             let movie = searchResults[indexPath.row]
-            cell.configureData(movie, false)
+            print(indexPath.row, movie.title, User.checkLike(movie.id))
+            cell.configureData(movie, User.checkLike(movie.id))
+            cell.likeButton.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
+            cell.likeButton.tag = indexPath.row
         }
         return cell
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {        
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        print(#function, searchResults[indexPath.row].title)
+        
         let detailVC = DetailViewController()
         detailVC.movie = searchResults[indexPath.row]
         navigationController?.pushViewController(detailVC, animated: true)
@@ -106,6 +112,23 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource, UITa
         }
     }
 
+    @objc
+    func likeButtonTapped(_ sender: UIButton) {
+        let movie = searchResults[sender.tag]
+
+        print(#function, sender.tag, movie.title, User.likedMovies, sender.isSelected)
+
+        if let index = User.likedMovies.firstIndex(of: movie.id) {
+            User.likedMovies.remove(at: index)
+        } else {
+            User.likedMovies.append(movie.id)
+        }
+        
+        sender.isSelected.toggle()
+        searchView.tableView.reloadRows(at: [IndexPath(item: sender.tag, section: 0)], with: .automatic)
+        
+        print(#function, sender.tag, movie.title, User.likedMovies, sender.isSelected)
+    }
 }
 
 // MARK: - Network

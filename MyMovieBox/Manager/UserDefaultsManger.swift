@@ -45,4 +45,11 @@ enum User {
         likedMovies = []
         recentSearch = []
     }
+    
+    static func checkLike(_ movieId: Int) -> Bool {
+        if likedMovies.contains(movieId) {
+            return true
+        }
+        return false
+    }
 }

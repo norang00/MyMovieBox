@@ -68,7 +68,7 @@ class TodayMovieCollectionViewCell: UICollectionViewCell {
     }
     
     private func configureView() {
-        posterImageView.image = UIImage(systemName: "star")
+        posterImageView.image = UIImage(systemName: "film.circle.fill")
         posterImageView.contentMode = .scaleAspectFill
         posterImageView.clipsToBounds = true
         posterImageView.layer.cornerRadius = 8
@@ -76,11 +76,11 @@ class TodayMovieCollectionViewCell: UICollectionViewCell {
         
         titleStackView.distribution = .fillProportionally
         
-        titleLabel.text = "movie title"
+        titleLabel.text = ""
         titleLabel.textColor = .white
         titleLabel.font = .systemFont(ofSize: 16, weight: .bold)
         
-        descriptionLabel.text = "movie description\nmovie description"
+        descriptionLabel.text = ""
         descriptionLabel.textColor = .white
         descriptionLabel.numberOfLines = 2
         descriptionLabel.font = .systemFont(ofSize: 14, weight: .medium)
@@ -88,17 +88,15 @@ class TodayMovieCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Data Setting
     func configureData(_ movie: Movie, _ isLiked: Bool){
+        titleLabel.text = movie.title
+        descriptionLabel.text = movie.overview
+
         guard let posterPath = movie.posterPath else { return }
         let url = "https://image.tmdb.org/t/p/w500"+posterPath
 
         guard let imageURL = URL(string: url) else { return }
         posterImageView.kf.setImage(with: imageURL)
-        
-        titleLabel.text = movie.title
-        descriptionLabel.text = movie.overview
-        
-        if isLiked {
-            likeButton.setImage(UIImage(systemName: isLiked ? "heart.fill" : "heart"), for: .normal)
-        }
+                
+        likeButton.isSelected = isLiked
     }
 }
