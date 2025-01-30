@@ -69,10 +69,10 @@ extension DetailViewController: UICollectionViewDelegate, UICollectionViewDataSo
         detailView.castCollectionView.delegate = self
         detailView.castCollectionView.dataSource = self
         detailView.castCollectionView.tag = 1
-//
-//        detailView.posterCollectionView.delegate = self
-//        detailView.posterCollectionView.dataSource = self
-//        detailView.posterCollectionView.tag = 2
+
+        detailView.posterCollectionView.delegate = self
+        detailView.posterCollectionView.dataSource = self
+        detailView.posterCollectionView.tag = 2
     }
     
     
@@ -102,9 +102,11 @@ extension DetailViewController: UICollectionViewDelegate, UICollectionViewDataSo
                                                           for: indexPath) as! CastCollectionViewCell
             cell.configureData(castList[indexPath.item])
             return cell
-        
-//        case 2:
-//            return cell
+        case 2:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PosterCollectionViewCell.identifier,
+                                                          for: indexPath) as! PosterCollectionViewCell
+            cell.configureData(posterList[indexPath.item].filePath)
+            return cell
         default:
             // 여기 디폴트 처리를 어떻게 해주어야 할지 고민된다
             let cell = collectionView.cellForItem(at: IndexPath(item: 0, section: 0))!
@@ -215,7 +217,7 @@ extension DetailViewController {
             self.configurePageControl()
             self.detailView.castCollectionView.reloadData()
             self.detailView.layoutSubviews()
-//            self.detailView.posterCollectionView.reloadData()
+            self.detailView.posterCollectionView.reloadData()
         }
     }
 }

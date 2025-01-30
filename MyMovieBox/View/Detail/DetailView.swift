@@ -27,9 +27,8 @@ final class DetailView: BaseView {
                                                 collectionViewLayout: CastCollectionView.createCollectionViewLayout())
     
     let posterLabel = UILabel()
-//    let posterCollectioinView =
-    
-    
+    let posterCollectionView = PosterCollectionView(frame: .zero,
+                                                     collectionViewLayout: PosterCollectionView.createCollectionViewLayout())
     
     let tempLabel = UILabel()
     
@@ -40,7 +39,7 @@ final class DetailView: BaseView {
         [backdropCollectionView, backdropPageControl, movieDescriptionLabel].forEach {
             contentView.addSubview($0)
         }
-
+        
         [synopsisLabel, synopsisButton, synopsisContentLabel].forEach {
             contentView.addSubview($0)
         }
@@ -49,7 +48,9 @@ final class DetailView: BaseView {
             contentView.addSubview($0)
         }
         
-        contentView.addSubview(tempLabel)
+        [posterLabel, posterCollectionView].forEach {
+            contentView.addSubview($0)
+        }
     }
     
     override func configureLayout() {
@@ -69,60 +70,56 @@ final class DetailView: BaseView {
         
         backdropPageControl.snp.makeConstraints { make in
             make.centerX.equalTo(backdropCollectionView)
-            make.bottom.equalTo(backdropCollectionView).inset(16)
+            make.bottom.equalTo(backdropCollectionView).inset(12)
         }
         
         movieDescriptionLabel.snp.makeConstraints { make in
             make.centerX.equalTo(backdropCollectionView)
-            make.top.equalTo(backdropCollectionView.snp.bottom).offset(8)
+            make.top.equalTo(backdropCollectionView.snp.bottom).offset(6)
             make.horizontalEdges.equalTo(contentView).inset(12)
         }
         
         synopsisLabel.snp.makeConstraints { make in
-            make.top.equalTo(movieDescriptionLabel.snp.bottom).offset(24)
+            make.top.equalTo(movieDescriptionLabel.snp.bottom).offset(20)
             make.leading.equalTo(contentView).inset(12)
             make.height.equalTo(30)
         }
         
         synopsisButton.snp.makeConstraints { make in
-            make.top.equalTo(movieDescriptionLabel.snp.bottom).offset(24)
+            make.top.equalTo(movieDescriptionLabel.snp.bottom).offset(20)
             make.trailing.equalTo(contentView).inset(12)
             make.bottom.equalTo(synopsisLabel)
         }
         
         synopsisContentLabel.snp.makeConstraints { make in
-            make.top.equalTo(synopsisLabel.snp.bottom).offset(8)
+            make.top.equalTo(synopsisLabel.snp.bottom).offset(6)
             make.horizontalEdges.equalTo(contentView).inset(12)
         }
         
         castLabel.snp.makeConstraints { make in
-            make.top.equalTo(synopsisContentLabel.snp.bottom).offset(24)
+            make.top.equalTo(synopsisContentLabel.snp.bottom).offset(20)
             make.leading.equalToSuperview().offset(12)
         }
         
         castCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(castLabel.snp.bottom).offset(8)
+            make.top.equalTo(castLabel.snp.bottom).offset(6)
             make.horizontalEdges.equalTo(safeAreaLayoutGuide)
-            make.height.equalTo(140)
+            make.height.equalTo(120)
         }
         
+        posterLabel.snp.makeConstraints { make in
+            make.top.equalTo(castCollectionView.snp.bottom).offset(20)
+            make.leading.equalToSuperview().offset(12)
+        }
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        tempLabel.snp.makeConstraints { make in
-            make.top.equalTo(castCollectionView.snp.bottom).offset(50)
-            make.bottom.equalTo(contentView).offset(-20)
+        posterCollectionView.snp.makeConstraints { make in
+            make.top.equalTo(posterLabel.snp.bottom).offset(6)
+            make.horizontalEdges.equalTo(safeAreaLayoutGuide)
+            make.height.greaterThanOrEqualTo(210)
+            make.bottom.equalTo(contentView).inset(24)
         }
     }
-        
-  
+
     override func configureView() {
         super.configureView()
         
@@ -139,25 +136,26 @@ final class DetailView: BaseView {
         synopsisLabel.text = "Synopsis"
         synopsisLabel.textColor = .white
         synopsisLabel.textAlignment = .left
-        synopsisLabel.font = .systemFont(ofSize: 20, weight: .bold)
+        synopsisLabel.font = .systemFont(ofSize: 16, weight: .bold)
         
         synopsisButton.setTitle("More", for: .normal)
         synopsisButton.setTitleColor(.accent, for: .normal)
-        synopsisButton.titleLabel?.font = .systemFont(ofSize: 16, weight: .bold)
+        synopsisButton.titleLabel?.font = .systemFont(ofSize: 14, weight: .bold)
 
         synopsisContentLabel.textColor = .white
-        synopsisContentLabel.font = .systemFont(ofSize: 16, weight: .medium)
+        synopsisContentLabel.font = .systemFont(ofSize: 14, weight: .regular)
         synopsisContentLabel.textAlignment = .justified
         synopsisContentLabel.numberOfLines = 3
         
         castLabel.text = "Cast"
         castLabel.textColor = .white
         castLabel.textAlignment = .left
-        castLabel.font = .systemFont(ofSize: 20, weight: .bold)
+        castLabel.font = .systemFont(ofSize: 16, weight: .bold)
         
-        
-        tempLabel.text = "asdf\nasdf\nasdf\nasdf\nasdf\nasdf\nasdf\nasdf\nasdf\nasdf\nasdf\nasdf\nasdf\nasdf\nasdf\nasdf\nasdf\nasdf\n"
-        tempLabel.numberOfLines = 0
+        posterLabel.text = "Poster"
+        posterLabel.textColor = .white
+        posterLabel.textAlignment = .left
+        posterLabel.font = .systemFont(ofSize: 16, weight: .bold)
     }
     
     // NSTextAttachment 사용법 참고:
