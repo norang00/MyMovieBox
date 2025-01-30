@@ -15,7 +15,6 @@ final class DetailView: BaseView {
 
     let backdropCollectionView = BackdropCollectionView(frame: .zero,
                                                         collectionViewLayout: BackdropCollectionView.createCollectionViewLayout())
-    // UIPageControl 구현 참고: https://taekki-dev.tistory.com/25
     var backdropPageControl = UIPageControl()
     let movieDescriptionLabel = UILabel()
 
@@ -24,7 +23,8 @@ final class DetailView: BaseView {
     let synopsisContentLabel = UILabel()
 
     let castLabel = UILabel()
-    //let castCollectionView =
+    let castCollectionView = CastCollectionView(frame: .zero,
+                                                collectionViewLayout: CastCollectionView.createCollectionViewLayout())
     
     let posterLabel = UILabel()
 //    let posterCollectioinView =
@@ -45,7 +45,7 @@ final class DetailView: BaseView {
             contentView.addSubview($0)
         }
         
-        [castLabel/*, castCollectionView*/].forEach {
+        [castLabel, castCollectionView].forEach {
             contentView.addSubview($0)
         }
         
@@ -95,7 +95,16 @@ final class DetailView: BaseView {
             make.horizontalEdges.equalTo(contentView).inset(12)
         }
         
+        castLabel.snp.makeConstraints { make in
+            make.top.equalTo(synopsisContentLabel.snp.bottom).offset(24)
+            make.leading.equalToSuperview().offset(12)
+        }
         
+        castCollectionView.snp.makeConstraints { make in
+            make.top.equalTo(castLabel.snp.bottom).offset(8)
+            make.horizontalEdges.equalTo(safeAreaLayoutGuide)
+            make.height.equalTo(140)
+        }
         
         
         
@@ -108,7 +117,7 @@ final class DetailView: BaseView {
         
         
         tempLabel.snp.makeConstraints { make in
-            make.top.equalTo(synopsisContentLabel.snp.bottom).offset(50)
+            make.top.equalTo(castCollectionView.snp.bottom).offset(50)
             make.bottom.equalTo(contentView).offset(-20)
         }
     }
@@ -141,7 +150,10 @@ final class DetailView: BaseView {
         synopsisContentLabel.textAlignment = .justified
         synopsisContentLabel.numberOfLines = 3
         
-        
+        castLabel.text = "Cast"
+        castLabel.textColor = .white
+        castLabel.textAlignment = .left
+        castLabel.font = .systemFont(ofSize: 20, weight: .bold)
         
         
         tempLabel.text = "asdf\nasdf\nasdf\nasdf\nasdf\nasdf\nasdf\nasdf\nasdf\nasdf\nasdf\nasdf\nasdf\nasdf\nasdf\nasdf\nasdf\nasdf\n"

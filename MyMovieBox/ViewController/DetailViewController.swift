@@ -66,9 +66,9 @@ extension DetailViewController: UICollectionViewDelegate, UICollectionViewDataSo
         detailView.backdropCollectionView.dataSource = self
         detailView.backdropCollectionView.tag = 0
         
-//        detailView.castCollectionView.delegate = self
-//        detailView.castCollectionView.dataSource = self
-//        detailView.castCollectionView.tag = 1
+        detailView.castCollectionView.delegate = self
+        detailView.castCollectionView.dataSource = self
+        detailView.castCollectionView.tag = 1
 //
 //        detailView.posterCollectionView.delegate = self
 //        detailView.posterCollectionView.dataSource = self
@@ -90,24 +90,31 @@ extension DetailViewController: UICollectionViewDelegate, UICollectionViewDataSo
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        switch collectionView.tag {
-//        case 0:
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BackdropCollectionViewCell.identifier,
-                                                      for: indexPath) as! BackdropCollectionViewCell
-        cell.configureData(backdropList[indexPath.item].filePath)
+        switch collectionView.tag {
+        case 0:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BackdropCollectionViewCell.identifier,
+                                                          for: indexPath) as! BackdropCollectionViewCell
+            cell.configureData(backdropList[indexPath.item].filePath)
+            
+            return cell
+        case 1:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CastCollectionViewCell.identifier,
+                                                          for: indexPath) as! CastCollectionViewCell
+            cell.configureData(castList[indexPath.item])
+            return cell
         
-        return cell
-//        case 1:
-//            return castList.count
 //        case 2:
-//            return posterList.count
-//        default:
-//            return 0
-//        }
+//            return cell
+        default:
+            // 여기 디폴트 처리를 어떻게 해주어야 할지 고민된다
+            let cell = collectionView.cellForItem(at: IndexPath(item: 0, section: 0))!
+            return cell
+        }
     }
 }
 
 // MARK: - (BackdropCollectionView) PageControl
+// UIPageControl 구현 참고: https://taekki-dev.tistory.com/25
 extension DetailViewController {
 
     func configurePageControl() {
@@ -159,7 +166,6 @@ extension DetailViewController {
 extension DetailViewController {
     
     func configureSynopsis() {
-        print(#function, movie?.title, movie?.overview)
         guard let synopsis = movie?.overview else { return }
         if synopsis.isEmpty {
             detailView.synopsisButton.isHidden = true
@@ -172,13 +178,11 @@ extension DetailViewController {
     
     @objc
     func synopsisButtonTapped() {
-        print(#function)
         let button = detailView.synopsisButton
         button.isSelected.toggle()
         detailView.synopsisButton.setTitle(button.isSelected ? "Hide" : "More", for: .normal)
         detailView.synopsisContentLabel.numberOfLines = button.isSelected ? 0 : 3
         detailView.layoutSubviews()
-        
     }
 }
 
@@ -186,6 +190,7 @@ extension DetailViewController {
 extension DetailViewController {
     
     func getData(_ movie: Movie) {
+        
         dispatchGroup.enter()
         NetworkManager.shared.callRequest(.image(query: movie.id), Image.self) { Result in
             self.backdropList = Result.backdrops.count > 5 ? Array(Result.backdrops.prefix(5)) : Result.backdrops
@@ -196,20 +201,20 @@ extension DetailViewController {
             self.dispatchGroup.leave()
         }
         
-//        dispatchGroup.enter()
-//        NetworkManager.shared.callRequest(.credit(query: movie.id), Credit.self) { Result in
-//            self.castList = Result.cast
-//            self.dispatchGroup.leave()
-//        } failureHandler: { errorMessage in
-//            self.showAlert(title: "이런! 문제가 발생했어요", message: errorMessage)
-//            self.dispatchGroup.leave()
-//        }
+        dispatchGroup.enter()
+        NetworkManager.shared.callRequest(.credit(query: movie.id), Credit.self) { Result in
+            self.castList = Result.cast
+            self.dispatchGroup.leave()
+        } failureHandler: { errorMessage in
+            self.showAlert(title: "이런! 문제가 발생했어요", message: errorMessage)
+            self.dispatchGroup.leave()
+        }
         
         dispatchGroup.notify(queue: .main) {
             self.detailView.backdropCollectionView.reloadData()
             self.configurePageControl()
-
-//            self.detailView.castCollectionView.reloadData()
+            self.detailView.castCollectionView.reloadData()
+            self.detailView.layoutSubviews()
 //            self.detailView.posterCollectionView.reloadData()
         }
     }
