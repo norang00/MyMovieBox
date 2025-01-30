@@ -36,6 +36,8 @@ final class SearchViewController: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        reloadLike()
     }
 }
 
@@ -45,7 +47,7 @@ extension SearchViewController: UISearchBarDelegate {
     private func configureSearchBar() {
         searchView.searchBar.delegate = self
     }
-
+    
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let inputText = searchBar.text else { return }
         if previousQuery != inputText {
@@ -58,10 +60,6 @@ extension SearchViewController: UISearchBarDelegate {
             searchView.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
         }
     }
-    
-//    private func clearSearchBar() {
-//        searchView.endEditing(true)
-//    }
 }
 
 // MARK: - TableView, Pagination
@@ -118,6 +116,15 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource, UITa
         let movie = searchResults[sender.tag]
         User.toggleLike(movie)
         sender.isSelected.toggle()
+    }
+    
+    func reloadLike() {
+        let userLikedMovies = User.likedMovies
+        for index in 0..<searchResults.count {
+            let movie = searchResults[index]
+            let cell = searchView.tableView.cellForRow(at: IndexPath(row: index, section: 0)) as? SearchTableViewCell
+            cell?.likeButton.isSelected = userLikedMovies.contains(movie.id)
+        }
     }
 }
 
