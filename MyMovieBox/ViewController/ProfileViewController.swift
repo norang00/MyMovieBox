@@ -10,6 +10,7 @@ import UIKit
 class ProfileViewController: BaseViewController {
     
     let profileView = ProfileView()
+    
     let rowTitles = ["자주 묻는 질문", "1:1 문의", "알림 설정", "탈퇴하기"]
     
     override func loadView() {
@@ -26,16 +27,28 @@ class ProfileViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        reloadProfileCard()
+        configureProfileCard()
     }
 }
 
 // 프로필 카드
 extension ProfileViewController {
-    func reloadProfileCard() {
+    
+    func configureProfileCard() {
         profileView.profileCard.profileImageView.image = UIImage(named: User.profileImageName)
         profileView.profileCard.nicknameLabel.text = User.nickname
         profileView.profileCard.likeLabel.text = "\(User.likedMovies.count)개의 무비박스 보관중"
+        profileView.profileCard.overlayButton.addTarget(self, action: #selector(profileTapped), for: .touchUpInside)
+    }
+    
+    @objc func profileTapped() {
+        let nicknameVC = NicknameSettingViewController()
+        nicknameVC.isNewUser = false
+        nicknameVC.editingDone = {
+            self.configureProfileCard()
+        }
+        let nextVC = UINavigationController(rootViewController: nicknameVC)
+        present(nextVC, animated: true)
     }
 }
 
@@ -69,6 +82,7 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
         if indexPath.row == 3 {
             showQuitAlert(title: "탈퇴하기", message: "탈퇴를 하면 데이터가 모두 초기화됩니다. 탈퇴 하시겠습니까?")
         }
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
     func showQuitAlert(title: String, message: String) {

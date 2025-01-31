@@ -36,7 +36,7 @@ final class MainViewController: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print(#function)
+
         configureProfileCard()
         configureRecentSearchWords()
         reloadLike()
@@ -65,7 +65,6 @@ extension MainViewController {
         let nicknameVC = NicknameSettingViewController()
         nicknameVC.isNewUser = false
         nicknameVC.editingDone = {
-            print("MainViewController", "editingDone", #function, "User.nickname", User.nickname)
             self.configureProfileCard()
         }
         let nextVC = UINavigationController(rootViewController: nicknameVC)
@@ -105,22 +104,18 @@ extension MainViewController {
     
     @objc
     func xButtonTapped(_ sender: UIButton) {
-        print(#function)
         recentSearchList.remove(at: sender.tag)
         configureRecentSearchWords()
     }
     
     @objc
     func deleteAllButtonTapped() {
-        print(#function)
         recentSearchList = []
         configureRecentSearchWords()
     }
     
     @objc
     func pushToSearchView(_ sender: UIButton) {
-        print(#function, sender, sender.tag)
-
         let nextVC = SearchViewController()
         if sender.tag != 1000 {
             nextVC.currentQuery = recentSearchList[sender.tag]

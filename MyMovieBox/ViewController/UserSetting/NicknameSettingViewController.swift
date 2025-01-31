@@ -34,8 +34,6 @@ final class NicknameSettingViewController: BaseViewController {
         if !isNewUser {
             nicknameSettingView.confirmButton.isHidden = true
             
-            print("NicknameSettingViewController", isNewUser, #function, "User.nickname", User.nickname, "profileNickname", profileNickname, "textfield", nicknameSettingView.nicknameTextField.text)
-
             let xButton = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .plain, target: self, action: #selector(popView))
             let saveButton = UIBarButtonItem(title: "저장", style: .done, target: self, action: #selector(confirmButtonTapped))
             self.navigationItem.leftBarButtonItem = xButton
@@ -48,8 +46,6 @@ final class NicknameSettingViewController: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
-        print("NicknameSettingViewController", #function, "User.nickname", User.nickname, "profileNickname", profileNickname, "textfield", nicknameSettingView.nicknameTextField.text)
 
         configureNicknameTextField()
     }
@@ -89,8 +85,6 @@ extension NicknameSettingViewController: UITextFieldDelegate {
         nicknameSettingView.nicknameTextField.delegate = self
         nicknameSettingView.nicknameTextField.text = isNewUser ? "" : User.nickname
         profileNickname = isNewUser ? "" : User.nickname
-        print("NicknameSettingViewController", #function, "isNewUser", isNewUser, "User.nickname", User.nickname, "profileNickname", profileNickname, "textfield", nicknameSettingView.nicknameTextField.text)
-
     }
     
     func textFieldDidChangeSelection(_ textField: UITextField) {
@@ -165,8 +159,6 @@ extension NicknameSettingViewController {
         } else {
             dismiss(animated: true)
         }
-
-        print("NicknameSettingViewController", #function, "User.nickname", User.nickname, "profileNickname", profileNickname, "textfield", nicknameSettingView.nicknameTextField.text)
 
         editingDone?()
     }
