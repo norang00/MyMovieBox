@@ -15,13 +15,12 @@ final class NicknameSettingView: BaseView {
     let profileImageOverlayButton = UIButton()
     
     private let nicknameInputView = UIView()
-    let nicknameTextField = UITextField()
+    var nicknameTextField = UITextField()
     private let underlineView = UIView()
 
     let guideLabel = UILabel()
-
     let confirmButton = UIButton()
-    
+        
     override func configureHierarchy() {
         
         profileImageSectionView.addSubview(profileImageView)

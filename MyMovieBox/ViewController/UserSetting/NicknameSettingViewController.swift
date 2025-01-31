@@ -9,11 +9,13 @@ import UIKit
 
 final class NicknameSettingViewController: BaseViewController {
 
-    private let nicknameSettingView = NicknameSettingView()
+    let nicknameSettingView = NicknameSettingView()
 
     var isNewUser: Bool = true
     var profileImageName = ""
     var profileNickname = ""
+    
+    var editingDone: (() -> Void)?
 
     private var isConfirmed: Bool = false {
         didSet {
@@ -30,18 +32,31 @@ final class NicknameSettingViewController: BaseViewController {
         configureNavigation(isNewUser ? "프로필 설정" : "프로필 편집")
         
         if !isNewUser {
-            // TODO: 신규가입이 아닐때의 네비게이션
-            navigationController?.navigationItem.leftBarButtonItem?.image = UIImage(systemName: "xmark")
-            navigationController?.navigationItem.leftBarButtonItem?.action = #selector(dismiss)
-            navigationController?.navigationItem.rightBarButtonItem?.title = "저장"
-            navigationController?.navigationItem.rightBarButtonItem?.action = #selector(confirmButtonTapped)
-            
             nicknameSettingView.confirmButton.isHidden = true
+            
+            print("NicknameSettingViewController", isNewUser, #function, "User.nickname", User.nickname, "profileNickname", profileNickname, "textfield", nicknameSettingView.nicknameTextField.text)
+
+            let xButton = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .plain, target: self, action: #selector(popView))
+            let saveButton = UIBarButtonItem(title: "저장", style: .done, target: self, action: #selector(confirmButtonTapped))
+            self.navigationItem.leftBarButtonItem = xButton
+            self.navigationItem.rightBarButtonItem = saveButton
         }
         
         configureProfileImageView()
-        configureNicknameTextField()
         configureConfirmButton(isConfirmed)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        print("NicknameSettingViewController", #function, "User.nickname", User.nickname, "profileNickname", profileNickname, "textfield", nicknameSettingView.nicknameTextField.text)
+
+        configureNicknameTextField()
+    }
+    
+    @objc
+    func popView() {
+        dismiss(animated: true)
     }
 }
 
@@ -49,7 +64,7 @@ final class NicknameSettingViewController: BaseViewController {
 extension NicknameSettingViewController {
     
     func configureProfileImageView() {
-        profileImageName = "profile_\(Int.random(in: 0...11))"
+        profileImageName = isNewUser ? "profile_\(Int.random(in: 0...11))" : User.profileImageName
         nicknameSettingView.profileImageView.image = UIImage(named: profileImageName)
         nicknameSettingView.profileImageOverlayButton.addTarget(self, action: #selector(profileImageViewTapped), for: .touchUpInside)
     }
@@ -72,6 +87,10 @@ extension NicknameSettingViewController: UITextFieldDelegate {
     
     private func configureNicknameTextField() {
         nicknameSettingView.nicknameTextField.delegate = self
+        nicknameSettingView.nicknameTextField.text = isNewUser ? "" : User.nickname
+        profileNickname = isNewUser ? "" : User.nickname
+        print("NicknameSettingViewController", #function, "isNewUser", isNewUser, "User.nickname", User.nickname, "profileNickname", profileNickname, "textfield", nicknameSettingView.nicknameTextField.text)
+
     }
     
     func textFieldDidChangeSelection(_ textField: UITextField) {
@@ -121,7 +140,7 @@ extension NicknameSettingViewController {
         User.profileImageName = profileImageName
         User.nickname = profileNickname
         User.signUpDate = DateFormatter.profileDateFormatter.string(from: Date())
-
+        
         if isNewUser {
             
             let mainVC = UINavigationController(rootViewController: MainViewController())
@@ -146,6 +165,10 @@ extension NicknameSettingViewController {
         } else {
             dismiss(animated: true)
         }
+
+        print("NicknameSettingViewController", #function, "User.nickname", User.nickname, "profileNickname", profileNickname, "textfield", nicknameSettingView.nicknameTextField.text)
+
+        editingDone?()
     }
 }
 

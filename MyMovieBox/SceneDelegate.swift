@@ -16,7 +16,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let scene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: scene)
         
-       
+        print(#function, "User nickname", User.nickname)
         
         let mainVC = UINavigationController(rootViewController: MainViewController())
         let upcomingVC = UINavigationController(rootViewController: UpcomingViewController())

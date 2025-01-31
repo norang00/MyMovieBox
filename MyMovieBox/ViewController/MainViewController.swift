@@ -36,10 +36,10 @@ final class MainViewController: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+        print(#function)
         configureProfileCard()
         configureRecentSearchWords()
-        setLike()
+        reloadLike()
     }
     
     override func configureNavigation(_ title: String) {
@@ -64,7 +64,10 @@ extension MainViewController {
     @objc func profileTapped() {
         let nicknameVC = NicknameSettingViewController()
         nicknameVC.isNewUser = false
-        
+        nicknameVC.editingDone = {
+            print("MainViewController", "editingDone", #function, "User.nickname", User.nickname)
+            self.configureProfileCard()
+        }
         let nextVC = UINavigationController(rootViewController: nicknameVC)
         present(nextVC, animated: true)
     }
@@ -163,7 +166,7 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
         mainView.profileCard.likeLabel.text = "\(User.likedMovies.count)개의 무비박스 보관중"
     }
     
-    func setLike() {
+    func reloadLike() {
         let userLikedMovies = User.likedMovies
         for index in 0..<todayMovieList.count {
             let movie = todayMovieList[index]
