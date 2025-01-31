@@ -108,7 +108,7 @@ class SearchTableViewCell: UITableViewCell {
         titleLabel.font = .systemFont(ofSize: 16, weight: .bold)
         
         dateLabel.text = ""
-        dateLabel.textColor = .bgGray
+        dateLabel.textColor = .gray2
         dateLabel.font = .systemFont(ofSize: 14, weight: .medium)
 
         genreStackView.axis = .horizontal

@@ -15,8 +15,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         sleep(2)
 
-        UINavigationBar.appearance().tintColor = .accent
-
         return true
     }
 

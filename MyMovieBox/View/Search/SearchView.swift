@@ -45,7 +45,7 @@ final class SearchView: BaseView {
         searchBar.tintColor = .accent
 
         emptyLabel.text = ""
-        emptyLabel.textColor = .titleGray
+        emptyLabel.textColor = .gray1
         emptyLabel.font = .systemFont(ofSize: 16, weight: .medium)
         emptyLabel.isHidden = true
     }

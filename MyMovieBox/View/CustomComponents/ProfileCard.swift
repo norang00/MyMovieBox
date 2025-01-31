@@ -68,7 +68,7 @@ final class ProfileCard: BaseView {
     
     override func configureView() {
         backgroundView.layer.cornerRadius = 16
-        backgroundView.layer.backgroundColor = UIColor.cardBgGray.cgColor
+        backgroundView.layer.backgroundColor = UIColor.gray3.cgColor
 
         profileImageView.image = UIImage(named: User.profileImageName)
         profileImageView.contentMode = .scaleAspectFit
@@ -82,12 +82,12 @@ final class ProfileCard: BaseView {
         nicknameLabel.font = .systemFont(ofSize: 20, weight: .bold)
         
         SignupDateLabel.text = User.signUpDate
-        SignupDateLabel.textColor = .titleGray
+        SignupDateLabel.textColor = .gray1
         SignupDateLabel.font = .systemFont(ofSize: 14, weight: .medium)
         
         chevronImage.image = UIImage(systemName: "chevron.right")
         chevronImage.contentMode = .scaleAspectFit
-        chevronImage.tintColor = .titleGray
+        chevronImage.tintColor = .gray1
         
         likeLabel.text = "\(User.likedMovies.count)개의 무비박스 보관중"
         likeLabel.textAlignment = .center

@@ -18,7 +18,7 @@ final class GenreBadge: UILabel {
         textAlignment = .center
         font = .systemFont(ofSize: 14, weight: .semibold)
         layer.cornerRadius = 4
-        layer.backgroundColor = UIColor.bgGray.cgColor
+        layer.backgroundColor = UIColor.gray2.cgColor
     }
     
     required init?(coder: NSCoder) {

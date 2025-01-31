@@ -23,7 +23,6 @@ final class OnboardingView: BaseView {
     }
 
     override func configureLayout() {
-        
         onboardImageView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(safeAreaLayoutGuide)
@@ -55,8 +54,8 @@ final class OnboardingView: BaseView {
         
         onboardingLabel.text = "Onboarding"
         onboardingLabel.textColor = .white
-        onboardingLabel.font = .italicSystemFont(ofSize: 30) // TODO: font bold 조절
-        
+        onboardingLabel.font = UIFont(name: "HelveticaNeue-BoldItalic", size: 30)
+
         welcomeLabel.text = "당신만의 영화 상자,\nMyMovieBox를 시작해보세요."
         welcomeLabel.textColor = .white
         welcomeLabel.textAlignment = .center
@@ -71,5 +70,4 @@ final class OnboardingView: BaseView {
         startButton.layer.borderColor = UIColor.accent.cgColor
         startButton.backgroundColor = .clear
     }
-
 }

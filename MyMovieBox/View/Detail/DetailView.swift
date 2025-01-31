@@ -128,7 +128,7 @@ final class DetailView: BaseView {
         backdropPageControl.backgroundStyle = .prominent
   
         movieDescriptionLabel.font = .systemFont(ofSize: 14, weight: .light)
-        movieDescriptionLabel.textColor = .titleGray
+        movieDescriptionLabel.textColor = .gray1
         movieDescriptionLabel.numberOfLines = 1
         movieDescriptionLabel.textAlignment = .center
         movieDescriptionLabel.sizeToFit()
@@ -188,7 +188,7 @@ final class DetailView: BaseView {
     
     func getSymbolAttachment(_ image: String) -> NSMutableAttributedString {
         let attachment = NSTextAttachment()
-        attachment.image = UIImage(systemName: image)?.withTintColor(.titleGray)
+        attachment.image = UIImage(systemName: image)?.withTintColor(.gray1)
         attachment.bounds = .init(x: 0, y: -3, width: 16, height: 16)
         let attributedString = NSMutableAttributedString(attachment: attachment)
         return attributedString

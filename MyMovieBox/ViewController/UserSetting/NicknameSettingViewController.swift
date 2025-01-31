@@ -12,8 +12,9 @@ final class NicknameSettingViewController: BaseViewController {
     let nicknameSettingView = NicknameSettingView()
 
     var isNewUser: Bool = true
-    var profileImageName = ""
-    var profileNickname = ""
+    private var profileImageName = ""
+    private var profileNickname = ""
+    private var tempNickname = ""
     
     var editingDone: (() -> Void)?
 
@@ -33,7 +34,6 @@ final class NicknameSettingViewController: BaseViewController {
         
         if !isNewUser {
             nicknameSettingView.confirmButton.isHidden = true
-            
             let xButton = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .plain, target: self, action: #selector(popView))
             let saveButton = UIBarButtonItem(title: "저장", style: .done, target: self, action: #selector(confirmButtonTapped))
             self.navigationItem.leftBarButtonItem = xButton
@@ -48,6 +48,17 @@ final class NicknameSettingViewController: BaseViewController {
         super.viewWillAppear(animated)
 
         configureNicknameTextField()
+        if !isConfirmed && !tempNickname.isEmpty {
+            checkNicknameConstraints(tempNickname)
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        if let input = nicknameSettingView.nicknameTextField.text {
+            tempNickname = input
+        }
     }
     
     @objc
@@ -83,8 +94,9 @@ extension NicknameSettingViewController: UITextFieldDelegate {
     
     private func configureNicknameTextField() {
         nicknameSettingView.nicknameTextField.delegate = self
-        nicknameSettingView.nicknameTextField.text = isNewUser ? "" : User.nickname
-        profileNickname = isNewUser ? "" : User.nickname
+        nicknameSettingView.nicknameTextField.text = isNewUser ? tempNickname : User.nickname
+        profileNickname = isNewUser ? tempNickname : User.nickname
+        nicknameSettingView.guideLabel.text = ""
     }
     
     func textFieldDidChangeSelection(_ textField: UITextField) {
@@ -92,13 +104,11 @@ extension NicknameSettingViewController: UITextFieldDelegate {
         isConfirmed = checkNicknameConstraints(inputText)
     }
 
+    @discardableResult
     private func checkNicknameConstraints(_ inputText: String) -> Bool {
         var result = false
         var guideText = ""
-
-        // 문자열 검증 참고:
-        // https://developerbee.tistory.com/25
-        // https://sarunw.com/posts/how-to-check-if-string-is-number-in-swift/
+       
         let specialCharacters = CharacterSet(charactersIn: "@#$%")
         let numberCharacters = CharacterSet.decimalDigits
         
@@ -125,8 +135,8 @@ extension NicknameSettingViewController {
     private func configureConfirmButton(_ isConfirmed: Bool) {
         nicknameSettingView.confirmButton.addTarget(self, action: #selector(confirmButtonTapped), for: .touchUpInside)
         nicknameSettingView.confirmButton.isEnabled = isConfirmed
-        nicknameSettingView.confirmButton.setTitleColor(isConfirmed ? .accent : .bgGray, for: .normal)
-        nicknameSettingView.confirmButton.layer.borderColor = isConfirmed ? UIColor.accent.cgColor : UIColor.bgGray.cgColor
+        nicknameSettingView.confirmButton.setTitleColor(isConfirmed ? .accent : .gray2, for: .normal)
+        nicknameSettingView.confirmButton.layer.borderColor = isConfirmed ? UIColor.accent.cgColor : UIColor.gray2.cgColor
     }
     
     @objc
@@ -136,22 +146,7 @@ extension NicknameSettingViewController {
         User.signUpDate = DateFormatter.profileDateFormatter.string(from: Date())
         
         if isNewUser {
-            
-            let mainVC = UINavigationController(rootViewController: MainViewController())
-            let upcomingVC = UINavigationController(rootViewController: UpcomingViewController())
-            let profileVC = UINavigationController(rootViewController: ProfileViewController())
-
-            let tabBarController = UITabBarController()
-            tabBarController.setViewControllers([mainVC, upcomingVC, profileVC], animated: true)
-            tabBarController.tabBar.backgroundColor = .black
-            tabBarController.tabBar.tintColor = .accent
-            tabBarController.tabBar.items![0].title = "CINEMA"
-            tabBarController.tabBar.items![0].image = UIImage(systemName: "popcorn")
-            tabBarController.tabBar.items![1].title = "UPCOMING"
-            tabBarController.tabBar.items![1].image = UIImage(systemName: "film.stack")
-            tabBarController.tabBar.items![2].title = "PROFILE"
-            tabBarController.tabBar.items![2].image = UIImage(systemName: "person.crop.circle")
-
+            let tabBarController = getMainTabBarController()
             guard let windowsScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else { return }
             let window = windowsScene.windows.first
             window?.rootViewController = tabBarController
@@ -161,6 +156,25 @@ extension NicknameSettingViewController {
         }
 
         editingDone?()
+    }
+    
+    func getMainTabBarController() -> UITabBarController {
+        let mainVC = UINavigationController(rootViewController: MainViewController())
+        let upcomingVC = UINavigationController(rootViewController: UpcomingViewController())
+        let profileVC = UINavigationController(rootViewController: ProfileViewController())
+
+        let tabBarController = UITabBarController()
+        tabBarController.setViewControllers([mainVC, upcomingVC, profileVC], animated: true)
+        tabBarController.tabBar.backgroundColor = .black
+        tabBarController.tabBar.tintColor = .accent
+        tabBarController.tabBar.items![0].title = "CINEMA"
+        tabBarController.tabBar.items![0].image = UIImage(systemName: "popcorn")
+        tabBarController.tabBar.items![1].title = "UPCOMING"
+        tabBarController.tabBar.items![1].image = UIImage(systemName: "film.stack")
+        tabBarController.tabBar.items![2].title = "PROFILE"
+        tabBarController.tabBar.items![2].image = UIImage(systemName: "person.crop.circle")
+        
+        return tabBarController
     }
 }
 

@@ -18,7 +18,7 @@ final class NicknameSettingView: BaseView {
     var nicknameTextField = UITextField()
     private let underlineView = UIView()
 
-    let guideLabel = UILabel()
+    var guideLabel = UILabel()
     let confirmButton = UIButton()
         
     override func configureHierarchy() {
@@ -76,15 +76,15 @@ final class NicknameSettingView: BaseView {
         }
         
         guideLabel.snp.makeConstraints { make in
-            make.top.equalTo(underlineView.snp.bottom)
+            make.top.equalTo(underlineView.snp.bottom).offset(4)
             make.horizontalEdges.equalToSuperview().inset(8)
             make.height.equalTo(44)
         }
         
         confirmButton.snp.makeConstraints { make in
-            make.top.equalTo(nicknameInputView.snp.bottom).offset(24)
+            make.top.equalTo(guideLabel.snp.bottom).offset(16)
             make.horizontalEdges.equalToSuperview().inset(16)
-            make.height.equalTo(50)
+            make.height.equalTo(44)
         }
     }
     
@@ -98,14 +98,14 @@ final class NicknameSettingView: BaseView {
         
         underlineView.backgroundColor = .white
         
-        guideLabel.text = ""
         guideLabel.textColor = .accent
+        guideLabel.font = .systemFont(ofSize: 14, weight: .regular)
         guideLabel.textAlignment = .left
         
         confirmButton.setTitle("완료", for: .normal)
         confirmButton.titleLabel?.font = .systemFont(ofSize: 16, weight: .bold)
-        confirmButton.layer.cornerRadius = 25
-        confirmButton.layer.borderWidth = 1
+        confirmButton.layer.cornerRadius = 22
+        confirmButton.layer.borderWidth = 2
         confirmButton.backgroundColor = .clear
     }
     

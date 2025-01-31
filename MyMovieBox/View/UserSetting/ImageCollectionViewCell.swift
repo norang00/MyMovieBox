@@ -31,7 +31,7 @@ final class ImageCollectionViewCell: UICollectionViewCell {
         super.prepareForReuse()
         
         profileImageView.alpha = 0.5
-        profileImageView.layer.borderColor = UIColor.bgGray.cgColor
+        profileImageView.layer.borderColor = UIColor.gray2.cgColor
     }
     
     // MARK: - View Setting
@@ -47,7 +47,7 @@ final class ImageCollectionViewCell: UICollectionViewCell {
     
     private func configureView() {
         profileImageView.alpha = 0.5
-        profileImageView.layer.borderColor = UIColor.bgGray.cgColor
+        profileImageView.layer.borderColor = UIColor.gray2.cgColor
         profileImageView.layer.cornerRadius = frame.size.width/2
     }
     

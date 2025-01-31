@@ -101,7 +101,7 @@ final class MainView: BaseView {
         recentSearchDeleteButton.setTitleColor(.accent, for: .normal)
         
         recentSearchEmptyLabel.text = "최근 검색어 내역이 없습니다."
-        recentSearchEmptyLabel.textColor = .titleGray
+        recentSearchEmptyLabel.textColor = .gray1
         recentSearchEmptyLabel.font = .systemFont(ofSize: 16, weight: .medium)
 
         recentSearchScrollView.isScrollEnabled = true

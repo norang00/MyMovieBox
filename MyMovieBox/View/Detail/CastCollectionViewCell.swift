@@ -71,7 +71,7 @@ class CastCollectionViewCell: UICollectionViewCell {
         castNameLabel.font = .systemFont(ofSize: 14, weight: .bold)
         castNameLabel.adjustsFontSizeToFitWidth = true
 
-        castCharacterLabel.textColor = .titleGray
+        castCharacterLabel.textColor = .gray1
         castCharacterLabel.font = .systemFont(ofSize: 12, weight: .regular)
         castCharacterLabel.adjustsFontSizeToFitWidth = true
       }
