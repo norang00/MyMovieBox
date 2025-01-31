@@ -14,13 +14,18 @@ final class NicknameSettingViewController: BaseViewController {
     var isNewUser: Bool = true
     private var profileImageName = ""
     private var profileNickname = ""
-    private var tempNickname = ""
     
+    private var userEditing = false
+    private var tempNickname = ""
+
+    private var saveButton: UIBarButtonItem?
+    private var xButton: UIBarButtonItem?
     var editingDone: (() -> Void)?
 
     private var isConfirmed: Bool = false {
         didSet {
             configureConfirmButton(isConfirmed)
+            saveButton?.isEnabled = isConfirmed
         }
     }
     
@@ -33,10 +38,11 @@ final class NicknameSettingViewController: BaseViewController {
         configureNavigation(isNewUser ? "프로필 설정" : "프로필 편집")
         
         if !isNewUser {
-            nicknameSettingView.confirmButton.isHidden = true
-            let xButton = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .plain, target: self, action: #selector(popView))
-            let saveButton = UIBarButtonItem(title: "저장", style: .done, target: self, action: #selector(confirmButtonTapped))
+            saveButton = UIBarButtonItem(title: "저장", style: .done, target: self, action: #selector(confirmButtonTapped))
+            xButton = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .plain, target: self, action: #selector(dismissView))
             self.navigationItem.leftBarButtonItem = xButton
+            nicknameSettingView.confirmButton.isHidden = true
+            saveButton?.isEnabled = false
             self.navigationItem.rightBarButtonItem = saveButton
         }
         
@@ -46,6 +52,8 @@ final class NicknameSettingViewController: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
+        print(#function, tempNickname)
 
         configureNicknameTextField()
         if !isConfirmed && !tempNickname.isEmpty {
@@ -57,12 +65,13 @@ final class NicknameSettingViewController: BaseViewController {
         super.viewWillDisappear(animated)
         
         if let input = nicknameSettingView.nicknameTextField.text {
+            print(#function, input, tempNickname)
             tempNickname = input
         }
     }
     
     @objc
-    func popView() {
+    func dismissView() {
         dismiss(animated: true)
     }
 }
@@ -70,7 +79,7 @@ final class NicknameSettingViewController: BaseViewController {
 // MARK: - profileImageView
 extension NicknameSettingViewController {
     
-    func configureProfileImageView() {
+    private func configureProfileImageView() {
         profileImageName = isNewUser ? "profile_\(Int.random(in: 0...11))" : User.profileImageName
         nicknameSettingView.profileImageView.image = UIImage(named: profileImageName)
         nicknameSettingView.profileImageOverlayButton.addTarget(self, action: #selector(profileImageViewTapped), for: .touchUpInside)
@@ -94,13 +103,14 @@ extension NicknameSettingViewController: UITextFieldDelegate {
     
     private func configureNicknameTextField() {
         nicknameSettingView.nicknameTextField.delegate = self
-        nicknameSettingView.nicknameTextField.text = isNewUser ? tempNickname : User.nickname
-        profileNickname = isNewUser ? tempNickname : User.nickname
+        nicknameSettingView.nicknameTextField.text = userEditing ? tempNickname : User.nickname
+        profileNickname = userEditing ? tempNickname : User.nickname
         nicknameSettingView.guideLabel.text = ""
     }
     
     func textFieldDidChangeSelection(_ textField: UITextField) {
         guard let inputText = textField.text else { return }
+        userEditing = true
         isConfirmed = checkNicknameConstraints(inputText)
     }
 
@@ -154,11 +164,12 @@ extension NicknameSettingViewController {
         } else {
             dismiss(animated: true)
         }
-
+        
+        userEditing = false
         editingDone?()
     }
     
-    func getMainTabBarController() -> UITabBarController {
+    private func getMainTabBarController() -> UITabBarController {
         let mainVC = UINavigationController(rootViewController: MainViewController())
         let upcomingVC = UINavigationController(rootViewController: UpcomingViewController())
         let profileVC = UINavigationController(rootViewController: ProfileViewController())
