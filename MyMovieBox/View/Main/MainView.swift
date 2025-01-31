@@ -51,13 +51,14 @@ final class MainView: BaseView {
             make.leading.equalTo(safeAreaLayoutGuide).inset(12)
         }
         
+        
         recentSearchDeleteButton.snp.makeConstraints { make in
             make.centerY.equalTo(recentSearchLabel)
             make.trailing.equalTo(safeAreaLayoutGuide).inset(12)
         }
         
         recentSearchEmptyView.snp.makeConstraints { make in
-            make.top.equalTo(recentSearchLabel.snp.bottom).offset(12)
+            make.top.equalTo(recentSearchLabel.snp.bottom).offset(8)
             make.horizontalEdges.equalTo(safeAreaLayoutGuide)
             make.height.equalTo(44)
         }
@@ -67,14 +68,14 @@ final class MainView: BaseView {
         }
 
         recentSearchScrollView.snp.makeConstraints { make in
-            make.top.equalTo(recentSearchLabel.snp.bottom).offset(12)
+            make.top.equalTo(recentSearchLabel.snp.bottom).offset(8)
             make.horizontalEdges.equalTo(safeAreaLayoutGuide)
-            make.height.equalTo(40)
+            make.height.equalTo(44)
         }
         
         recentSearchStackView.snp.makeConstraints { make in
             make.horizontalEdges.equalTo(recentSearchScrollView)
-            make.width.equalTo(recentSearchScrollView)
+            make.height.equalTo(30)
         }
 
         // 오늘의 영화 영역
@@ -105,12 +106,11 @@ final class MainView: BaseView {
 
         recentSearchScrollView.isScrollEnabled = true
         recentSearchScrollView.showsHorizontalScrollIndicator = false
-        recentSearchScrollView.contentInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+        recentSearchScrollView.contentInset = UIEdgeInsets(top: 7, left: 12, bottom: 7, right: 12)
         
         recentSearchStackView.axis = .horizontal
         recentSearchStackView.spacing = 8
-        recentSearchStackView.distribution = .equalSpacing
-        recentSearchStackView.isUserInteractionEnabled = true
+//        recentSearchStackView.distribution = .equalSpacing
         
         todayMovieLabel.text = "오늘의 영화"
         todayMovieLabel.font = .systemFont(ofSize: 20, weight: .bold)

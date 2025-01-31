@@ -34,7 +34,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         tabBarController.tabBar.items![2].image = UIImage(systemName: "person.crop.circle")
         
         let isNewUser = User.nickname.isEmpty
-        let nextVC = isNewUser ? OnboardingViewController() : tabBarController
+        let nextVC = isNewUser ? UINavigationController(rootViewController: OnboardingViewController()) : tabBarController
 
         window?.rootViewController = nextVC
         window?.makeKeyAndVisible()

@@ -26,7 +26,16 @@ class ProfileViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        
+        reloadProfileCard()
+    }
+}
+
+// 프로필 카드
+extension ProfileViewController {
+    func reloadProfileCard() {
+        profileView.profileCard.profileImageView.image = UIImage(named: User.profileImageName)
+        profileView.profileCard.nicknameLabel.text = User.nickname
+        profileView.profileCard.likeLabel.text = "\(User.likedMovies.count)개의 무비박스 보관중"
     }
 }
 

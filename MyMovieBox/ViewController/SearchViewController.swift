@@ -29,8 +29,11 @@ final class SearchViewController: BaseViewController {
         configureSearchBar()
         configureTableView()
         
-        if !currentQuery.isEmpty {
+        if currentQuery.isEmpty {
+            searchView.searchBar.becomeFirstResponder()
+        } else {
             getSearchResult(currentQuery, page)
+            searchView.searchBar.text = currentQuery
         }
     }
     

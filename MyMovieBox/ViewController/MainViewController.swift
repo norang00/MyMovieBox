@@ -12,7 +12,12 @@ final class MainViewController: BaseViewController {
     
     private let mainView = MainView()
     
-    var recentSearchList: [String] = ["하얼빈", "모아나", "Moana"]
+    var recentSearchList: [String] = ["현빈", "스파이더", "해리포터", "소방관", "크리스마스"] {
+        didSet {
+            User.recentSearch = recentSearchList
+        }
+    }
+    
     var todayMovieList: [Movie] = []
     let dispatchGroup = DispatchGroup()
     
@@ -73,26 +78,26 @@ extension MainViewController {
 extension MainViewController {
     
     func configureRecentSearchWords() {
-        //       recentSearchList = User.recentSearch
+//        recentSearchList = User.recentSearch
         mainView.recentSearchStackView.subviews.forEach {
             $0.removeFromSuperview()
         }
+        
         mainView.recentSearchDeleteButton.addTarget(self, action: #selector(deleteAllButtonTapped), for: .touchUpInside)
         
         if recentSearchList.isEmpty {
             mainView.recentSearchEmptyView.isHidden = false
+
         } else {
             mainView.recentSearchEmptyView.isHidden = true
-            
+
             for index in 0..<recentSearchList.count {
-                let button = SearchWordButton(frame: .zero)
+                let button = SearchWordSegment(frame: .zero)
                 button.searchButton.setTitle(recentSearchList[index], for: .normal)
                 button.searchButton.tag = index
                 button.searchButton.addTarget(self, action: #selector(pushToSearchView), for: .touchUpInside)
                 button.xButton.tag = index
                 button.xButton.addTarget(self, action: #selector(xButtonTapped), for: .touchUpInside)
-                
-                print(recentSearchList[index])
                 mainView.recentSearchStackView.addArrangedSubview(button)
             }
             
@@ -103,16 +108,22 @@ extension MainViewController {
     func xButtonTapped(_ sender: UIButton) {
         // 검색어 삭제 및 버튼 재정렬
         print(#function)
+        recentSearchList.remove(at: sender.tag)
+        configureRecentSearchWords()
     }
     
     @objc
     func deleteAllButtonTapped() {
         print(#function)
+        recentSearchList = []
     }
     
     @objc
     func pushToSearchView(_ sender: UIButton) {
-        navigationController?.pushViewController(SearchViewController(), animated: true)
+        print(#function, sender.tag)
+        let nextVC = SearchViewController()
+        nextVC.currentQuery = recentSearchList[sender.tag]
+        navigationController?.pushViewController(nextVC, animated: true)
     }
     
 }
