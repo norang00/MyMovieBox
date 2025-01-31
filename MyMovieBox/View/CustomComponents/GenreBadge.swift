@@ -8,16 +8,16 @@
 import UIKit
 
 final class GenreBadge: UILabel {
-    private var padding = UIEdgeInsets(top: 2, left: 6, bottom: 2, right: 6)
+    private var padding = UIEdgeInsets(top: 0, left: 4, bottom: 0, right: 4)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
 
         textColor = .white
         textAlignment = .center
-        font = .systemFont(ofSize: 14, weight: .semibold)
+        font = .systemFont(ofSize: 12, weight: .semibold)
         layer.cornerRadius = 4
-        layer.backgroundColor = UIColor.gray2.cgColor
+        layer.backgroundColor = UIColor.genreBadgeGray.cgColor
     }
     
     required init?(coder: NSCoder) {

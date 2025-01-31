@@ -68,7 +68,7 @@ final class ProfileCard: BaseView {
     
     override func configureView() {
         backgroundView.layer.cornerRadius = 16
-        backgroundView.layer.backgroundColor = UIColor.gray3.cgColor
+        backgroundView.layer.backgroundColor = UIColor.profileCardGray.cgColor
 
         profileImageView.image = UIImage(named: User.profileImageName)
         profileImageView.contentMode = .scaleAspectFit

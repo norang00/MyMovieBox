@@ -81,7 +81,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource, UITa
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 120
+        return 124
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

@@ -85,7 +85,9 @@ class SearchTableViewCell: UITableViewCell {
         }
         
         genreStackView.snp.makeConstraints { make in
-            make.leading.verticalEdges.equalToSuperview()
+            make.leading.equalToSuperview()
+            make.height.equalTo(20)
+            make.bottom.equalToSuperview()
         }
         
         likeButton.snp.makeConstraints { make in
@@ -112,8 +114,7 @@ class SearchTableViewCell: UITableViewCell {
         dateLabel.font = .systemFont(ofSize: 14, weight: .medium)
 
         genreStackView.axis = .horizontal
-        genreStackView.spacing = 8
-        genreStackView.distribution = .equalSpacing
+        genreStackView.spacing = 4
     }
     
     func makeGenreBadge() {
