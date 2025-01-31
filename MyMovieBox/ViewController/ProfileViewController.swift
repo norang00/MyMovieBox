@@ -37,7 +37,7 @@ extension ProfileViewController {
     func configureProfileCard() {
         profileView.profileCard.profileImageView.image = UIImage(named: User.profileImageName)
         profileView.profileCard.nicknameLabel.text = User.nickname
-        profileView.profileCard.likeLabel.text = "\(User.likedMovies.count)개의 무비박스 보관중"
+        profileView.profileCard.movieBoxLabel.text = "\(User.likedMovies.count)개의 무비박스 보관중"
         profileView.profileCard.overlayButton.addTarget(self, action: #selector(profileTapped), for: .touchUpInside)
     }
     

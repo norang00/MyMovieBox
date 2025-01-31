@@ -31,9 +31,16 @@ final class GenreBadge: UILabel {
     }
     
     override var intrinsicContentSize: CGSize {
-        let size = super.intrinsicContentSize
-        return CGSize(width: size.width + horizontalInset*2,
-                      height: size.height + verticalInset*2)
+        var contentSize = super.intrinsicContentSize
+        contentSize.height += verticalInset*2
+        contentSize.width += horizontalInset*2
+
+        return contentSize
     }
+    
+//    override var intrinsicContentSize: CGSize {
+//        let size = super.intrinsicContentSize
+//        return CGSize(width: size.width + horizontalInset*2,
+//                      height: size.height + verticalInset*2)
+//    }
 }
-// Label custom 참고 https://jeonyeohun.tistory.com/248

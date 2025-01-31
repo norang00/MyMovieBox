@@ -57,7 +57,7 @@ extension MainViewController {
     func configureProfileCard() {
         mainView.profileCard.profileImageView.image = UIImage(named: User.profileImageName)
         mainView.profileCard.nicknameLabel.text = User.nickname
-        mainView.profileCard.likeLabel.text = "\(User.likedMovies.count)개의 무비박스 보관중"
+        mainView.profileCard.movieBoxLabel.text = "\(User.likedMovies.count)개의 무비박스 보관중"
         mainView.profileCard.overlayButton.addTarget(self, action: #selector(profileTapped), for: .touchUpInside)
     }
     
@@ -158,7 +158,7 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
         let movie = todayMovieList[sender.tag]
         User.toggleLike(movie)
         sender.isSelected.toggle()
-        mainView.profileCard.likeLabel.text = "\(User.likedMovies.count)개의 무비박스 보관중"
+        mainView.profileCard.movieBoxLabel.text = "\(User.likedMovies.count)개의 무비박스 보관중"
     }
     
     func reloadLike() {

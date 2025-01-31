@@ -38,19 +38,16 @@ final class MainView: BaseView {
     }
 
     override func configureLayout() {
-        // 프로필 카드
         profileCard.snp.makeConstraints { make in
             make.top.equalTo(safeAreaLayoutGuide)
             make.horizontalEdges.equalTo(safeAreaLayoutGuide)
-            make.height.equalTo(136)
+            make.height.equalTo(138)
         }
         
-        //최근 검색어 영역
         recentSearchLabel.snp.makeConstraints { make in
             make.top.equalTo(profileCard.snp.bottom).offset(12)
             make.leading.equalTo(safeAreaLayoutGuide).inset(12)
         }
-        
         
         recentSearchDeleteButton.snp.makeConstraints { make in
             make.centerY.equalTo(recentSearchLabel)
@@ -101,8 +98,8 @@ final class MainView: BaseView {
         recentSearchDeleteButton.setTitleColor(.accent, for: .normal)
         
         recentSearchEmptyLabel.text = "최근 검색어 내역이 없습니다."
-        recentSearchEmptyLabel.textColor = .gray1
-        recentSearchEmptyLabel.font = .systemFont(ofSize: 16, weight: .medium)
+        recentSearchEmptyLabel.textColor = .gray
+        recentSearchEmptyLabel.font = .systemFont(ofSize: 14, weight: .medium)
 
         recentSearchScrollView.isScrollEnabled = true
         recentSearchScrollView.showsHorizontalScrollIndicator = false

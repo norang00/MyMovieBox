@@ -16,13 +16,13 @@ final class ProfileCard: BaseView {
     var nicknameLabel = UILabel()
     var SignupDateLabel = UILabel()
     private var chevronImage = UIImageView()
-    var likeLabel = UILabel()
+    var movieBoxLabel = MovieBoxLabel()
     let overlayButton = UIButton()
     
     override func configureHierarchy() {
         addSubview(backgroundView)
         
-        [profileImageView, labelStackView, chevronImage, likeLabel].forEach {
+        [profileImageView, labelStackView, chevronImage, movieBoxLabel].forEach {
             backgroundView.addSubview($0)
         }
 
@@ -35,30 +35,30 @@ final class ProfileCard: BaseView {
     
     override func configureLayout() {
         backgroundView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(12)
+            make.top.equalToSuperview().offset(8)
             make.horizontalEdges.equalToSuperview().inset(12)
-            make.height.equalTo(120)
+            make.height.equalTo(130)
         }
         
         profileImageView.snp.makeConstraints { make in
-            make.top.leading.equalToSuperview().offset(16)
+            make.top.leading.equalToSuperview().offset(14)
             make.size.equalTo(50)
         }
         
         labelStackView.snp.makeConstraints { make in
             make.centerY.equalTo(profileImageView)
-            make.leading.equalTo(profileImageView.snp.trailing).offset(16)
+            make.leading.equalTo(profileImageView.snp.trailing).offset(12)
         }
         
         chevronImage.snp.makeConstraints { make in
             make.centerY.equalTo(profileImageView)
-            make.trailing.equalToSuperview().inset(16)
+            make.trailing.equalToSuperview().inset(14)
         }
         
-        likeLabel.snp.makeConstraints { make in
+        movieBoxLabel.snp.makeConstraints { make in
             make.top.equalTo(profileImageView.snp.bottom).offset(12)
-            make.horizontalEdges.equalToSuperview().inset(12)
-            make.bottom.equalToSuperview().inset(12)
+            make.horizontalEdges.equalToSuperview().inset(14)
+            make.bottom.equalToSuperview().inset(14)
         }
         
         overlayButton.snp.makeConstraints { make in
@@ -76,24 +76,25 @@ final class ProfileCard: BaseView {
         profileImageView.layer.cornerRadius = 25
         
         labelStackView.axis = .vertical
+        labelStackView.spacing = 4
         
         nicknameLabel.text = User.nickname
         nicknameLabel.textColor = .white
-        nicknameLabel.font = .systemFont(ofSize: 20, weight: .bold)
+        nicknameLabel.font = .systemFont(ofSize: 18, weight: .bold)
         
         SignupDateLabel.text = User.signUpDate
-        SignupDateLabel.textColor = .gray1
-        SignupDateLabel.font = .systemFont(ofSize: 14, weight: .medium)
+        SignupDateLabel.textColor = .gray
+        SignupDateLabel.font = .systemFont(ofSize: 12, weight: .medium)
         
         chevronImage.image = UIImage(systemName: "chevron.right")
         chevronImage.contentMode = .scaleAspectFit
         chevronImage.tintColor = .gray1
         
-        likeLabel.text = "\(User.likedMovies.count)개의 무비박스 보관중"
-        likeLabel.textAlignment = .center
-        likeLabel.font = .systemFont(ofSize: 16, weight: .bold)
-        likeLabel.layer.cornerRadius = 8
-        likeLabel.layer.backgroundColor = UIColor.accent.cgColor
+        movieBoxLabel.text = "\(User.likedMovies.count)개의 무비박스 보관중"
+        movieBoxLabel.textAlignment = .center
+        movieBoxLabel.font = .systemFont(ofSize: 14, weight: .bold)
+        movieBoxLabel.layer.cornerRadius = 8
+        movieBoxLabel.layer.backgroundColor = UIColor.moviebox.cgColor
 
         overlayButton.backgroundColor = .clear
     }
