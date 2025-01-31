@@ -142,15 +142,13 @@ final class SearchTableViewCell: UITableViewCell {
             let genre = Genre.mapping[$0]
             genreList.append(genre!)
         }
+        makeGenreBadge()
+        likeButton.isSelected = isLiked
 
         guard let posterPath = movie.posterPath else { return }
         let url = "https://image.tmdb.org/t/p/w500"+posterPath
-        
         guard let imageURL = URL(string: url) else { return }
         posterImageView.kf.setImage(with: imageURL)
         posterImageView.contentMode = .scaleAspectFill
-        
-        makeGenreBadge()
-        likeButton.isSelected = isLiked
     }
 }

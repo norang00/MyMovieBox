@@ -79,11 +79,12 @@ final class CastCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Data Setting
     func configureData(_ cast: Cast){
+        castNameLabel.text = cast.name
+        castCharacterLabel.text = cast.character
+
         guard let profilePath = cast.profilePath else { return }
         let url = TMDBRequest.imageBaseURL+profilePath
         guard let imageURL = URL(string: url) else { return }
         castImageView.kf.setImage(with: imageURL)
-        castNameLabel.text = cast.name
-        castCharacterLabel.text = cast.character
     }
 }

@@ -12,7 +12,7 @@ final class SearchViewController: BaseViewController {
     let searchView = SearchView()
     
     private var previousQuery: String = ""
-    private var currentQuery: String = ""
+    var currentQuery: String = ""
     private var page: Int = 1
     private var totalPage: Int?
     private var searchResults: [Movie] = []

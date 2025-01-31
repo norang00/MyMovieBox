@@ -49,5 +49,4 @@ final class SettingTableViewCell: UITableViewCell {
     func configureData(_ title: String) {
         titleLabel.text = title
     }
-    
 }
