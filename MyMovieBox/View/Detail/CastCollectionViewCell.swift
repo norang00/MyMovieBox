@@ -6,9 +6,10 @@
 //
 
 import UIKit
+import SnapKit
 import Kingfisher
 
-class CastCollectionViewCell: UICollectionViewCell {
+final class CastCollectionViewCell: UICollectionViewCell {
     
     static var identifier: String {
         return String(describing: self)
@@ -74,13 +75,12 @@ class CastCollectionViewCell: UICollectionViewCell {
         castCharacterLabel.textColor = .gray1
         castCharacterLabel.font = .systemFont(ofSize: 12, weight: .regular)
         castCharacterLabel.numberOfLines = 2
-//        castCharacterLabel.adjustsFontSizeToFitWidth = true
       }
     
     // MARK: - Data Setting
     func configureData(_ cast: Cast){
         guard let profilePath = cast.profilePath else { return }
-        let url = "https://image.tmdb.org/t/p/w500"+profilePath
+        let url = TMDBRequest.imageBaseURL+profilePath
         guard let imageURL = URL(string: url) else { return }
         castImageView.kf.setImage(with: imageURL)
         castNameLabel.text = cast.name

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SearchTableView: UITableView {
+final class SearchTableView: UITableView {
     
     override init(frame: CGRect, style: UITableView.Style) {
         super.init(frame: frame, style: style)

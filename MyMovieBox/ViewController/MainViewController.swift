@@ -6,18 +6,16 @@
 //
 
 import UIKit
-import SnapKit
 
 final class MainViewController: BaseViewController {
     
     private let mainView = MainView()
     
-    var recentSearchList: [String] = ["현빈", "스파이더", "해리포터", "소방관", "크리스마스"] {
+    var recentSearchList: [String] = [] {
         didSet {
             User.recentSearch = recentSearchList
         }
     }
-    
     var todayMovieList: [Movie] = []
     let dispatchGroup = DispatchGroup()
     
@@ -80,7 +78,6 @@ extension MainViewController {
         mainView.recentSearchStackView.subviews.forEach {
             $0.removeFromSuperview()
         }
-        
         mainView.recentSearchDeleteButton.addTarget(self, action: #selector(deleteAllButtonTapped), for: .touchUpInside)
         
         if recentSearchList.isEmpty {
@@ -123,7 +120,6 @@ extension MainViewController {
         }
         navigationController?.pushViewController(nextVC, animated: true)
     }
-    
 }
 
 // MARK: - Today's Movie

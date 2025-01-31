@@ -7,11 +7,10 @@
 
 import UIKit
 
-class ProfileViewController: BaseViewController {
+final class ProfileViewController: BaseViewController {
     
     let profileView = ProfileView()
-    
-    let rowTitles = ["자주 묻는 질문", "1:1 문의", "알림 설정", "탈퇴하기"]
+    private let rowTitles = ["자주 묻는 질문", "1:1 문의", "알림 설정", "탈퇴하기"]
     
     override func loadView() {
         view = profileView
@@ -31,10 +30,10 @@ class ProfileViewController: BaseViewController {
     }
 }
 
-// 프로필 카드
+// MARK: - 프로필 카드
 extension ProfileViewController {
     
-    func configureProfileCard() {
+    private func configureProfileCard() {
         profileView.profileCard.profileImageView.image = UIImage(named: User.profileImageName)
         profileView.profileCard.nicknameLabel.text = User.nickname
         profileView.profileCard.movieBoxLabel.text = "\(User.likedMovies.count)개의 무비박스 보관중"
@@ -52,10 +51,10 @@ extension ProfileViewController {
     }
 }
 
-// 설정 테이블뷰
+// MARK: - 설정 테이블뷰
 extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     
-    func configureTableView() {
+    private func configureTableView() {
         profileView.settingTableView.delegate = self
         profileView.settingTableView.dataSource = self
     }
@@ -85,7 +84,7 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
-    func showQuitAlert(title: String, message: String) {
+    private func showQuitAlert(title: String, message: String) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let confirmAction = UIAlertAction(title: "확인", style: .default) {_ in 
             User.reset()

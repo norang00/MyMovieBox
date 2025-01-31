@@ -8,11 +8,11 @@
 import Foundation
 
 extension DateFormatter {
+    
     static let profileDateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "ko_KR")
         formatter.dateFormat = "yy.MM.dd 가입"
         return formatter
     }()
-    
 }

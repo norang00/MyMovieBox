@@ -11,12 +11,17 @@ import SnapKit
 final class ProfileCard: BaseView {
     
     private let backgroundView = UIView()
+    
     let profileImageView = CircleImage(frame: .zero)
+    
     private let labelStackView = UIStackView()
     var nicknameLabel = UILabel()
     var SignupDateLabel = UILabel()
+    
     private var chevronImage = UIImageView()
+    
     var movieBoxLabel = MovieBoxLabel()
+    
     let overlayButton = UIButton()
     
     override func configureHierarchy() {

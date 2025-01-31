@@ -6,9 +6,8 @@
 //
 
 import UIKit
-import SnapKit
 
-class LikeButton: UIButton {
+final class LikeButton: UIButton {
     
     override init(frame: CGRect) {
         super.init(frame: frame)

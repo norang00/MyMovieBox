@@ -6,8 +6,9 @@
 //
 
 import UIKit
+import SnapKit
 
-class SearchTableViewCell: UITableViewCell {
+final class SearchTableViewCell: UITableViewCell {
     
     static var identifier: String {
         return String(describing: self)

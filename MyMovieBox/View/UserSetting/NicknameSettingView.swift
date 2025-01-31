@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 
 final class NicknameSettingView: BaseView {
 
@@ -20,9 +21,9 @@ final class NicknameSettingView: BaseView {
 
     var guideLabel = UILabel()
     let confirmButton = UIButton()
-        
+
+    // MARK: - configureHierarchy
     override func configureHierarchy() {
-        
         profileImageSectionView.addSubview(profileImageView)
         profileImageSectionView.addSubview(cameraIconView)
         addSubview(profileImageSectionView)
@@ -36,6 +37,7 @@ final class NicknameSettingView: BaseView {
         addSubview(confirmButton)
     }
 
+    // MARK: - configureLayout
     override func configureLayout() {
         profileImageSectionView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
@@ -88,6 +90,7 @@ final class NicknameSettingView: BaseView {
         }
     }
     
+    // MARK: - configureView
     override func configureView() {
         super.configureView()
         
@@ -108,5 +111,4 @@ final class NicknameSettingView: BaseView {
         confirmButton.layer.borderWidth = 2
         confirmButton.backgroundColor = .clear
     }
-    
 }

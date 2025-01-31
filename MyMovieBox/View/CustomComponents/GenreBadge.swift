@@ -8,6 +8,7 @@
 import UIKit
 
 final class GenreBadge: UILabel {
+
     private var padding = UIEdgeInsets(top: 0, left: 4, bottom: 0, right: 4)
     
     override init(frame: CGRect) {

@@ -32,6 +32,7 @@ final class DetailView: BaseView {
     
     let tempLabel = UILabel()
     
+    // MARK: - configureHierarchy
     override func configureHierarchy() {
         addSubview(scrollView)
         scrollView.addSubview(contentView)
@@ -53,6 +54,7 @@ final class DetailView: BaseView {
         }
     }
     
+    // MARK: - configureLayout
     override func configureLayout() {
         scrollView.snp.makeConstraints { make in
             make.edges.equalTo(safeAreaLayoutGuide)
@@ -119,7 +121,8 @@ final class DetailView: BaseView {
             make.bottom.equalTo(contentView).inset(24)
         }
     }
-
+    
+    // MARK: - configureView
     override func configureView() {
         super.configureView()
         
@@ -158,6 +161,7 @@ final class DetailView: BaseView {
         posterLabel.font = .systemFont(ofSize: 16, weight: .bold)
     }
     
+    // MARK: - Others
     func setMovieDescription(_ date: String, _ vote: String, _ genre: String) -> NSAttributedString {
 
         let calendarString = getSymbolAttachment("calendar")
@@ -182,7 +186,7 @@ final class DetailView: BaseView {
         return fullText
     }
     
-    func getSymbolAttachment(_ image: String) -> NSMutableAttributedString {
+    private func getSymbolAttachment(_ image: String) -> NSMutableAttributedString {
         let attachment = NSTextAttachment()
         attachment.image = UIImage(systemName: image)?.withTintColor(.gray1)
         attachment.bounds = .init(x: 0, y: -3, width: 16, height: 16)

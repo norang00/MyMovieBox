@@ -23,10 +23,8 @@ final class NetworkManager {
             .responseDecodable(of: T.self) { response in
                 switch response.result {
                 case .success(let value):
-                    print("success")
                     successHandler(value)
                 case .failure(let error):
-                    print("failure", error)
                     var errorMessage: String = ""
                     if let urlError = error.asAFError?.underlyingError as? URLError {
                         errorMessage = self.getErrorMessage(urlError)

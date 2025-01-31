@@ -9,7 +9,6 @@ import Foundation
 import Alamofire
 
 enum TMDBRequest {
-    
     case trending
     case search(query: String, page: Int)
     case image(query: Int)
@@ -17,6 +16,10 @@ enum TMDBRequest {
     
     var baseURL: String {
         return "https://api.themoviedb.org/3"
+    }
+    
+    static var imageBaseURL: String {
+        return "https://image.tmdb.org/t/p/w500"
     }
     
     var endpoint: URL {
@@ -55,6 +58,5 @@ enum TMDBRequest {
             return ["language": "ko-KR"]
         }
     }
-    
 }
 

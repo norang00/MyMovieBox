@@ -11,12 +11,12 @@ final class SearchViewController: BaseViewController {
     
     let searchView = SearchView()
     
-    var previousQuery: String = ""
-    var currentQuery: String = ""
-    var page: Int = 1
-    var totalPage: Int?
-    var searchResults: [Movie] = []
-    let dispatchGroup = DispatchGroup()
+    private var previousQuery: String = ""
+    private var currentQuery: String = ""
+    private var page: Int = 1
+    private var totalPage: Int?
+    private var searchResults: [Movie] = []
+    private let dispatchGroup = DispatchGroup()
     
     override func loadView() {
         view = searchView
@@ -73,7 +73,7 @@ extension SearchViewController: UISearchBarDelegate {
 // MARK: - TableView, Pagination
 extension SearchViewController: UITableViewDelegate, UITableViewDataSource, UITableViewDataSourcePrefetching {
     
-    func configureTableView() {
+    private func configureTableView() {
         searchView.tableView.delegate = self
         searchView.tableView.dataSource = self
         searchView.tableView.prefetchDataSource = self
@@ -127,7 +127,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource, UITa
         sender.isSelected.toggle()
     }
     
-    func reloadLike() {
+    private func reloadLike() {
         let userLikedMovies = User.likedMovies
         for index in 0..<searchResults.count {
             let movie = searchResults[index]

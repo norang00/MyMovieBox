@@ -6,8 +6,9 @@
 //
 
 import UIKit
+import SnapKit
 
-class SettingTableViewCell: UITableViewCell {
+final class SettingTableViewCell: UITableViewCell {
     
     static var identifier: String {
         return String(describing: self)

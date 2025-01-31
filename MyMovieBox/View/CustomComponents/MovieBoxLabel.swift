@@ -8,6 +8,7 @@
 import UIKit
 
 final class MovieBoxLabel: UILabel {
+    
     private var padding = UIEdgeInsets(top: 16, left: 0, bottom: 16, right: 0)
 
     override init(frame: CGRect) {

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 import Kingfisher
 
 final class BackdropCollectionViewCell: UICollectionViewCell {
@@ -52,7 +53,7 @@ final class BackdropCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Data Setting
     func configureData(_ imagePath: String){
-        let url = "https://image.tmdb.org/t/p/w500"+imagePath
+        let url = TMDBRequest.imageBaseURL+imagePath
         guard let imageURL = URL(string: url) else { return }
         backdropImageView.kf.setImage(with: imageURL)                
     }

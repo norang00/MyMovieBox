@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 import Kingfisher
 
 final class PosterCollectionViewCell: UICollectionViewCell {
@@ -51,7 +52,7 @@ final class PosterCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Data Setting
     func configureData(_ imagePath: String){
-        let url = "https://image.tmdb.org/t/p/w500"+imagePath
+        let url = TMDBRequest.imageBaseURL+imagePath
         guard let imageURL = URL(string: url) else { return }
         posterImageView.kf.setImage(with: imageURL)
     }

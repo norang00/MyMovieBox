@@ -22,6 +22,7 @@ final class MainView: BaseView {
     let todayMovieLabel = UILabel()
     let collectionView = TodayMovieCollectionView(frame: .zero, collectionViewLayout: TodayMovieCollectionView.createCollectionViewLayout())
     
+    // MARK: - configureHierarchy
     override func configureHierarchy() {
         addSubview(profileCard)
         
@@ -36,7 +37,8 @@ final class MainView: BaseView {
         addSubview(todayMovieLabel)
         addSubview(collectionView)
     }
-
+    
+    // MARK: - configureLayout
     override func configureLayout() {
         profileCard.snp.makeConstraints { make in
             make.top.equalTo(safeAreaLayoutGuide)
@@ -75,7 +77,6 @@ final class MainView: BaseView {
             make.height.equalTo(30)
         }
 
-        // 오늘의 영화 영역
         todayMovieLabel.snp.makeConstraints { make in
             make.top.equalTo(recentSearchEmptyView.snp.bottom).offset(12)
             make.horizontalEdges.equalTo(safeAreaLayoutGuide).inset(12)
@@ -88,6 +89,7 @@ final class MainView: BaseView {
         }
     }
     
+    // MARK: - configureView
     override func configureView() {
         super.configureView()
         

@@ -18,11 +18,8 @@ final class DetailViewController: BaseViewController {
             detailView.backdropPageControl.currentPage = currentPage
         }
     }
-    
     var castList: [Cast] = []
-    
     var posterList: [Poster] = []
-    
     let dispatchGroup = DispatchGroup()
     
     override func loadView() {
@@ -49,13 +46,11 @@ final class DetailViewController: BaseViewController {
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: likeButton)
     }
     
-    // MARK: 좋아요 기능
     @objc
     func likeButtonTapped(_ sender: UIButton) {
         User.toggleLike(movie!)
         sender.isSelected.toggle()
     }
-
 }
 
 // MARK: - CollectionView
@@ -74,7 +69,6 @@ extension DetailViewController: UICollectionViewDelegate, UICollectionViewDataSo
         detailView.posterCollectionView.dataSource = self
         detailView.posterCollectionView.tag = 2
     }
-    
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch collectionView.tag {
@@ -108,7 +102,6 @@ extension DetailViewController: UICollectionViewDelegate, UICollectionViewDataSo
             cell.configureData(posterList[indexPath.item].filePath)
             return cell
         default:
-            // 여기 디폴트 처리를 어떻게 해주어야 할지 고민된다
             let cell = collectionView.cellForItem(at: IndexPath(item: 0, section: 0))!
             return cell
         }
@@ -190,7 +183,6 @@ extension DetailViewController {
 extension DetailViewController {
     
     func getData(_ movie: Movie) {
-        
         dispatchGroup.enter()
         NetworkManager.shared.callRequest(.image(query: movie.id), Image.self) { Result in
             self.backdropList = Result.backdrops.count > 5 ? Array(Result.backdrops.prefix(5)) : Result.backdrops
