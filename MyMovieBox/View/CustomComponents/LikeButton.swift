@@ -14,7 +14,6 @@ class LikeButton: UIButton {
         super.init(frame: frame)
         setImage(UIImage(systemName: "heart"), for: .normal)
         imageView?.contentMode = .scaleAspectFit
-        bounds.size = CGSize(width: 30, height: 30)
         tintColor = .accent
     }
     

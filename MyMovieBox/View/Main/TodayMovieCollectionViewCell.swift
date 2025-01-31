@@ -60,6 +60,10 @@ final class TodayMovieCollectionViewCell: UICollectionViewCell {
             make.horizontalEdges.equalToSuperview()
         }
         
+        likeButton.snp.makeConstraints { make in
+            make.size.equalTo(20)
+        }
+        
         descriptionLabel.snp.makeConstraints { make in
             make.top.equalTo(titleStackView.snp.bottom).offset(8)
             make.horizontalEdges.equalToSuperview()
@@ -73,7 +77,7 @@ final class TodayMovieCollectionViewCell: UICollectionViewCell {
         posterImageView.clipsToBounds = true
         posterImageView.layer.cornerRadius = 8
         
-        titleStackView.distribution = .fillProportionally
+        titleStackView.distribution = .fill
         
         titleLabel.text = ""
         titleLabel.textColor = .white

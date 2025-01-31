@@ -88,7 +88,7 @@ final class ProfileCard: BaseView {
         
         chevronImage.image = UIImage(systemName: "chevron.right")
         chevronImage.contentMode = .scaleAspectFit
-        chevronImage.tintColor = .gray1
+        chevronImage.tintColor = .gray
         
         overlayButton.backgroundColor = .clear
     }
