@@ -7,8 +7,7 @@
 
 import UIKit
 
-// Label custom 참고 https://jeonyeohun.tistory.com/248
-class GenreBadge: UILabel {
+final class GenreBadge: UILabel {
     let verticalInset: CGFloat = 2
     let horizontalInset: CGFloat = 6
     
@@ -37,3 +36,4 @@ class GenreBadge: UILabel {
                       height: size.height + verticalInset*2)
     }
 }
+// Label custom 참고 https://jeonyeohun.tistory.com/248

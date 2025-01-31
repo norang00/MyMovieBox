@@ -12,7 +12,7 @@ final class MainViewController: BaseViewController {
     
     private let mainView = MainView()
     
-    var recentSearchList: [String] = ["aa", "bb", "cc"]
+    var recentSearchList: [String] = ["하얼빈", "모아나", "Moana"]
     var todayMovieList: [Movie] = []
     let dispatchGroup = DispatchGroup()
     
@@ -45,12 +45,11 @@ final class MainViewController: BaseViewController {
         let searchButton = UIBarButtonItem(image: UIImage(systemName: "magnifyingglass"), style: .plain, target: self, action: #selector(pushToSearchView))
         self.navigationItem.rightBarButtonItem = searchButton
     }
-    
 }
 
 // MARK: - Profile
 extension MainViewController {
- 
+    
     func configureProfileCard() {
         mainView.profileCard.overlayButton.addTarget(self, action: #selector(profileTapped), for: .touchUpInside)
     }
@@ -74,36 +73,41 @@ extension MainViewController {
 extension MainViewController {
     
     func configureRecentSearchWords() {
-//       searchList = User.recentSearch
+        //       recentSearchList = User.recentSearch
+        mainView.recentSearchStackView.subviews.forEach {
+            $0.removeFromSuperview()
+        }
+        mainView.recentSearchDeleteButton.addTarget(self, action: #selector(deleteAllButtonTapped), for: .touchUpInside)
         
         if recentSearchList.isEmpty {
             mainView.recentSearchEmptyView.isHidden = false
-            
         } else {
             mainView.recentSearchEmptyView.isHidden = true
             
             for index in 0..<recentSearchList.count {
-                let button = SearchWordSegment(frame: .zero)
+                let button = SearchWordButton(frame: .zero)
                 button.searchButton.setTitle(recentSearchList[index], for: .normal)
                 button.searchButton.tag = index
                 button.searchButton.addTarget(self, action: #selector(pushToSearchView), for: .touchUpInside)
                 button.xButton.tag = index
                 button.xButton.addTarget(self, action: #selector(xButtonTapped), for: .touchUpInside)
-
+                
+                print(recentSearchList[index])
                 mainView.recentSearchStackView.addArrangedSubview(button)
             }
-
+            
         }
     }
     
     @objc
     func xButtonTapped(_ sender: UIButton) {
         // 검색어 삭제 및 버튼 재정렬
+        print(#function)
     }
     
     @objc
     func deleteAllButtonTapped() {
-        
+        print(#function)
     }
     
     @objc

@@ -69,12 +69,12 @@ final class MainView: BaseView {
         recentSearchScrollView.snp.makeConstraints { make in
             make.top.equalTo(recentSearchLabel.snp.bottom).offset(12)
             make.horizontalEdges.equalTo(safeAreaLayoutGuide)
-            make.height.greaterThanOrEqualTo(44)
+            make.height.equalTo(40)
         }
         
         recentSearchStackView.snp.makeConstraints { make in
-            make.horizontalEdges.equalToSuperview()
-            make.width.equalToSuperview()
+            make.horizontalEdges.equalTo(recentSearchScrollView)
+            make.width.equalTo(recentSearchScrollView)
         }
 
         // 오늘의 영화 영역
@@ -110,6 +110,7 @@ final class MainView: BaseView {
         recentSearchStackView.axis = .horizontal
         recentSearchStackView.spacing = 8
         recentSearchStackView.distribution = .equalSpacing
+        recentSearchStackView.isUserInteractionEnabled = true
         
         todayMovieLabel.text = "오늘의 영화"
         todayMovieLabel.font = .systemFont(ofSize: 20, weight: .bold)
