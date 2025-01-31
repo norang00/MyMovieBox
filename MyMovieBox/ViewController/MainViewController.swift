@@ -84,9 +84,11 @@ extension MainViewController {
         mainView.recentSearchDeleteButton.addTarget(self, action: #selector(deleteAllButtonTapped), for: .touchUpInside)
         
         if recentSearchList.isEmpty {
+            mainView.recentSearchDeleteButton.isHidden = true
             mainView.recentSearchEmptyView.isHidden = false
 
         } else {
+            mainView.recentSearchDeleteButton.isHidden = false
             mainView.recentSearchEmptyView.isHidden = true
 
             for index in 0..<recentSearchList.count {
@@ -98,7 +100,6 @@ extension MainViewController {
                 button.xButton.addTarget(self, action: #selector(xButtonTapped), for: .touchUpInside)
                 mainView.recentSearchStackView.addArrangedSubview(button)
             }
-            
         }
     }
     

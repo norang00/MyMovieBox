@@ -90,12 +90,6 @@ final class ProfileCard: BaseView {
         chevronImage.contentMode = .scaleAspectFit
         chevronImage.tintColor = .gray1
         
-        movieBoxLabel.text = "\(User.likedMovies.count)개의 무비박스 보관중"
-        movieBoxLabel.textAlignment = .center
-        movieBoxLabel.font = .systemFont(ofSize: 14, weight: .bold)
-        movieBoxLabel.layer.cornerRadius = 8
-        movieBoxLabel.layer.backgroundColor = UIColor.moviebox.cgColor
-
         overlayButton.backgroundColor = .clear
     }
 }

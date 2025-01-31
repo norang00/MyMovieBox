@@ -8,8 +8,7 @@
 import UIKit
 
 final class GenreBadge: UILabel {
-    let verticalInset: CGFloat = 2
-    let horizontalInset: CGFloat = 6
+    private var padding = UIEdgeInsets(top: 2, left: 6, bottom: 2, right: 6)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -26,21 +25,13 @@ final class GenreBadge: UILabel {
     }
     
     override func drawText(in rect: CGRect) {
-        let insets = UIEdgeInsets(top: verticalInset, left: horizontalInset, bottom: verticalInset, right: horizontalInset)
-        super.drawText(in: rect.inset(by: insets))
+        super.drawText(in: rect.inset(by: padding))
     }
     
     override var intrinsicContentSize: CGSize {
         var contentSize = super.intrinsicContentSize
-        contentSize.height += verticalInset*2
-        contentSize.width += horizontalInset*2
-
+        contentSize.height += padding.top + padding.bottom
+        contentSize.width += padding.left + padding.right
         return contentSize
     }
-    
-//    override var intrinsicContentSize: CGSize {
-//        let size = super.intrinsicContentSize
-//        return CGSize(width: size.width + horizontalInset*2,
-//                      height: size.height + verticalInset*2)
-//    }
 }

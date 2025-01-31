@@ -37,6 +37,7 @@ final class SearchWordSegment: BaseView {
             make.centerY.equalTo(searchButton)
             make.leading.equalTo(searchButton.snp.trailing).offset(8)
             make.trailing.equalToSuperview().inset(12)
+            make.size.equalTo(12)
         }
     }
     
@@ -46,8 +47,7 @@ final class SearchWordSegment: BaseView {
         
         searchButton.setTitle("검색어", for: .normal)
         searchButton.setTitleColor(.black, for: .normal)
-        searchButton.titleLabel?.font = .systemFont(ofSize: 16, weight: .regular)
-        searchButton.titleLabel?.lineBreakMode = .byWordWrapping
+        searchButton.titleLabel?.font = .systemFont(ofSize: 14, weight: .medium)
         searchButton.titleLabel?.numberOfLines = 1
         searchButton.contentHorizontalAlignment = .left
         searchButton.backgroundColor = .clear

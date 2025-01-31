@@ -45,7 +45,7 @@ final class MainView: BaseView {
         }
         
         recentSearchLabel.snp.makeConstraints { make in
-            make.top.equalTo(profileCard.snp.bottom).offset(12)
+            make.top.equalTo(profileCard.snp.bottom).offset(16)
             make.leading.equalTo(safeAreaLayoutGuide).inset(12)
         }
         
@@ -96,6 +96,7 @@ final class MainView: BaseView {
 
         recentSearchDeleteButton.setTitle("전체 삭제", for: .normal)
         recentSearchDeleteButton.setTitleColor(.accent, for: .normal)
+        recentSearchDeleteButton.titleLabel?.font = .systemFont(ofSize: 14, weight: .bold)
         
         recentSearchEmptyLabel.text = "최근 검색어 내역이 없습니다."
         recentSearchEmptyLabel.textColor = .gray

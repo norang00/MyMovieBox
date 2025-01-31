@@ -12,6 +12,12 @@ final class MovieBoxLabel: UILabel {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        text = "\(User.likedMovies.count)개의 무비박스 보관중"
+        textAlignment = .center
+        font = .systemFont(ofSize: 14, weight: .bold)
+        layer.cornerRadius = 8
+        layer.backgroundColor = UIColor.moviebox.cgColor
     }
     
     required init?(coder: NSCoder) {
