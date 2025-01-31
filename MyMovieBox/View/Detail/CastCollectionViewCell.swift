@@ -73,7 +73,8 @@ class CastCollectionViewCell: UICollectionViewCell {
 
         castCharacterLabel.textColor = .gray1
         castCharacterLabel.font = .systemFont(ofSize: 12, weight: .regular)
-        castCharacterLabel.adjustsFontSizeToFitWidth = true
+        castCharacterLabel.numberOfLines = 2
+//        castCharacterLabel.adjustsFontSizeToFitWidth = true
       }
     
     // MARK: - Data Setting

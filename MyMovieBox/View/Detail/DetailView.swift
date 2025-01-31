@@ -75,7 +75,7 @@ final class DetailView: BaseView {
         
         movieDescriptionLabel.snp.makeConstraints { make in
             make.centerX.equalTo(backdropCollectionView)
-            make.top.equalTo(backdropCollectionView.snp.bottom).offset(6)
+            make.top.equalTo(backdropCollectionView.snp.bottom).offset(12)
             make.horizontalEdges.equalTo(contentView).inset(12)
         }
         
@@ -127,8 +127,8 @@ final class DetailView: BaseView {
         
         backdropPageControl.backgroundStyle = .prominent
   
-        movieDescriptionLabel.font = .systemFont(ofSize: 14, weight: .light)
-        movieDescriptionLabel.textColor = .gray1
+        movieDescriptionLabel.font = .systemFont(ofSize: 12, weight: .light)
+        movieDescriptionLabel.textColor = .gray
         movieDescriptionLabel.numberOfLines = 1
         movieDescriptionLabel.textAlignment = .center
         movieDescriptionLabel.sizeToFit()
@@ -158,10 +158,6 @@ final class DetailView: BaseView {
         posterLabel.font = .systemFont(ofSize: 16, weight: .bold)
     }
     
-    // NSTextAttachment 사용법 참고:
-    // https://nsios.tistory.com/204
-    // https://ios-development.tistory.com/1728
-    // https://www.hackingwithswift.com/articles/237/complete-guide-to-sf-symbols
     func setMovieDescription(_ date: String, _ vote: String, _ genre: String) -> NSAttributedString {
 
         let calendarString = getSymbolAttachment("calendar")

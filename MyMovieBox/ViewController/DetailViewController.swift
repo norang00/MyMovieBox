@@ -116,7 +116,6 @@ extension DetailViewController: UICollectionViewDelegate, UICollectionViewDataSo
 }
 
 // MARK: - (BackdropCollectionView) PageControl
-// UIPageControl 구현 참고: https://taekki-dev.tistory.com/25
 extension DetailViewController {
 
     func configurePageControl() {
@@ -184,7 +183,6 @@ extension DetailViewController {
         button.isSelected.toggle()
         detailView.synopsisButton.setTitle(button.isSelected ? "Hide" : "More", for: .normal)
         detailView.synopsisContentLabel.numberOfLines = button.isSelected ? 0 : 3
-        detailView.layoutSubviews()
     }
 }
 
