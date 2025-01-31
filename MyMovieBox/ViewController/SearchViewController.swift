@@ -58,6 +58,11 @@ extension SearchViewController: UISearchBarDelegate {
             currentQuery = inputText
             page = 1
             getSearchResult(currentQuery, page)
+            
+            if !User.recentSearch.contains(currentQuery) {
+                User.recentSearch.append(currentQuery)
+            }
+            
         } else {
             searchView.tableView.reloadData()
             searchView.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)

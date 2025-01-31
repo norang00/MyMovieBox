@@ -110,7 +110,6 @@ final class MainView: BaseView {
         
         recentSearchStackView.axis = .horizontal
         recentSearchStackView.spacing = 8
-//        recentSearchStackView.distribution = .equalSpacing
         
         todayMovieLabel.text = "오늘의 영화"
         todayMovieLabel.font = .systemFont(ofSize: 20, weight: .bold)

@@ -29,9 +29,6 @@ final class MainViewController: BaseViewController {
         super.viewDidLoad()
         
         configureNavigation("My Movie Box")
-        
-        configureProfileCard()
-        configureRecentSearchWords()
         configureCollectionView()
         
         getTodayMovie()
@@ -40,14 +37,16 @@ final class MainViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        reloadProfileCard()
-        reloadLike()
+        configureProfileCard()
+        configureRecentSearchWords()
+        setLike()
     }
     
     override func configureNavigation(_ title: String) {
         super.configureNavigation(title)
         
         let searchButton = UIBarButtonItem(image: UIImage(systemName: "magnifyingglass"), style: .plain, target: self, action: #selector(pushToSearchView))
+        searchButton.tag = 1000
         self.navigationItem.rightBarButtonItem = searchButton
     }
 }
@@ -56,6 +55,9 @@ final class MainViewController: BaseViewController {
 extension MainViewController {
     
     func configureProfileCard() {
+        mainView.profileCard.profileImageView.image = UIImage(named: User.profileImageName)
+        mainView.profileCard.nicknameLabel.text = User.nickname
+        mainView.profileCard.likeLabel.text = "\(User.likedMovies.count)개의 무비박스 보관중"
         mainView.profileCard.overlayButton.addTarget(self, action: #selector(profileTapped), for: .touchUpInside)
     }
     
@@ -66,19 +68,13 @@ extension MainViewController {
         let nextVC = UINavigationController(rootViewController: nicknameVC)
         present(nextVC, animated: true)
     }
-    
-    func reloadProfileCard() {
-        mainView.profileCard.profileImageView.image = UIImage(named: User.profileImageName)
-        mainView.profileCard.nicknameLabel.text = User.nickname
-        mainView.profileCard.likeLabel.text = "\(User.likedMovies.count)개의 무비박스 보관중"
-    }
 }
 
-// MARK: - Recent Search // TODO: 레이아웃 조정중
+// MARK: - Recent Search
 extension MainViewController {
     
     func configureRecentSearchWords() {
-//        recentSearchList = User.recentSearch
+        recentSearchList = User.recentSearch
         mainView.recentSearchStackView.subviews.forEach {
             $0.removeFromSuperview()
         }
@@ -106,7 +102,6 @@ extension MainViewController {
     
     @objc
     func xButtonTapped(_ sender: UIButton) {
-        // 검색어 삭제 및 버튼 재정렬
         print(#function)
         recentSearchList.remove(at: sender.tag)
         configureRecentSearchWords()
@@ -116,13 +111,17 @@ extension MainViewController {
     func deleteAllButtonTapped() {
         print(#function)
         recentSearchList = []
+        configureRecentSearchWords()
     }
     
     @objc
     func pushToSearchView(_ sender: UIButton) {
-        print(#function, sender.tag)
+        print(#function, sender, sender.tag)
+
         let nextVC = SearchViewController()
-        nextVC.currentQuery = recentSearchList[sender.tag]
+        if sender.tag != 1000 {
+            nextVC.currentQuery = recentSearchList[sender.tag]
+        }
         navigationController?.pushViewController(nextVC, animated: true)
     }
     
@@ -164,7 +163,7 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
         mainView.profileCard.likeLabel.text = "\(User.likedMovies.count)개의 무비박스 보관중"
     }
     
-    func reloadLike() {
+    func setLike() {
         let userLikedMovies = User.likedMovies
         for index in 0..<todayMovieList.count {
             let movie = todayMovieList[index]
