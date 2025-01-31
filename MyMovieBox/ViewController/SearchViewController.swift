@@ -77,6 +77,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource, UITa
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        print(#function, searchResults.count)
         return searchResults.count
     }
     
@@ -89,6 +90,8 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource, UITa
             cell.likeButton.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
             cell.likeButton.tag = indexPath.row
         }
+        print(#function, indexPath, searchResults[indexPath.row])
+
         return cell
     }
     

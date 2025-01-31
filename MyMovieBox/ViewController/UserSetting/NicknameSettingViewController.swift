@@ -123,9 +123,25 @@ extension NicknameSettingViewController {
         User.signUpDate = DateFormatter.profileDateFormatter.string(from: Date())
 
         if isNewUser {
+            
+            let mainVC = UINavigationController(rootViewController: MainViewController())
+            let upcomingVC = UINavigationController(rootViewController: UpcomingViewController())
+            let profileVC = UINavigationController(rootViewController: ProfileViewController())
+
+            let tabBarController = UITabBarController()
+            tabBarController.setViewControllers([mainVC, upcomingVC, profileVC], animated: true)
+            tabBarController.tabBar.backgroundColor = .black
+            tabBarController.tabBar.tintColor = .accent
+            tabBarController.tabBar.items![0].title = "CINEMA"
+            tabBarController.tabBar.items![0].image = UIImage(systemName: "popcorn")
+            tabBarController.tabBar.items![1].title = "UPCOMING"
+            tabBarController.tabBar.items![1].image = UIImage(systemName: "film.stack")
+            tabBarController.tabBar.items![2].title = "PROFILE"
+            tabBarController.tabBar.items![2].image = UIImage(systemName: "person.crop.circle")
+
             guard let windowsScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else { return }
             let window = windowsScene.windows.first
-            window?.rootViewController = UINavigationController(rootViewController: MainViewController())
+            window?.rootViewController = tabBarController
             window?.makeKeyAndVisible()
         } else {
             dismiss(animated: true)

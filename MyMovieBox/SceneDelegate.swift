@@ -21,10 +21,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let mainVC = UINavigationController(rootViewController: MainViewController())
         let upcomingVC = UINavigationController(rootViewController: UpcomingViewController())
         let profileVC = UINavigationController(rootViewController: ProfileViewController())
-        
+
         let tabBarController = UITabBarController()
         tabBarController.setViewControllers([mainVC, upcomingVC, profileVC], animated: true)
-//        tabBarController.modalPresentationStyle = .fullScreen
         tabBarController.tabBar.backgroundColor = .black
         tabBarController.tabBar.tintColor = .accent
         tabBarController.tabBar.items![0].title = "CINEMA"
