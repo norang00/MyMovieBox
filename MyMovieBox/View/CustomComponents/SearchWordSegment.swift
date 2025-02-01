@@ -45,7 +45,6 @@ final class SearchWordSegment: BaseView {
         layer.cornerRadius = 15
         layer.backgroundColor = UIColor.white.cgColor
         
-        searchButton.setTitle("검색어", for: .normal)
         searchButton.setTitleColor(.black, for: .normal)
         searchButton.titleLabel?.font = .systemFont(ofSize: 14, weight: .medium)
         searchButton.titleLabel?.numberOfLines = 1
@@ -53,7 +52,7 @@ final class SearchWordSegment: BaseView {
         searchButton.backgroundColor = .clear
         searchButton.sizeToFit()
         
-        xButton.setImage(UIImage(systemName: "xmark"), for: .normal)
+        xButton.setImage(UIImage(systemName: ImageName.cancel.rawValue), for: .normal)
         xButton.contentMode = .scaleAspectFit
         xButton.tintColor = .black
         xButton.backgroundColor = .clear

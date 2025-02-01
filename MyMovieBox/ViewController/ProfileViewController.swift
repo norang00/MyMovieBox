@@ -10,7 +10,7 @@ import UIKit
 final class ProfileViewController: BaseViewController {
     
     let profileView = ProfileView()
-    private let rowTitles = ["자주 묻는 질문", "1:1 문의", "알림 설정", "탈퇴하기"]
+    private let rowTitles = SettingTitles.allCases.map { $0.rawValue }
     
     override func loadView() {
         view = profileView
@@ -19,7 +19,7 @@ final class ProfileViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        configureNavigation("설정")
+        configureNavigation(Title.setting.rawValue)
         configureTableView()
     }
     
@@ -36,7 +36,7 @@ extension ProfileViewController {
     private func configureProfileCard() {
         profileView.profileCard.profileImageView.image = UIImage(named: User.profileImageName)
         profileView.profileCard.nicknameLabel.text = User.nickname
-        profileView.profileCard.movieBoxLabel.text = "\(User.likedMovies.count)개의 무비박스 보관중"
+        profileView.profileCard.movieBoxLabel.text = "\(User.likedMovies.count)"+Title.likedMovie.rawValue
         profileView.profileCard.overlayButton.addTarget(self, action: #selector(profileTapped), for: .touchUpInside)
     }
     
@@ -79,14 +79,15 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == 3 {
-            showQuitAlert(title: "탈퇴하기", message: "탈퇴를 하면 데이터가 모두 초기화됩니다. 탈퇴 하시겠습니까?")
+            showQuitAlert(title: Title.quitTitle.rawValue,
+                          message: Title.quitDescription.rawValue)
         }
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
     private func showQuitAlert(title: String, message: String) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let confirmAction = UIAlertAction(title: "확인", style: .default) {_ in 
+        let confirmAction = UIAlertAction(title: Title.check.rawValue, style: .default) {_ in 
             User.reset()
             
             guard let windowsScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else { return }
@@ -95,7 +96,7 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
             window?.makeKeyAndVisible()
         }
         
-        let cancelAction = UIAlertAction(title: "취소", style: .cancel)
+        let cancelAction = UIAlertAction(title: Title.cancel.rawValue, style: .cancel)
         alertController.addAction(confirmAction)
         alertController.addAction(cancelAction)
         

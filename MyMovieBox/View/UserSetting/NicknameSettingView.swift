@@ -95,7 +95,7 @@ final class NicknameSettingView: BaseView {
         super.configureView()
         
         nicknameTextField.textColor = .white
-        nicknameTextField.placeholder = "닉네임을 입력해보세요"
+        nicknameTextField.placeholder = Title.nicknamePlaceholder.rawValue
         nicknameTextField.borderStyle = .none
         nicknameTextField.tintColor = .accent
         
@@ -105,7 +105,7 @@ final class NicknameSettingView: BaseView {
         guideLabel.font = .systemFont(ofSize: 14, weight: .regular)
         guideLabel.textAlignment = .left
         
-        confirmButton.setTitle("완료", for: .normal)
+        confirmButton.setTitle(Title.confirm.rawValue, for: .normal)
         confirmButton.titleLabel?.font = .systemFont(ofSize: 16, weight: .bold)
         confirmButton.layer.cornerRadius = 22
         confirmButton.layer.borderWidth = 2

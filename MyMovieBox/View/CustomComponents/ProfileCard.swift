@@ -24,6 +24,7 @@ final class ProfileCard: BaseView {
     
     let overlayButton = UIButton()
     
+    // MARK: - configureHierarchy
     override func configureHierarchy() {
         addSubview(backgroundView)
         
@@ -38,6 +39,7 @@ final class ProfileCard: BaseView {
         addSubview(overlayButton)
     }
     
+    // MARK: - configureLayout
     override func configureLayout() {
         backgroundView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(8)
@@ -71,6 +73,7 @@ final class ProfileCard: BaseView {
         }
     }
     
+    // MARK: - configureView
     override func configureView() {
         backgroundView.layer.cornerRadius = 16
         backgroundView.layer.backgroundColor = UIColor.profileCardGray.cgColor
@@ -91,7 +94,7 @@ final class ProfileCard: BaseView {
         SignupDateLabel.textColor = .gray
         SignupDateLabel.font = .systemFont(ofSize: 12, weight: .medium)
         
-        chevronImage.image = UIImage(systemName: "chevron.right")
+        chevronImage.image = UIImage(systemName: ImageName.chevronRight.rawValue)
         chevronImage.contentMode = .scaleAspectFit
         chevronImage.tintColor = .gray
         

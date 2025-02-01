@@ -46,7 +46,7 @@ final class BackdropCollectionViewCell: UICollectionViewCell {
     }
     
     private func configureView() {
-        backdropImageView.image = UIImage(systemName: "film.circle.fill")
+        backdropImageView.image = UIImage(systemName: ImageName.film.rawValue)
         backdropImageView.contentMode = .scaleAspectFill
         backdropImageView.clipsToBounds = true
       }

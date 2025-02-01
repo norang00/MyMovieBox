@@ -174,7 +174,7 @@ extension DetailViewController {
     func synopsisButtonTapped() {
         let button = detailView.synopsisButton
         button.isSelected.toggle()
-        detailView.synopsisButton.setTitle(button.isSelected ? "Hide" : "More", for: .normal)
+        detailView.synopsisButton.setTitle(button.isSelected ? Title.hide.rawValue : Title.more.rawValue, for: .normal)
         detailView.synopsisContentLabel.numberOfLines = button.isSelected ? 0 : 3
     }
 }
@@ -189,7 +189,7 @@ extension DetailViewController {
             self.posterList = Result.posters
             self.dispatchGroup.leave()
         } failureHandler: { errorMessage in
-            self.showAlert(title: "이런! 문제가 발생했어요", message: errorMessage)
+            self.showAlert(title: Title.warning.rawValue, message: errorMessage)
             self.dispatchGroup.leave()
         }
         
@@ -198,7 +198,7 @@ extension DetailViewController {
             self.castList = Result.cast
             self.dispatchGroup.leave()
         } failureHandler: { errorMessage in
-            self.showAlert(title: "이런! 문제가 발생했어요", message: errorMessage)
+            self.showAlert(title: Title.warning.rawValue, message: errorMessage)
             self.dispatchGroup.leave()
         }
         

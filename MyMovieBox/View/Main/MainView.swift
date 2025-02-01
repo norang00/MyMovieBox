@@ -93,14 +93,14 @@ final class MainView: BaseView {
     override func configureView() {
         super.configureView()
         
-        recentSearchLabel.text = "최근검색어"
+        recentSearchLabel.text = Title.recentSearch.rawValue
         recentSearchLabel.font = .systemFont(ofSize: 20, weight: .bold)
 
-        recentSearchDeleteButton.setTitle("전체 삭제", for: .normal)
+        recentSearchDeleteButton.setTitle(Title.deleteAll.rawValue, for: .normal)
         recentSearchDeleteButton.setTitleColor(.accent, for: .normal)
         recentSearchDeleteButton.titleLabel?.font = .systemFont(ofSize: 14, weight: .bold)
         
-        recentSearchEmptyLabel.text = "최근 검색어 내역이 없습니다."
+        recentSearchEmptyLabel.text = Title.noRecentSearch.rawValue
         recentSearchEmptyLabel.textColor = .gray
         recentSearchEmptyLabel.font = .systemFont(ofSize: 14, weight: .medium)
 
@@ -111,7 +111,7 @@ final class MainView: BaseView {
         recentSearchStackView.axis = .horizontal
         recentSearchStackView.spacing = 8
         
-        todayMovieLabel.text = "오늘의 영화"
+        todayMovieLabel.text = Title.todayMovie.rawValue
         todayMovieLabel.font = .systemFont(ofSize: 20, weight: .bold)
     }
     

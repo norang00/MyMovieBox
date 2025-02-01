@@ -39,7 +39,7 @@ final class SearchTableViewCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         
-        posterImageView.image = UIImage(systemName: "film")
+        posterImageView.image = UIImage(systemName: ImageName.film.rawValue)
         posterImageView.contentMode = .scaleAspectFit
         titleLabel.text = ""
         dateLabel.text = ""
@@ -99,18 +99,15 @@ final class SearchTableViewCell: UITableViewCell {
     }
     
     private func configureView() {
-        posterImageView.image = UIImage(systemName: "film")
         posterImageView.tintColor = .white
         posterImageView.contentMode = .scaleAspectFit
         posterImageView.layer.cornerRadius = 8
         posterImageView.clipsToBounds = true
         
-        titleLabel.text = ""
         titleLabel.textColor = .white
         titleLabel.numberOfLines = 2
         titleLabel.font = .systemFont(ofSize: 16, weight: .bold)
         
-        dateLabel.text = ""
         dateLabel.textColor = .gray2
         dateLabel.font = .systemFont(ofSize: 14, weight: .medium)
 
@@ -146,7 +143,7 @@ final class SearchTableViewCell: UITableViewCell {
         likeButton.isSelected = isLiked
 
         guard let posterPath = movie.posterPath else { return }
-        let url = "https://image.tmdb.org/t/p/w500"+posterPath
+        let url = TMDBRequest.imageBaseURL+posterPath
         guard let imageURL = URL(string: url) else { return }
         posterImageView.kf.setImage(with: imageURL)
         posterImageView.contentMode = .scaleAspectFill

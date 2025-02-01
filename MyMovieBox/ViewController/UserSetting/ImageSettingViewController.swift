@@ -21,7 +21,7 @@ final class ImageSettingViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureNavigation(isNewUser ? "프로필 이미지 설정" : "프로필 이미지 편집")
+        configureNavigation(isNewUser ? Title.imageSetNav.rawValue : Title.imageEditNav.rawValue)
 
         configureMainImage()
         configureCollectionView()

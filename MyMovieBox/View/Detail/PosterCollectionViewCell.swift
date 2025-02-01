@@ -45,7 +45,6 @@ final class PosterCollectionViewCell: UICollectionViewCell {
     }
     
     private func configureView() {
-        posterImageView.image = UIImage(systemName: "film.circle.fill")
         posterImageView.contentMode = .scaleAspectFill
         posterImageView.clipsToBounds = true
     }

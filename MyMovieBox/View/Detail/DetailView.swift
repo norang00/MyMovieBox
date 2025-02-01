@@ -136,12 +136,12 @@ final class DetailView: BaseView {
         movieDescriptionLabel.textAlignment = .center
         movieDescriptionLabel.sizeToFit()
 
-        synopsisLabel.text = "Synopsis"
+        synopsisLabel.text = Title.synopsis.rawValue
         synopsisLabel.textColor = .white
         synopsisLabel.textAlignment = .left
         synopsisLabel.font = .systemFont(ofSize: 16, weight: .bold)
         
-        synopsisButton.setTitle("More", for: .normal)
+        synopsisButton.setTitle(Title.more.rawValue, for: .normal)
         synopsisButton.setTitleColor(.accent, for: .normal)
         synopsisButton.titleLabel?.font = .systemFont(ofSize: 14, weight: .bold)
 
@@ -150,12 +150,12 @@ final class DetailView: BaseView {
         synopsisContentLabel.textAlignment = .justified
         synopsisContentLabel.numberOfLines = 3
         
-        castLabel.text = "Cast"
+        castLabel.text = Title.cast.rawValue
         castLabel.textColor = .white
         castLabel.textAlignment = .left
         castLabel.font = .systemFont(ofSize: 16, weight: .bold)
         
-        posterLabel.text = "Poster"
+        posterLabel.text = Title.poster.rawValue
         posterLabel.textColor = .white
         posterLabel.textAlignment = .left
         posterLabel.font = .systemFont(ofSize: 16, weight: .bold)
@@ -164,13 +164,13 @@ final class DetailView: BaseView {
     // MARK: - Others
     func setMovieDescription(_ date: String, _ vote: String, _ genre: String) -> NSAttributedString {
 
-        let calendarString = getSymbolAttachment("calendar")
+        let calendarString = getSymbolAttachment(ImageName.calendar.rawValue)
         let releaseDate = NSAttributedString(string: "  \(date)")
         
-        let starString = getSymbolAttachment("star.fill")
+        let starString = getSymbolAttachment(ImageName.star.rawValue)
         let voteAverage = NSAttributedString(string: "  \(vote)")
         
-        let filmString = getSymbolAttachment("film.fill")
+        let filmString = getSymbolAttachment(ImageName.film.rawValue)
         let genre = NSAttributedString(string: "  \(genre)")
 
         let fullText = NSMutableAttributedString()

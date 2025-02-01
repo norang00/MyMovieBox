@@ -35,11 +35,11 @@ final class NicknameSettingViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureNavigation(isNewUser ? "프로필 설정" : "프로필 편집")
+        configureNavigation(isNewUser ? Title.profileSetNav.rawValue: Title.profileEditNav.rawValue)
         
         if !isNewUser {
-            saveButton = UIBarButtonItem(title: "저장", style: .done, target: self, action: #selector(confirmButtonTapped))
-            xButton = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .plain, target: self, action: #selector(dismissView))
+            saveButton = UIBarButtonItem(title: Title.save.rawValue, style: .done, target: self, action: #selector(confirmButtonTapped))
+            xButton = UIBarButtonItem(image: UIImage(systemName: ImageName.cancel.rawValue), style: .plain, target: self, action: #selector(dismissView))
             self.navigationItem.leftBarButtonItem = xButton
             nicknameSettingView.confirmButton.isHidden = true
             saveButton?.isEnabled = false
@@ -156,7 +156,7 @@ extension NicknameSettingViewController {
         User.signUpDate = DateFormatter.profileDateFormatter.string(from: Date())
         
         if isNewUser {
-            let tabBarController = getMainTabBarController()
+            let tabBarController = SceneDelegate.getMainTabBarController()
             guard let windowsScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else { return }
             let window = windowsScene.windows.first
             window?.rootViewController = tabBarController
@@ -169,24 +169,6 @@ extension NicknameSettingViewController {
         editingDone?()
     }
     
-    private func getMainTabBarController() -> UITabBarController {
-        let mainVC = UINavigationController(rootViewController: MainViewController())
-        let upcomingVC = UINavigationController(rootViewController: UpcomingViewController())
-        let profileVC = UINavigationController(rootViewController: ProfileViewController())
-
-        let tabBarController = UITabBarController()
-        tabBarController.setViewControllers([mainVC, upcomingVC, profileVC], animated: true)
-        tabBarController.tabBar.backgroundColor = .black
-        tabBarController.tabBar.tintColor = .accent
-        tabBarController.tabBar.items![0].title = "CINEMA"
-        tabBarController.tabBar.items![0].image = UIImage(systemName: "popcorn")
-        tabBarController.tabBar.items![1].title = "UPCOMING"
-        tabBarController.tabBar.items![1].image = UIImage(systemName: "film.stack")
-        tabBarController.tabBar.items![2].title = "PROFILE"
-        tabBarController.tabBar.items![2].image = UIImage(systemName: "person.crop.circle")
-        
-        return tabBarController
-    }
 }
 
 // MARK: - Hide Keyboard

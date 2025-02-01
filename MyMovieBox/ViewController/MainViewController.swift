@@ -26,7 +26,7 @@ final class MainViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        configureNavigation("My Movie Box")
+        configureNavigation(Title.mainNav.rawValue)
         configureCollectionView()
         
         getTodayMovie()
@@ -43,7 +43,7 @@ final class MainViewController: BaseViewController {
     override func configureNavigation(_ title: String) {
         super.configureNavigation(title)
         
-        let searchButton = UIBarButtonItem(image: UIImage(systemName: "magnifyingglass"), style: .plain, target: self, action: #selector(pushToSearchView))
+        let searchButton = UIBarButtonItem(image: UIImage(systemName: ImageName.search.rawValue), style: .plain, target: self, action: #selector(pushToSearchView))
         searchButton.tag = 1000
         self.navigationItem.rightBarButtonItem = searchButton
     }
@@ -55,7 +55,7 @@ extension MainViewController {
     func configureProfileCard() {
         mainView.profileCard.profileImageView.image = UIImage(named: User.profileImageName)
         mainView.profileCard.nicknameLabel.text = User.nickname
-        mainView.profileCard.movieBoxLabel.text = "\(User.likedMovies.count)개의 무비박스 보관중"
+        mainView.profileCard.movieBoxLabel.text = "\(User.likedMovies.count)"+Title.likedMovie.rawValue
         mainView.profileCard.overlayButton.addTarget(self, action: #selector(profileTapped), for: .touchUpInside)
     }
     
@@ -155,7 +155,7 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
         let movie = todayMovieList[sender.tag]
         User.toggleLike(movie)
         sender.isSelected.toggle()
-        mainView.profileCard.movieBoxLabel.text = "\(User.likedMovies.count)개의 무비박스 보관중"
+        mainView.profileCard.movieBoxLabel.text = "\(User.likedMovies.count)"+Title.likedMovie.rawValue
     }
     
     func reloadLike() {
@@ -177,7 +177,7 @@ extension MainViewController {
             self.todayMovieList = Result.results
             self.dispatchGroup.leave()
         } failureHandler: { errorMessage in
-            self.showAlert(title: "이런! 문제가 발생했어요", message: errorMessage)
+            self.showAlert(title: Title.warning.rawValue, message: errorMessage)
             self.dispatchGroup.leave()
         }
         

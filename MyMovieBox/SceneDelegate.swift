@@ -19,17 +19,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let upcomingVC = UINavigationController(rootViewController: UpcomingViewController())
         let profileVC = UINavigationController(rootViewController: ProfileViewController())
 
-        let tabBarController = UITabBarController()
-        tabBarController.setViewControllers([mainVC, upcomingVC, profileVC], animated: true)
-        tabBarController.tabBar.backgroundColor = .black
-        tabBarController.tabBar.tintColor = .accent
-        tabBarController.tabBar.items![0].title = "CINEMA"
-        tabBarController.tabBar.items![0].image = UIImage(systemName: "popcorn")
-        tabBarController.tabBar.items![1].title = "UPCOMING"
-        tabBarController.tabBar.items![1].image = UIImage(systemName: "film.stack")
-        tabBarController.tabBar.items![2].title = "PROFILE"
-        tabBarController.tabBar.items![2].image = UIImage(systemName: "person.crop.circle")
-        
+        let tabBarController = SceneDelegate.getMainTabBarController()
         let isNewUser = User.nickname.isEmpty
         let nextVC = isNewUser ? UINavigationController(rootViewController: OnboardingViewController()) : tabBarController
 
@@ -65,6 +55,23 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // to restore the scene back to its current state.
     }
 
+    static func getMainTabBarController() -> UITabBarController {
+        let mainVC = UINavigationController(rootViewController: MainViewController())
+        let upcomingVC = UINavigationController(rootViewController: UpcomingViewController())
+        let profileVC = UINavigationController(rootViewController: ProfileViewController())
 
+        let tabBarController = UITabBarController()
+        tabBarController.setViewControllers([mainVC, upcomingVC, profileVC], animated: true)
+        tabBarController.tabBar.backgroundColor = .black
+        tabBarController.tabBar.tintColor = .accent
+        tabBarController.tabBar.items![0].title = Title.firstTab.rawValue
+        tabBarController.tabBar.items![0].image = UIImage(systemName: ImageName.popcorn.rawValue)
+        tabBarController.tabBar.items![1].title = Title.secondTab.rawValue
+        tabBarController.tabBar.items![1].image = UIImage(systemName: ImageName.filmStack.rawValue)
+        tabBarController.tabBar.items![2].title = Title.thirdTab.rawValue
+        tabBarController.tabBar.items![2].image = UIImage(systemName: ImageName.person.rawValue)
+        
+        return tabBarController
+    }
 }
 

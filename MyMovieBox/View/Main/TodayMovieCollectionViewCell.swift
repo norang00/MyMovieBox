@@ -73,18 +73,16 @@ final class TodayMovieCollectionViewCell: UICollectionViewCell {
     }
     
     private func configureView() {
-        posterImageView.image = UIImage(systemName: "film.circle.fill")
+        posterImageView.image = UIImage(systemName: ImageName.film.rawValue)
         posterImageView.contentMode = .scaleAspectFill
         posterImageView.clipsToBounds = true
         posterImageView.layer.cornerRadius = 8
         
         titleStackView.distribution = .fill
         
-        titleLabel.text = ""
         titleLabel.textColor = .white
         titleLabel.font = .systemFont(ofSize: 16, weight: .bold)
         
-        descriptionLabel.text = ""
         descriptionLabel.textColor = .white
         descriptionLabel.numberOfLines = 2
         descriptionLabel.font = .systemFont(ofSize: 14, weight: .medium)
@@ -96,7 +94,7 @@ final class TodayMovieCollectionViewCell: UICollectionViewCell {
         descriptionLabel.text = movie.overview
 
         guard let posterPath = movie.posterPath else { return }
-        let url = "https://image.tmdb.org/t/p/w500"+posterPath
+        let url = TMDBRequest.imageBaseURL+posterPath
 
         guard let imageURL = URL(string: url) else { return }
         posterImageView.kf.setImage(with: imageURL)

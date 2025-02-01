@@ -7,7 +7,7 @@
 
 import Foundation
 
-class Genre {
+final class Genre {
     
     static let mapping = [
         12 : "모험",

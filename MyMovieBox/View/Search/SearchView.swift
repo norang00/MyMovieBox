@@ -41,11 +41,10 @@ final class SearchView: BaseView {
     override func configureView() {
         super.configureView()
         
-        searchBar.placeholder = "영화를 검색해보세요."
+        searchBar.placeholder = Title.searchPlaceholder.rawValue
         searchBar.searchBarStyle = .minimal
         searchBar.tintColor = .accent
 
-        emptyLabel.text = ""
         emptyLabel.textColor = .gray1
         emptyLabel.font = .systemFont(ofSize: 16, weight: .medium)
         emptyLabel.isHidden = true

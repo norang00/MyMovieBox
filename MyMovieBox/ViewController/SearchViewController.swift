@@ -25,7 +25,7 @@ final class SearchViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        configureNavigation("영화 검색")
+        configureNavigation(Title.searchNav.rawValue)
         configureSearchBar()
         configureTableView()
         
@@ -151,7 +151,7 @@ extension SearchViewController {
             }
             self.dispatchGroup.leave()
         } failureHandler: { errorMessage in
-            self.showAlert(title: "이런! 문제가 발생했어요", message: errorMessage)
+            self.showAlert(title: Title.warning.rawValue, message: errorMessage)
             self.dispatchGroup.leave()
         }
         
@@ -159,7 +159,7 @@ extension SearchViewController {
             if self.searchResults.isEmpty {
                 self.searchView.emptyLabel.isHidden = false
                 self.searchView.tableView.isHidden = true
-                self.searchView.emptyLabel.text = "원하는 검색결과를 찾지 못했습니다"
+                self.searchView.emptyLabel.text = Title.noResult.rawValue
             } else {
                 self.searchView.emptyLabel.isHidden = true
                 self.searchView.tableView.isHidden = false
