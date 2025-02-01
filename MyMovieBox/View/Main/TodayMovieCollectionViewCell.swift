@@ -92,13 +92,11 @@ final class TodayMovieCollectionViewCell: UICollectionViewCell {
     func configureData(_ movie: Movie, _ isLiked: Bool){
         titleLabel.text = movie.title
         descriptionLabel.text = movie.overview
+        likeButton.isSelected = isLiked
 
         guard let posterPath = movie.posterPath else { return }
         let url = TMDBRequest.imageBaseURL+posterPath
-
         guard let imageURL = URL(string: url) else { return }
-        posterImageView.kf.setImage(with: imageURL)
-                
-        likeButton.isSelected = isLiked
+        posterImageView.kf.setImage(with: imageURL)                
     }
 }

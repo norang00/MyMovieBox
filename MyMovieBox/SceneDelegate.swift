@@ -14,10 +14,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let scene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: scene)
-        
-        let mainVC = UINavigationController(rootViewController: MainViewController())
-        let upcomingVC = UINavigationController(rootViewController: UpcomingViewController())
-        let profileVC = UINavigationController(rootViewController: ProfileViewController())
 
         let tabBarController = SceneDelegate.getMainTabBarController()
         let isNewUser = User.nickname.isEmpty
