@@ -60,7 +60,7 @@ extension SearchViewController: UISearchBarDelegate {
             getSearchResult(currentQuery, page)
             
             if !User.recentSearch.contains(currentQuery) {
-                User.recentSearch.append(currentQuery)
+                User.recentSearch.insert(currentQuery, at: 0)
             }
             
         } else {
