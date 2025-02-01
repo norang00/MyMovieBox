@@ -53,8 +53,6 @@ final class NicknameSettingViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        print(#function, tempNickname)
-
         configureNicknameTextField()
         if !isConfirmed && !tempNickname.isEmpty {
             checkNicknameConstraints(tempNickname)
@@ -65,7 +63,6 @@ final class NicknameSettingViewController: BaseViewController {
         super.viewWillDisappear(animated)
         
         if let input = nicknameSettingView.nicknameTextField.text {
-            print(#function, input, tempNickname)
             tempNickname = input
         }
     }
