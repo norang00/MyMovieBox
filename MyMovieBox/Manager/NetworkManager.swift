@@ -35,7 +35,8 @@ final class NetworkManager {
                 }
             }
     }
-        
+    
+    // [TODO] TMDB 에러 메세지 확인
     private func getErrorMessage(_ statusCode: Int) -> String {
         switch statusCode {
         case 400:
