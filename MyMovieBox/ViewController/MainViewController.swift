@@ -23,14 +23,12 @@ final class MainViewController: BaseViewController {
         configureNavigation(Title.mainNav.rawValue)
         configureCollectionView()
         
-//        getTrendingMovie()
         bindAction()
         bindData()
     }
     
     private func bindAction() {
         mainView.profileCard.overlayButton.addTarget(self, action: #selector(profileCardTapped), for: .touchUpInside)
-
     }
     
     private func bindData() {
@@ -43,6 +41,10 @@ final class MainViewController: BaseViewController {
         
         profileViewModel.output.presentUserSettingModal.lazyBind { [weak self] _ in
             self?.presentUserSettingModal()
+        }
+        
+        trendingViewModel.output.trendingList.bind { [weak self] movieList in
+            self?.mainView.collectionView.reloadData()
         }
     }
     
@@ -94,59 +96,49 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return trendingViewModel.trendingList.count
+        let trendingList = trendingViewModel.output.trendingList.value
+        return trendingList.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TrendingCollectionViewCell.identifier, for: indexPath) as! TrendingCollectionViewCell
-        let movie = trendingViewModel.trendingList[indexPath.item]
+
+        let trendingList = trendingViewModel.output.trendingList.value
+        let movie = trendingList[indexPath.item]
         cell.configureData(movie, User.checkLike(movie.id))
+
         cell.likeButton.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
         cell.likeButton.tag = indexPath.item
+
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let trendingList = trendingViewModel.output.trendingList.value
         let detailVC = DetailViewController()
-        detailVC.movie = trendingViewModel.trendingList[indexPath.item]
+        detailVC.movie = trendingList[indexPath.item]
         navigationController?.pushViewController(detailVC, animated: true)
     }
     
     // MARK: 좋아요 기능
     @objc
     func likeButtonTapped(_ sender: UIButton) {
-        let movie = trendingViewModel.trendingList[sender.tag]
+        let trendingList = trendingViewModel.output.trendingList.value
+
+        let movie = trendingList[sender.tag]
         User.toggleLike(movie)
         sender.isSelected.toggle()
         mainView.profileCard.movieBoxLabel.text = "\(User.likedMovies.count)"+Title.likedMovie.rawValue
     }
     
     func reloadLike() {
+        let trendingList = trendingViewModel.output.trendingList.value
+
         let userLikedMovies = User.likedMovies
-        for index in 0..<trendingViewModel.trendingList.count {
-            let movie = trendingViewModel.trendingList[index]
+        for index in 0..<trendingList.count {
+            let movie = trendingList[index]
             let cell = mainView.collectionView.cellForItem(at: IndexPath(item: index, section: 0)) as? TrendingCollectionViewCell
             cell?.likeButton.isSelected = userLikedMovies.contains(movie.id)
         }
-    }
-}
-
-// MARK: - Network
-extension MainViewController {
-    
-    private func getTrendingMovie() {
-//        dispatchGroup.enter()
-//        NetworkManager.shared.callRequest(.trending, Trending.self) { Result in
-//            self.trendingList = Result.results
-//            self.dispatchGroup.leave()
-//        } failureHandler: { errorMessage in
-//            self.showAlert(title: Title.warning.rawValue, message: errorMessage)
-//            self.dispatchGroup.leave()
-//        }
-//        
-//        dispatchGroup.notify(queue: .main) {
-//            self.mainView.collectionView.reloadData()
-//        }
-        print(#file, #function)
     }
 }

@@ -38,7 +38,7 @@ final class SearchViewController: BaseViewController {
         if currentQuery.isEmpty {
             searchView.searchBar.becomeFirstResponder()
         } else {
-            callRequest(currentQuery, page)
+//            callRequest(currentQuery, page)
             searchView.searchBar.text = currentQuery
         }
     }
@@ -63,7 +63,7 @@ extension SearchViewController: UISearchBarDelegate {
             previousQuery = currentQuery
             currentQuery = inputText
             page = 1
-            callRequest(currentQuery, page)
+//            callRequest(currentQuery, page)
             
             if !User.recentSearch.contains(currentQuery) {
                 User.recentSearch.insert(currentQuery, at: 0)
@@ -120,7 +120,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource, UITa
         for item in indexPaths {
             if searchResults.count - 2 == item.row && page < totalPage {
                 page += 1
-                callRequest(currentQuery, page)
+//                callRequest(currentQuery, page)
             }
         }
     }
@@ -187,40 +187,40 @@ extension SearchViewController {
     @objc
     func getSearchResult(_ sender: UIButton) {
         searchView.recentSearch.isHidden = false
-        callRequest(recentSearchList[sender.tag], 1)
+//        callRequest(recentSearchList[sender.tag], 1)
     }
 }
 
 // MARK: - Network
 extension SearchViewController {
     
-    private func callRequest(_ query: String, _ page: Int) {
-        dispatchGroup.enter()
-        NetworkManager.shared.callRequest(.search(query: query, page: page), Search.self) { Result in
-            if page == 1 {
-                self.totalPage = Result.totalPages
-                self.searchResults = Result.results
-            } else {
-                self.searchResults.append(contentsOf: Result.results)
-            }
-            self.dispatchGroup.leave()
-        } failureHandler: { errorMessage in
-            self.showAlert(title: Title.warning.rawValue, message: errorMessage)
-            self.dispatchGroup.leave()
-        }
-        
-        dispatchGroup.notify(queue: .main) {
-            if self.searchResults.isEmpty {
-                self.searchView.tableView.isHidden = true
-            } else {
-                self.searchView.tableView.isHidden = false
-                self.searchView.tableView.reloadData()
-                
-                if page == 1 {
-                    self.searchView.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
-                }
-            }
-            self.searchView.endEditing(true)
-        }
-    }
+//    private func callRequest(_ query: String, _ page: Int) {
+//        dispatchGroup.enter()
+//        NetworkManager.shared.callRequest(.search(query: query, page: page), Search.self) { Result in
+//            if page == 1 {
+//                self.totalPage = Result.totalPages
+//                self.searchResults = Result.results
+//            } else {
+//                self.searchResults.append(contentsOf: Result.results)
+//            }
+//            self.dispatchGroup.leave()
+//        } failureHandler: { errorMessage in
+//            self.showAlert(title: Title.warning.rawValue, message: errorMessage)
+//            self.dispatchGroup.leave()
+//        }
+//        
+//        dispatchGroup.notify(queue: .main) {
+//            if self.searchResults.isEmpty {
+//                self.searchView.tableView.isHidden = true
+//            } else {
+//                self.searchView.tableView.isHidden = false
+//                self.searchView.tableView.reloadData()
+//                
+//                if page == 1 {
+//                    self.searchView.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+//                }
+//            }
+//            self.searchView.endEditing(true)
+//        }
+//    }
 }

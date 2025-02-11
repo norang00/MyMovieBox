@@ -34,7 +34,7 @@ final class DetailViewController: BaseViewController {
         configureMovieDescription()
         configureSynopsis()
         
-        getData(movie!)
+//        getData(movie!)
     }
     
     override func configureNavigation(_ title: String) {
@@ -182,32 +182,32 @@ extension DetailViewController {
 // MARK: - Network
 extension DetailViewController {
     
-    func getData(_ movie: Movie) {
-        dispatchGroup.enter()
-        NetworkManager.shared.callRequest(.image(query: movie.id), Image.self) { Result in
-            self.backdropList = Result.backdrops.count > 5 ? Array(Result.backdrops.prefix(5)) : Result.backdrops
-            self.posterList = Result.posters
-            self.dispatchGroup.leave()
-        } failureHandler: { errorMessage in
-            self.showAlert(title: Title.warning.rawValue, message: errorMessage)
-            self.dispatchGroup.leave()
-        }
-        
-        dispatchGroup.enter()
-        NetworkManager.shared.callRequest(.credit(query: movie.id), Credit.self) { Result in
-            self.castList = Result.cast
-            self.dispatchGroup.leave()
-        } failureHandler: { errorMessage in
-            self.showAlert(title: Title.warning.rawValue, message: errorMessage)
-            self.dispatchGroup.leave()
-        }
-        
-        dispatchGroup.notify(queue: .main) {
-            self.detailView.backdropCollectionView.reloadData()
-            self.configurePageControl()
-            self.detailView.castCollectionView.reloadData()
-            self.detailView.layoutSubviews()
-            self.detailView.posterCollectionView.reloadData()
-        }
-    }
+//    func getData(_ movie: Movie) {
+//        dispatchGroup.enter()
+//        NetworkManager.shared.callRequest(.image(query: movie.id), Image.self) { Result in
+//            self.backdropList = Result.backdrops.count > 5 ? Array(Result.backdrops.prefix(5)) : Result.backdrops
+//            self.posterList = Result.posters
+//            self.dispatchGroup.leave()
+//        } failureHandler: { errorMessage in
+//            self.showAlert(title: Title.warning.rawValue, message: errorMessage)
+//            self.dispatchGroup.leave()
+//        }
+//        
+//        dispatchGroup.enter()
+//        NetworkManager.shared.callRequest(.credit(query: movie.id), Credit.self) { Result in
+//            self.castList = Result.cast
+//            self.dispatchGroup.leave()
+//        } failureHandler: { errorMessage in
+//            self.showAlert(title: Title.warning.rawValue, message: errorMessage)
+//            self.dispatchGroup.leave()
+//        }
+//        
+//        dispatchGroup.notify(queue: .main) {
+//            self.detailView.backdropCollectionView.reloadData()
+//            self.configurePageControl()
+//            self.detailView.castCollectionView.reloadData()
+//            self.detailView.layoutSubviews()
+//            self.detailView.posterCollectionView.reloadData()
+//        }
+//    }
 }

@@ -16,26 +16,29 @@ final class NetworkManager {
     
     final func callRequest<T: Decodable>(_ api: TMDBRequest,
                                          _ type: T.Type,
-                                         successHandler: @escaping (T) -> Void,
-                                         failureHandler: @escaping (String) -> Void) {
-        AF.request(api.endpoint, method: api.method, parameters: api.parameters, headers: api.headers)
+                                         completionHandler: @escaping (Result<T, AFError>) -> Void) {
+        AF.request(api.endpoint, method: api.method, parameters: api.parameters)
             .validate(statusCode: 200..<400)
-            .responseDecodable(of: T.self) { response in
+            .responseDecodable(of: type) { response in
                 switch response.result {
                 case .success(let value):
-                    successHandler(value)
+                    completionHandler(.success(value))
                 case .failure(let error):
-                    var errorMessage: String = ""
-                    if let urlError = error.asAFError?.underlyingError as? URLError {
-                        errorMessage = self.getErrorMessage(urlError)
-                    } else if let statusCode = error.responseCode {
-                        errorMessage = self.getErrorMessage(statusCode)
-                    }
-                    failureHandler(errorMessage)
+                    completionHandler(.failure(error))
                 }
             }
     }
     
+    
+    // [TODO] 에러 메세지 분기처리
+    //    if let urlError = error.asAFError?.underlyingError as? URLError {
+    //        errorMessage = self.getErrorMessage(urlError)
+    //    } else if let statusCode = error.responseCode {
+    //        errorMessage = self.getErrorMessage(statusCode)
+    //    } else if error.isResponseSerializationError {
+    //        errorMessage = "Data parsing error: \(error.localizedDescription)"
+    //    }
+
     // [TODO] TMDB 에러 메세지 확인
     private func getErrorMessage(_ statusCode: Int) -> String {
         switch statusCode {
