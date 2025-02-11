@@ -38,13 +38,9 @@ enum User {
     @UserDefault(key: "recentSearch", defaultValue: [])
     static var recentSearch: [String]
     
-    static func reset() {
-        nickname = ""
-        signUpDate = ""
-        profileImageName = ""
-        likedMovies = []
-        recentSearch = []
-    }
+    static var movieBoxLabel: String = {
+        return "\(likedMovies.count)개의 무비박스 보관 중"
+    }()
     
     static func checkLike(_ movieId: Int) -> Bool {
         if likedMovies.contains(movieId) {
@@ -58,6 +54,12 @@ enum User {
             User.likedMovies.remove(at: index)
         } else {
             User.likedMovies.append(movie.id)
+        }
+    }
+
+    static func reset() {
+        for key in UserDefaults.standard.dictionaryRepresentation().keys {
+            UserDefaults.standard.removeObject(forKey: key.description)
         }
     }
 }

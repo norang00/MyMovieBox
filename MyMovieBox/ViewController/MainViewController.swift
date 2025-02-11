@@ -23,19 +23,32 @@ final class MainViewController: BaseViewController {
         configureNavigation(Title.mainNav.rawValue)
         configureCollectionView()
         
-        getTrendingMovie()
-        
+//        getTrendingMovie()
+        bindAction()
         bindData()
     }
     
+    private func bindAction() {
+        mainView.profileCard.overlayButton.addTarget(self, action: #selector(profileCardTapped), for: .touchUpInside)
+
+    }
+    
     private func bindData() {
+        profileViewModel.output.userInfo.bind { [weak self] _ in
+            self?.mainView.profileCard.profileImageView.image = UIImage(named: User.profileImageName)
+            self?.mainView.profileCard.nicknameLabel.text = User.nickname
+            self?.mainView.profileCard.SignupDateLabel.text = User.signUpDate
+            self?.mainView.profileCard.movieBoxLabel.text = User.movieBoxLabel
+        }
         
+        profileViewModel.output.presentUserSettingModal.lazyBind { [weak self] _ in
+            self?.presentUserSettingModal()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        configureProfileCard()
         reloadLike()
     }
     
@@ -56,18 +69,16 @@ final class MainViewController: BaseViewController {
 // MARK: - Profile
 extension MainViewController {
     
-    func configureProfileCard() {
-        mainView.profileCard.profileImageView.image = UIImage(named: User.profileImageName)
-        mainView.profileCard.nicknameLabel.text = User.nickname
-        mainView.profileCard.movieBoxLabel.text = "\(User.likedMovies.count)"+Title.likedMovie.rawValue
-        mainView.profileCard.overlayButton.addTarget(self, action: #selector(profileTapped), for: .touchUpInside)
+    @objc
+    func profileCardTapped() {
+        profileViewModel.input.profileCardTapped.value = ()
     }
     
-    @objc func profileTapped() {
+    func presentUserSettingModal() {
         let nicknameVC = NicknameSettingViewController()
         nicknameVC.isNewUser = false
         nicknameVC.editingDone = {
-            self.configureProfileCard()
+//            self.configureProfileCard()
         }
         let nextVC = UINavigationController(rootViewController: nicknameVC)
         present(nextVC, animated: true)

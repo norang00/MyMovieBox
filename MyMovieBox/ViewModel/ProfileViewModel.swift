@@ -13,14 +13,13 @@ final class ProfileViewModel: BaseViewModel {
     private(set) var output: Output
     
     struct Input {
-        
+        let profileCardTapped: Observable<Void?> = Observable(nil)
     }
     
     struct Output {
-        
+        let userInfo: Observable<User?> = Observable(nil)
+        let presentUserSettingModal: Observable<Void?> = Observable(nil)
     }
-    
-
     
     init() {
         input = Input()
@@ -31,5 +30,9 @@ final class ProfileViewModel: BaseViewModel {
     
     func transform() {
         print(#file, #function)
+        
+        input.profileCardTapped.lazyBind { [weak self] _ in
+            self?.output.presentUserSettingModal.value = ()
+        }
     }
 }
