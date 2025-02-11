@@ -84,7 +84,7 @@ final class TrendingCollectionViewCell: UICollectionViewCell {
         titleLabel.font = .systemFont(ofSize: 16, weight: .bold)
         
         descriptionLabel.textColor = .white
-        descriptionLabel.numberOfLines = 2
+        descriptionLabel.numberOfLines = 0
         descriptionLabel.font = .systemFont(ofSize: 14, weight: .medium)
     }
     

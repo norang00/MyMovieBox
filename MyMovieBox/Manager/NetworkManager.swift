@@ -20,7 +20,6 @@ final class NetworkManager {
         AF.request(api.endpoint, method: api.method, parameters: api.parameters, headers: api.headers)
             .validate(statusCode: 200..<500)
             .responseDecodable(of: T.self) { response in
-                print(#function, response)
                 switch response.result {
                 case .success(let value):
                     completionHandler(.success(value), nil)

@@ -48,7 +48,7 @@ final class DetailViewController: BaseViewController {
     
     @objc
     func likeButtonTapped(_ sender: UIButton) {
-        User.toggleLike(movie!)
+        User.toggleLike(movie!.id)
         sender.isSelected.toggle()
     }
 }

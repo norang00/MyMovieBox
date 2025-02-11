@@ -13,6 +13,7 @@ final class MainViewController: BaseViewController {
     private let profileViewModel = ProfileViewModel()
     private let trendingViewModel = TrendingViewModel()
     
+    // MARK: - ViewLifeCycle
     override func loadView() {
         view = mainView
     }
@@ -27,23 +28,31 @@ final class MainViewController: BaseViewController {
         bindData()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        updateProfileCard()
+        updateLikeButtons()
+    }
+    
+    // MARK: - bindAction
     private func bindAction() {
         mainView.profileCard.overlayButton.addTarget(self, action: #selector(profileCardTapped), for: .touchUpInside)
     }
     
+    // MARK: - bindData
     private func bindData() {
-        profileViewModel.output.userInfo.bind { [weak self] _ in
-            self?.mainView.profileCard.profileImageView.image = UIImage(named: User.profileImageName)
-            self?.mainView.profileCard.nicknameLabel.text = User.nickname
-            self?.mainView.profileCard.SignupDateLabel.text = User.signUpDate
-            self?.mainView.profileCard.movieBoxLabel.text = User.movieBoxLabel
+        // Profile View
+        profileViewModel.output.updateUserInfo.lazyBind { [weak self] _ in
+            self?.updateProfileCard()
         }
         
         profileViewModel.output.presentUserSettingModal.lazyBind { [weak self] _ in
             self?.presentUserSettingModal()
         }
         
-        trendingViewModel.output.trendingList.bind { [weak self] movieList in
+        // Trending View
+        trendingViewModel.output.trendingList.lazyBind { [weak self] movieList in
             self?.mainView.collectionView.reloadData()
         }
         
@@ -51,14 +60,18 @@ final class MainViewController: BaseViewController {
             guard let alertSet = alertSet else { return }
             self?.showAlert(title: alertSet.title, message: alertSet.message)
         }
+        
+        trendingViewModel.output.pushToDetailVC.lazyBind { [weak self] movie in
+            guard let movie = movie else { return }
+            self?.pushToDetailView(movie)
+        }
+        
+        trendingViewModel.output.updateLike.lazyBind { [weak self] _ in
+            self?.mainView.profileCard.movieBoxLabel.text = User.movieBoxLabel
+        }
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        reloadLike()
-    }
-    
+// MARK: - Search
     override func configureNavigation(_ title: String) {
         super.configureNavigation(title)
         
@@ -81,18 +94,23 @@ extension MainViewController {
         profileViewModel.input.profileCardTapped.value = ()
     }
     
+    // [고민] View 에서 User 를 갖고 오는게 이게 맞나? 나름 저장소인데... 뷰모델에서 UserDefaults 정보 가지고 오고 또 그걸 별도 구조체에 포장해서 전달해줘야 하나?
+    func updateProfileCard() {
+        mainView.profileCard.profileImageView.image = UIImage(named: User.profileImageName)
+        mainView.profileCard.nicknameLabel.text = User.nickname
+        mainView.profileCard.SignupDateLabel.text = User.signUpDate
+        mainView.profileCard.movieBoxLabel.text = User.movieBoxLabel
+    }
+    
     func presentUserSettingModal() {
         let nicknameVC = NicknameSettingViewController()
         nicknameVC.isNewUser = false
-        nicknameVC.editingDone = {
-//            self.configureProfileCard()
-        }
         let nextVC = UINavigationController(rootViewController: nicknameVC)
         present(nextVC, animated: true)
     }
 }
 
-// MARK: - Trending Movie
+// MARK: - Trending
 extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func configureCollectionView() {
@@ -107,38 +125,40 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TrendingCollectionViewCell.identifier, for: indexPath) as! TrendingCollectionViewCell
-
         let trendingList = trendingViewModel.output.trendingList.value
         let movie = trendingList[indexPath.item]
         cell.configureData(movie, User.checkLike(movie.id))
-
         cell.likeButton.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
         cell.likeButton.tag = indexPath.item
-
+        
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let trendingList = trendingViewModel.output.trendingList.value
+        let movie = trendingViewModel.output.trendingList.value[indexPath.item]
+        trendingViewModel.input.movieTapped.value = movie
+    }
+    
+    func pushToDetailView(_ movie: Movie) {
         let detailVC = DetailViewController()
-        detailVC.movie = trendingList[indexPath.item]
+        detailVC.movie = movie
         navigationController?.pushViewController(detailVC, animated: true)
     }
+}
+
+// MARK: - Like
+extension MainViewController {
     
-    // MARK: 좋아요 기능
     @objc
     func likeButtonTapped(_ sender: UIButton) {
-        let trendingList = trendingViewModel.output.trendingList.value
-
-        let movie = trendingList[sender.tag]
-        User.toggleLike(movie)
         sender.isSelected.toggle()
-        mainView.profileCard.movieBoxLabel.text = "\(User.likedMovies.count)"+Title.likedMovie.rawValue
+        let movieID = trendingViewModel.output.trendingList.value[sender.tag].id
+        trendingViewModel.input.likeTapped.value = movieID
     }
     
-    func reloadLike() {
+    // [고민] 셀을 돌면서 좋아요 표시를 갱신해야 하는데 이건 뷰역할이 맞지 않나 싶은데 코드가 너무 복잡하당
+    func updateLikeButtons() {
         let trendingList = trendingViewModel.output.trendingList.value
-
         let userLikedMovies = User.likedMovies
         for index in 0..<trendingList.count {
             let movie = trendingList[index]

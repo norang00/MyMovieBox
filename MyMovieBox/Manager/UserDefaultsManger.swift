@@ -38,9 +38,9 @@ enum User {
     @UserDefault(key: "recentSearch", defaultValue: [])
     static var recentSearch: [String]
     
-    static var movieBoxLabel: String = {
+    static var movieBoxLabel: String {
         return "\(likedMovies.count)개의 무비박스 보관 중"
-    }()
+    }
     
     static func checkLike(_ movieId: Int) -> Bool {
         if likedMovies.contains(movieId) {
@@ -49,11 +49,11 @@ enum User {
         return false
     }
     
-    static func toggleLike(_ movie: Movie) {
-        if let index = User.likedMovies.firstIndex(of: movie.id) {
+    static func toggleLike(_ movieID: Int) {
+        if let index = User.likedMovies.firstIndex(of: movieID) {
             User.likedMovies.remove(at: index)
         } else {
-            User.likedMovies.append(movie.id)
+            User.likedMovies.append(movieID)
         }
     }
 

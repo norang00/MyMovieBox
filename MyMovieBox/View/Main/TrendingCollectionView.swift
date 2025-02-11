@@ -16,7 +16,8 @@ final class TrendingCollectionView: UICollectionView {
         layout.scrollDirection = .horizontal
         layout.minimumInteritemSpacing = spacing
         layout.sectionInset = UIEdgeInsets(top: sectionInset, left: sectionInset, bottom: sectionInset, right: sectionInset)
-        layout.itemSize = CGSize(width: 220, height: 380)
+//        layout.itemSize = CGSize(width: 220, height: 380)
+        layout.itemSize = CGSize(width: 280, height: 450)
         return layout
     }
         
