@@ -45,8 +45,10 @@ extension TrendingViewModel {
         NetworkManager.shared.callRequest(.trending, Trending.self) { [weak self] response in
             switch response {
             case .success(let value):
+                print(#function)
                 self?.output.trendingList.value = value.results
             case .failure(let error):
+                print(#function, error)
                 let errorMessage = error.localizedDescription
                 let alert = AlertSet(title: Title.warning.rawValue, message: errorMessage)
                 self?.output.showAlert.value = alert

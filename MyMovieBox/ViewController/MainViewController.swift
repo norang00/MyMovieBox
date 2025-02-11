@@ -46,6 +46,11 @@ final class MainViewController: BaseViewController {
         trendingViewModel.output.trendingList.bind { [weak self] movieList in
             self?.mainView.collectionView.reloadData()
         }
+        
+        trendingViewModel.output.showAlert.lazyBind { [weak self] alertSet in
+            guard let alertSet = alertSet else { return }
+            self?.showAlert(title: alertSet.title, message: alertSet.message)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
