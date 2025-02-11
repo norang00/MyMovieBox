@@ -10,7 +10,12 @@ import UIKit
 final class SearchViewController: BaseViewController {
     
     let searchView = SearchView()
-    
+    var recentSearchList: [String] = [] {
+        didSet {
+            User.recentSearch = recentSearchList
+        }
+    }
+
     private var previousQuery: String = ""
     var currentQuery: String = ""
     private var page: Int = 1
@@ -28,11 +33,12 @@ final class SearchViewController: BaseViewController {
         configureNavigation(Title.searchNav.rawValue)
         configureSearchBar()
         configureTableView()
-        
+        configureRecentSearchWords()
+
         if currentQuery.isEmpty {
             searchView.searchBar.becomeFirstResponder()
         } else {
-            getSearchResult(currentQuery, page)
+            callRequest(currentQuery, page)
             searchView.searchBar.text = currentQuery
         }
     }
@@ -57,7 +63,7 @@ extension SearchViewController: UISearchBarDelegate {
             previousQuery = currentQuery
             currentQuery = inputText
             page = 1
-            getSearchResult(currentQuery, page)
+            callRequest(currentQuery, page)
             
             if !User.recentSearch.contains(currentQuery) {
                 User.recentSearch.insert(currentQuery, at: 0)
@@ -114,7 +120,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource, UITa
         for item in indexPaths {
             if searchResults.count - 2 == item.row && page < totalPage {
                 page += 1
-                getSearchResult(currentQuery, page)
+                callRequest(currentQuery, page)
             }
         }
     }
@@ -136,11 +142,59 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource, UITa
         }
     }
 }
+// MARK: - Recent Search
+extension SearchViewController {
+    
+    func configureRecentSearchWords() {
+        recentSearchList = User.recentSearch
+        searchView.recentSearch.recentSearchStackView.subviews.forEach {
+            $0.removeFromSuperview()
+        }
+        searchView.recentSearch.recentSearchDeleteButton.addTarget(self, action: #selector(deleteAllButtonTapped), for: .touchUpInside)
+        
+        if recentSearchList.isEmpty {
+            searchView.recentSearch.recentSearchDeleteButton.isHidden = true
+            searchView.recentSearch.recentSearchEmptyView.isHidden = false
+
+        } else {
+            searchView.recentSearch.recentSearchDeleteButton.isHidden = false
+            searchView.recentSearch.recentSearchEmptyView.isHidden = true
+
+            for index in 0..<recentSearchList.count {
+                let button = SearchWordSegment(frame: .zero)
+                button.searchButton.setTitle(recentSearchList[index], for: .normal)
+                button.searchButton.tag = index
+                button.searchButton.addTarget(self, action: #selector(getSearchResult), for: .touchUpInside)
+                button.xButton.tag = index
+                button.xButton.addTarget(self, action: #selector(xButtonTapped), for: .touchUpInside)
+                searchView.recentSearch.recentSearchStackView.addArrangedSubview(button)
+            }
+        }
+    }
+    
+    @objc
+    func xButtonTapped(_ sender: UIButton) {
+        recentSearchList.remove(at: sender.tag)
+        configureRecentSearchWords()
+    }
+    
+    @objc
+    func deleteAllButtonTapped() {
+        recentSearchList = []
+        configureRecentSearchWords()
+    }
+    
+    @objc
+    func getSearchResult(_ sender: UIButton) {
+        searchView.recentSearch.isHidden = false
+        callRequest(recentSearchList[sender.tag], 1)
+    }
+}
 
 // MARK: - Network
 extension SearchViewController {
     
-    private func getSearchResult(_ query: String, _ page: Int) {
+    private func callRequest(_ query: String, _ page: Int) {
         dispatchGroup.enter()
         NetworkManager.shared.callRequest(.search(query: query, page: page), Search.self) { Result in
             if page == 1 {
@@ -157,11 +211,8 @@ extension SearchViewController {
         
         dispatchGroup.notify(queue: .main) {
             if self.searchResults.isEmpty {
-                self.searchView.emptyLabel.isHidden = false
                 self.searchView.tableView.isHidden = true
-                self.searchView.emptyLabel.text = Title.noResult.rawValue
             } else {
-                self.searchView.emptyLabel.isHidden = true
                 self.searchView.tableView.isHidden = false
                 self.searchView.tableView.reloadData()
                 

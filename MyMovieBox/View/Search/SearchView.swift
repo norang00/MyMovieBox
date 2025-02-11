@@ -11,13 +11,13 @@ import SnapKit
 final class SearchView: BaseView {
 
     let searchBar = UISearchBar()
+    let recentSearch = RecentSearch()
     let tableView = SearchTableView()
-    let emptyLabel = UILabel()
 
     override func configureHierarchy() {
         addSubview(searchBar)
+        addSubview(recentSearch)
         addSubview(tableView)
-        addSubview(emptyLabel)
     }
     
     override func configureLayout() {
@@ -26,15 +26,16 @@ final class SearchView: BaseView {
             make.top.equalTo(safeAreaLayoutGuide)
             make.horizontalEdges.equalToSuperview().inset(8)
         }
-        
+
+        recentSearch.snp.makeConstraints { make in
+            make.top.equalTo(searchBar.snp.bottom)
+            make.horizontalEdges.equalTo(safeAreaLayoutGuide)
+        }
+
         tableView.snp.makeConstraints { make in
             make.top.equalTo(searchBar.snp.bottom)
             make.horizontalEdges.equalTo(safeAreaLayoutGuide)
             make.bottom.equalTo(safeAreaLayoutGuide)
-        }
-        
-        emptyLabel.snp.makeConstraints { make in
-            make.centerX.centerY.equalToSuperview()
         }
     }
     
@@ -44,9 +45,7 @@ final class SearchView: BaseView {
         searchBar.placeholder = Title.searchPlaceholder.rawValue
         searchBar.searchBarStyle = .minimal
         searchBar.tintColor = .accent
-
-        emptyLabel.textColor = .gray1
-        emptyLabel.font = .systemFont(ofSize: 16, weight: .medium)
-        emptyLabel.isHidden = true
+        
+        tableView.isHidden = true
     }
 }

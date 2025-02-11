@@ -1,5 +1,5 @@
 //
-//  Trending.swift
+//  Movie.swift
 //  MyMovieBox
 //
 //  Created by Kyuhee hong on 1/24/25.

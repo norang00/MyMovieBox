@@ -33,7 +33,7 @@ enum Title: String {
     case secondTab = "UPCOMING"
     case thirdTab = "PROFILE"
     
-    // Navibation title
+    // Navigation title
     case mainNav = "My Movie Box"
     case profileSetNav = "프로필 설정"
     case profileEditNav = "프로필 편집"

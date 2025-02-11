@@ -10,12 +10,6 @@ import UIKit
 final class MainViewController: BaseViewController {
     
     private let mainView = MainView()
-    
-    var recentSearchList: [String] = [] {
-        didSet {
-            User.recentSearch = recentSearchList
-        }
-    }
     var todayMovieList: [Movie] = []
     let dispatchGroup = DispatchGroup()
     
@@ -36,7 +30,6 @@ final class MainViewController: BaseViewController {
         super.viewWillAppear(animated)
 
         configureProfileCard()
-        configureRecentSearchWords()
         reloadLike()
     }
     
@@ -44,8 +37,13 @@ final class MainViewController: BaseViewController {
         super.configureNavigation(title)
         
         let searchButton = UIBarButtonItem(image: UIImage(systemName: ImageName.search.rawValue), style: .plain, target: self, action: #selector(pushToSearchView))
-        searchButton.tag = 1000
         self.navigationItem.rightBarButtonItem = searchButton
+    }
+    
+    @objc
+    func pushToSearchView() {
+        let nextVC = SearchViewController()
+        navigationController?.pushViewController(nextVC, animated: true)
     }
 }
 
@@ -67,58 +65,6 @@ extension MainViewController {
         }
         let nextVC = UINavigationController(rootViewController: nicknameVC)
         present(nextVC, animated: true)
-    }
-}
-
-// MARK: - Recent Search
-extension MainViewController {
-    
-    func configureRecentSearchWords() {
-        recentSearchList = User.recentSearch
-        mainView.recentSearchStackView.subviews.forEach {
-            $0.removeFromSuperview()
-        }
-        mainView.recentSearchDeleteButton.addTarget(self, action: #selector(deleteAllButtonTapped), for: .touchUpInside)
-        
-        if recentSearchList.isEmpty {
-            mainView.recentSearchDeleteButton.isHidden = true
-            mainView.recentSearchEmptyView.isHidden = false
-
-        } else {
-            mainView.recentSearchDeleteButton.isHidden = false
-            mainView.recentSearchEmptyView.isHidden = true
-
-            for index in 0..<recentSearchList.count {
-                let button = SearchWordSegment(frame: .zero)
-                button.searchButton.setTitle(recentSearchList[index], for: .normal)
-                button.searchButton.tag = index
-                button.searchButton.addTarget(self, action: #selector(pushToSearchView), for: .touchUpInside)
-                button.xButton.tag = index
-                button.xButton.addTarget(self, action: #selector(xButtonTapped), for: .touchUpInside)
-                mainView.recentSearchStackView.addArrangedSubview(button)
-            }
-        }
-    }
-    
-    @objc
-    func xButtonTapped(_ sender: UIButton) {
-        recentSearchList.remove(at: sender.tag)
-        configureRecentSearchWords()
-    }
-    
-    @objc
-    func deleteAllButtonTapped() {
-        recentSearchList = []
-        configureRecentSearchWords()
-    }
-    
-    @objc
-    func pushToSearchView(_ sender: UIButton) {
-        let nextVC = SearchViewController()
-        if sender.tag != 1000 {
-            nextVC.currentQuery = recentSearchList[sender.tag]
-        }
-        navigationController?.pushViewController(nextVC, animated: true)
     }
 }
 
