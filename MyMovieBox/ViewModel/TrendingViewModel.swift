@@ -71,7 +71,6 @@ extension TrendingViewModel {
                 guard let errorMessage = errorMessage else { return }
                 let alert = AlertSet(title: Title.warning.rawValue, message: errorMessage)
                 self?.output.showAlert.value = alert
-                return
             }
         }
     }

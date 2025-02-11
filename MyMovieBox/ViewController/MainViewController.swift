@@ -22,15 +22,15 @@ final class MainViewController: BaseViewController {
         super.viewDidLoad()
         
         configureNavigation(Title.mainNav.rawValue)
+        configureProfileCard()
         configureCollectionView()
         
-        bindAction()
         bindData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
+        
         updateProfileCard()
         updateLikeButtons()
     }
@@ -71,7 +71,7 @@ final class MainViewController: BaseViewController {
         }
     }
     
-// MARK: - Search
+    // MARK: - Search
     override func configureNavigation(_ title: String) {
         super.configureNavigation(title)
         
@@ -88,6 +88,10 @@ final class MainViewController: BaseViewController {
 
 // MARK: - Profile
 extension MainViewController {
+    
+    func configureProfileCard() {
+        mainView.profileCard.overlayButton.addTarget(self, action: #selector(profileCardTapped), for: .touchUpInside)
+    }
     
     @objc
     func profileCardTapped() {
@@ -139,7 +143,7 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
         trendingViewModel.input.movieTapped.value = movie
     }
     
-    func pushToDetailView(_ movie: Movie) {
+    private func pushToDetailView(_ movie: Movie) {
         let detailVC = DetailViewController()
         detailVC.movie = movie
         navigationController?.pushViewController(detailVC, animated: true)
