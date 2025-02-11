@@ -1,5 +1,5 @@
 //
-//  TodayMovieCollectionView.swift
+//  TrendingCollectionView.swift
 //  MyMovieBox
 //
 //  Created by Kyuhee hong on 1/27/25.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class TodayMovieCollectionView: UICollectionView {
+final class TrendingCollectionView: UICollectionView {
 
     static func createCollectionViewLayout() -> UICollectionViewLayout {
         let sectionInset: CGFloat = 12
@@ -33,6 +33,6 @@ final class TodayMovieCollectionView: UICollectionView {
     private func configureCollectionView() {
         backgroundColor = .clear
         showsHorizontalScrollIndicator = false
-        register(TodayMovieCollectionViewCell.self, forCellWithReuseIdentifier: TodayMovieCollectionViewCell.identifier)
+        register(TrendingCollectionViewCell.self, forCellWithReuseIdentifier: TrendingCollectionViewCell.identifier)
     }
 }

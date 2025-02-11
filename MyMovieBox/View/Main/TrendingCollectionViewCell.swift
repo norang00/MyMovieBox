@@ -1,5 +1,5 @@
 //
-//  TodayMovieCollectionViewCell.swift
+//  TrendingCollectionViewCell.swift
 //  MyMovieBox
 //
 //  Created by Kyuhee hong on 1/27/25.
@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 import Kingfisher
 
-final class TodayMovieCollectionViewCell: UICollectionViewCell {
+final class TrendingCollectionViewCell: UICollectionViewCell {
     
     static var identifier: String {
         return String(describing: self)

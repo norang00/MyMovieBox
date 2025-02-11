@@ -1,5 +1,5 @@
 //
-//  MainViewModel.swift
+//  TrendingViewModel.swift
 //  MyMovieBox
 //
 //  Created by Kyuhee hong on 2/11/25.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class MainViewModel: BaseViewModel {
+final class TrendingViewModel: BaseViewModel {
 
     private(set) var input: Input
     private(set) var output: Output
@@ -17,8 +17,11 @@ final class MainViewModel: BaseViewModel {
     }
     
     struct Output {
-        
+        let trendingList: Observable<[Movie]> = Observable([])
     }
+    
+     var trendingList: [Movie] = []
+    private let dispatchGroup = DispatchGroup()
     
     init() {
         input = Input()

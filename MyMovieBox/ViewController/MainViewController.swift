@@ -10,8 +10,8 @@ import UIKit
 final class MainViewController: BaseViewController {
     
     private let mainView = MainView()
-    var todayMovieList: [Movie] = []
-    let dispatchGroup = DispatchGroup()
+    private let profileViewModel = ProfileViewModel()
+    private let trendingViewModel = TrendingViewModel()
     
     override func loadView() {
         view = mainView
@@ -23,7 +23,13 @@ final class MainViewController: BaseViewController {
         configureNavigation(Title.mainNav.rawValue)
         configureCollectionView()
         
-        getTodayMovie()
+        getTrendingMovie()
+        
+        bindData()
+    }
+    
+    private func bindData() {
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -68,7 +74,7 @@ extension MainViewController {
     }
 }
 
-// MARK: - Today's Movie
+// MARK: - Trending Movie
 extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func configureCollectionView() {
@@ -77,12 +83,12 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return todayMovieList.count
+        return trendingViewModel.trendingList.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TodayMovieCollectionViewCell.identifier, for: indexPath) as! TodayMovieCollectionViewCell
-        let movie = todayMovieList[indexPath.item]
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TrendingCollectionViewCell.identifier, for: indexPath) as! TrendingCollectionViewCell
+        let movie = trendingViewModel.trendingList[indexPath.item]
         cell.configureData(movie, User.checkLike(movie.id))
         cell.likeButton.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
         cell.likeButton.tag = indexPath.item
@@ -91,14 +97,14 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let detailVC = DetailViewController()
-        detailVC.movie = todayMovieList[indexPath.item]
+        detailVC.movie = trendingViewModel.trendingList[indexPath.item]
         navigationController?.pushViewController(detailVC, animated: true)
     }
     
     // MARK: 좋아요 기능
     @objc
     func likeButtonTapped(_ sender: UIButton) {
-        let movie = todayMovieList[sender.tag]
+        let movie = trendingViewModel.trendingList[sender.tag]
         User.toggleLike(movie)
         sender.isSelected.toggle()
         mainView.profileCard.movieBoxLabel.text = "\(User.likedMovies.count)"+Title.likedMovie.rawValue
@@ -106,9 +112,9 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
     
     func reloadLike() {
         let userLikedMovies = User.likedMovies
-        for index in 0..<todayMovieList.count {
-            let movie = todayMovieList[index]
-            let cell = mainView.collectionView.cellForItem(at: IndexPath(item: index, section: 0)) as? TodayMovieCollectionViewCell
+        for index in 0..<trendingViewModel.trendingList.count {
+            let movie = trendingViewModel.trendingList[index]
+            let cell = mainView.collectionView.cellForItem(at: IndexPath(item: index, section: 0)) as? TrendingCollectionViewCell
             cell?.likeButton.isSelected = userLikedMovies.contains(movie.id)
         }
     }
@@ -117,18 +123,19 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
 // MARK: - Network
 extension MainViewController {
     
-    private func getTodayMovie() {
-        dispatchGroup.enter()
-        NetworkManager.shared.callRequest(.trending, Trending.self) { Result in
-            self.todayMovieList = Result.results
-            self.dispatchGroup.leave()
-        } failureHandler: { errorMessage in
-            self.showAlert(title: Title.warning.rawValue, message: errorMessage)
-            self.dispatchGroup.leave()
-        }
-        
-        dispatchGroup.notify(queue: .main) {
-            self.mainView.collectionView.reloadData()
-        }
+    private func getTrendingMovie() {
+//        dispatchGroup.enter()
+//        NetworkManager.shared.callRequest(.trending, Trending.self) { Result in
+//            self.trendingList = Result.results
+//            self.dispatchGroup.leave()
+//        } failureHandler: { errorMessage in
+//            self.showAlert(title: Title.warning.rawValue, message: errorMessage)
+//            self.dispatchGroup.leave()
+//        }
+//        
+//        dispatchGroup.notify(queue: .main) {
+//            self.mainView.collectionView.reloadData()
+//        }
+        print(#file, #function)
     }
 }

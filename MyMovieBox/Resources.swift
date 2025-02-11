@@ -59,7 +59,7 @@ enum Title: String {
     case poster = "Poster"
     case more = "More"
     case hide = "Hide"
-    case todayMovie = "오늘의 영화"
+    case trending = "오늘의 영화"
     case searchPlaceholder = "영화를 검색해보세요."
     case nicknamePlaceholder = "닉네임을 입력해보세요"
     

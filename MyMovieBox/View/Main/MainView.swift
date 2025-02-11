@@ -11,13 +11,13 @@ import SnapKit
 final class MainView: BaseView {
     
     let profileCard = ProfileCard()
-    let todayMovieLabel = UILabel()
-    let collectionView = TodayMovieCollectionView(frame: .zero, collectionViewLayout: TodayMovieCollectionView.createCollectionViewLayout())
+    let trendingLabel = UILabel()
+    let collectionView = TrendingCollectionView(frame: .zero, collectionViewLayout: TrendingCollectionView.createCollectionViewLayout())
     
     // MARK: - configureHierarchy
     override func configureHierarchy() {
         addSubview(profileCard)
-        addSubview(todayMovieLabel)
+        addSubview(trendingLabel)
         addSubview(collectionView)
     }
     
@@ -29,13 +29,13 @@ final class MainView: BaseView {
             make.height.equalTo(138)
         }
         
-        todayMovieLabel.snp.makeConstraints { make in
+        trendingLabel.snp.makeConstraints { make in
             make.top.equalTo(profileCard.snp.bottom).offset(24)
             make.horizontalEdges.equalTo(safeAreaLayoutGuide).inset(12)
         }
         
         collectionView.snp.makeConstraints { make in
-            make.top.equalTo(todayMovieLabel.snp.bottom)
+            make.top.equalTo(trendingLabel.snp.bottom)
             make.horizontalEdges.equalTo(safeAreaLayoutGuide)
             make.bottom.equalTo(safeAreaLayoutGuide)
         }
@@ -45,8 +45,8 @@ final class MainView: BaseView {
     override func configureView() {
         super.configureView()
         
-        todayMovieLabel.text = Title.todayMovie.rawValue
-        todayMovieLabel.font = .systemFont(ofSize: 20, weight: .bold)
+        trendingLabel.text = Title.trending.rawValue
+        trendingLabel.font = .systemFont(ofSize: 20, weight: .bold)
     }
     
 }
