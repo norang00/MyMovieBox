@@ -12,37 +12,40 @@ final class SearchViewModel: BaseViewModel {
     private(set) var input: Input
     private(set) var output: Output
     
-    // internal properties
     private var totalPage = 0
     private var page = 1
-    private var previousQuery = ""
-    private var currentQuery = ""
-//    private var recentList: [Int] = []
-    private var resultResult: [Movie] = []
+    private var query: String?
+    private var resultList: [Movie] = []
     private var dispatchGroup = DispatchGroup()
 
     struct Input {
-        let viewLoaded: Observable<Void?> = Observable(nil)
+        let loadRecentList: Observable<Void?> = Observable(nil)
+        let recentKeywordTapped: Observable<String?> = Observable(nil)
+        let recentKeywordXTapped: Observable<Int?> = Observable(nil)
+        let recentDeleteAllTapped: Observable<Void?> = Observable(nil)
+
+        let searchTextDidChange: Observable<String?> = Observable(nil)
         let searchButtonTapped: Observable<String?> = Observable(nil)
-        let recentButtonTapped: Observable<String?> = Observable(nil)
-        let recentXButtonTapped: Observable<Int?> = Observable(nil)
-        let recentDeleteTapped: Observable<Void?> = Observable(nil)
         let movieRowTapped: Observable<Movie?> = Observable(nil)
         let loadAdditionalPage: Observable<[IndexPath]> = Observable([])
+        
+        let likeButtonTapped: Observable<Int?> = Observable(nil)
     }
     
     struct Output {
         let recentList: Observable<[String]> = Observable([])
-        let resultList: Observable<[Movie]> = Observable([])
-        let showRecentView: Observable<Bool?> = Observable(nil) // 이게 맞나...?
-        let showResultView: Observable<Bool?> = Observable(nil) // 어디까지 지정해야..?
         let reloadRecentView: Observable<Void?> = Observable(nil)
+
+        let searchText: Observable<String?> = Observable(nil)
+        let resultList: Observable<[Movie]> = Observable([])
         let reloadResultView: Observable<Void?> = Observable(nil)
+        let showResultView: Observable<Bool> = Observable(false)
         let scrollResultView: Observable<Void?> = Observable(nil)
+
         let becomeResponder: Observable<Void?> = Observable(nil)
         let resignResponder: Observable<Void?> = Observable(nil)
         let pushToDetailVC: Observable<Movie?> = Observable(nil)
-        let updateLike: Observable<Void?> = Observable(nil)
+        let toggleLike: Observable<Int?> = Observable(nil)
         let showAlert: Observable<AlertSet?> = Observable(nil)
     }
     
@@ -53,28 +56,39 @@ final class SearchViewModel: BaseViewModel {
         transform()
     }
     
+    // MARK: - transform
     func transform() {
-        input.viewLoaded.bind { [weak self] _ in // [고민] 아직 VC 생성 전에 트리거를 걸어줘봐야...?
-            print(#file, #function)
-            self?.output.becomeResponder.value = ()
+        input.loadRecentList.bind { [weak self] _ in
             self?.output.recentList.value = User.recentSearch
+        }
+
+        input.recentKeywordTapped.lazyBind { [weak self] keyword in
+            guard let keyword = keyword else { return }
+            self?.output.searchText.value = keyword
+            self?.getSearchResult(keyword)
+        }
+        
+        input.recentKeywordXTapped.lazyBind { [weak self] index in
+            guard let index = index else { return }
+            User.recentSearch.remove(at: index)
+            self?.output.recentList.value = User.recentSearch
+        }
+        
+        input.recentDeleteAllTapped.lazyBind { [weak self] _ in
+            User.recentSearch.removeAll()
+            self?.output.recentList.value = User.recentSearch
+        }
+        
+        input.searchTextDidChange.lazyBind { [weak self] inputText in
+            guard let inputText = inputText else { return }
+            if inputText.isEmpty {
+                self?.output.showResultView.value = false
+            }
         }
         
         input.searchButtonTapped.lazyBind { [weak self] inputText in
             guard let inputText = inputText else { return }
-            print(#file, #function, inputText)
-            self?.getSearchResult(inputText)
-        }
-
-        input.recentXButtonTapped.lazyBind { [weak self] index in
-            guard let index = index else { return }
-            self?.output.recentList.value.remove(at: index)
-
-        }
-        
-        input.recentDeleteTapped.lazyBind { [weak self] _ in
-            self?.output.recentList.value = []
-            User.recentSearch = []
+            self?.validateKeyword(inputText)
         }
         
         input.movieRowTapped.lazyBind { [weak self] movie in
@@ -87,6 +101,12 @@ final class SearchViewModel: BaseViewModel {
             self?.getAdditionalPage(indexPaths, listCount)
         }
         
+        input.likeButtonTapped.lazyBind { [weak self] index in
+            guard let index = index else { return }
+            self?.output.toggleLike.value = index
+            guard let movie = self?.output.resultList.value[index] else { return }
+            self?.toggleLike(movie.id)
+        }
     }
 }
 
@@ -94,67 +114,81 @@ final class SearchViewModel: BaseViewModel {
 extension SearchViewModel {
     
     private func addToRecent(_ currentQuery: String) {
-        print(#file, #function, currentQuery)
-
         if !User.recentSearch.contains(currentQuery) {
             User.recentSearch.insert(currentQuery, at: 0)
         }
+        output.recentList.value = User.recentSearch
     }
-    
-    
-    
 }
 
 // MARK: - Search Result
 extension SearchViewModel {
+        
+    private func validateKeyword(_ inputText: String) {
+        if inputText.replacingOccurrences(of: " ", with: "").count == 0 {
+            self.output.showAlert.value =
+            AlertSet(title: Resources.Alert.Title.emptyInput.rawValue,
+                     message: Resources.Alert.Message.emptyInput.rawValue)
+            self.output.searchText.value = ""
+        } else if inputText.count > 20 {
+            self.output.showAlert.value =
+            AlertSet(title: Resources.Alert.Title.tooLongKeyword.rawValue,
+                     message: Resources.Alert.Message.tooLongKeyword.rawValue)
+            self.output.searchText.value = ""
+        } else {
+            getSearchResult(inputText)
+        }
+    }
     
     private func getSearchResult(_ inputText: String) {
-        print(#file, #function, inputText)
-
-        if previousQuery != inputText {
-            previousQuery = currentQuery
-            currentQuery = inputText
-            page = 1
-
-            print(#file, #function, "previousQuery != inputText", inputText)
-
-            callRequest(currentQuery, page)
-            addToRecent(currentQuery)
+        if inputText == query {
+            if output.resultList.value.isEmpty {
+                output.showAlert.value = AlertSet(title: Resources.Alert.Title.noResult.rawValue,
+                                                  message: Resources.Alert.Message.noResult.rawValue)
+                self.output.searchText.value = ""
+            } else {
+                output.scrollResultView.value = ()
+            }
         } else {
-            
-            print(#file, #function, inputText)
-
-            output.scrollResultView.value = ()
+            page = 1
+            query = inputText
+            callRequest(query!, page)
+            addToRecent(query!)
         }
     }
     
     private func getAdditionalPage(_ indexPaths: [IndexPath] , _ listCount: Int) {
+        guard let query = query else { return }
         for item in indexPaths {
             if listCount - 2 == item.row && page < totalPage {
                 page += 1
-                callRequest(currentQuery, page)
+                callRequest(query, page)
             }
         }
     }
-    
+}
+
+// MARK: - Like
+// [TODO] 얘도 그냥 모아서 하나로 빼도 되겠다.
+extension SearchViewModel {
+    private func toggleLike(_ movieID: Int) {
+        User.toggleLike(movieID)
+    }
 }
 
 // MARK: - Network
 extension SearchViewModel {
     
     private func callRequest(_ query: String, _ page: Int) {
-        
-        print(#file, #function, query)
-
         dispatchGroup.enter()
         NetworkManager.shared.callRequest(.search(query: query, page: page), Search.self) { [weak self] response  in
             switch response {
             case .success(let value):
                 if page == 1 {
                     self?.totalPage = value.totalPages
-                    self?.resultResult = value.results
+                    self?.resultList = value.results
                 } else {
-                    self?.resultResult.append(contentsOf: value.results)
+                    self?.resultList.append(contentsOf: value.results)
                 }
                 self?.dispatchGroup.leave()
             case .failure(let error):
@@ -165,17 +199,19 @@ extension SearchViewModel {
         }
         
         dispatchGroup.notify(queue: .main) {
-            if self.resultResult.isEmpty {
+            if self.resultList.isEmpty {
                 self.output.showResultView.value = false
                 self.output.showAlert.value =
                 AlertSet(title: Resources.Alert.Title.noResult.rawValue,
                          message: Resources.Alert.Message.noResult.rawValue)
             } else {
+                self.output.resultList.value = self.resultList
                 self.output.showResultView.value = true
-                self.output.reloadResultView.value = ()
-//                if page == 1 {
-//                    self.output.scrollResultView.value = ()
-//                }
+                print(#function, "result")
+
+                if page == 1 {
+                    self.output.scrollResultView.value = ()
+                }
             }
             self.output.resignResponder.value = ()
         }

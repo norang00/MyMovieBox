@@ -68,14 +68,18 @@ enum Resources {
     enum Alert {
         enum Title: String {
             case quit = "탈퇴하기"
+            case emptyInput = "검색어를 입력해주세요"
             case noResult = "검색 결과가 없습니다"
             case warning = "이런! 문제가 발생했어요"
+            case tooLongKeyword = "검색어가 너무 길어요"
         }
         
         enum Message: String {
             case quit = "탈퇴를 하면 데이터가 모두 초기화됩니다. 탈퇴 하시겠습니까?"
-            case noResult = "다른 검색어를 입력해보세요"
+            case emptyInput = ""
+            case noResult = "다른 단어를 입력해보세요"
             case warning = "관리자에게 문의하세요"
+            case tooLongKeyword = "20자 이내로 적어주세요"
         }
     }
 

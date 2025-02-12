@@ -21,7 +21,6 @@ final class SearchViewController: BaseViewController {
         super.viewDidLoad()
 
         configureNavigation(Resources.Title.searchNav.rawValue)
-        configureRecentView(searchViewModel.output.recentList.value)
         configureSearchBar()
         configureTableView()
         
@@ -38,30 +37,51 @@ final class SearchViewController: BaseViewController {
     private func bindData() {
         
         searchViewModel.output.recentList.bind { [weak self] recentList in
-            print(#file, #function, "recentList", recentList)
             self?.configureRecentView(recentList)
         }
         
-        searchViewModel.output.showResultView.lazyBind { [weak self] _ in
-            self?.searchView.resultTableView.isHidden = false
-        }
-
-        searchViewModel.output.reloadResultView.lazyBind { [weak self] _ in
-            self?.searchView.resultTableView.reloadData()
-        }
-        
-        searchViewModel.output.scrollResultView.lazyBind { [weak self] _ in
-            self?.searchView.resultTableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+        searchViewModel.output.searchText.lazyBind { [weak self] text in
+            guard let text = text else { return }
+            self?.searchView.searchBar.text = text
         }
         
         searchViewModel.output.becomeResponder.bind { [weak self] _ in
             self?.searchView.searchBar.becomeFirstResponder()
         }
         
+        searchViewModel.output.resultList.lazyBind { [weak self] resultList in
+            self?.searchView.resultTableView.reloadData()
+        }
+        
+        searchViewModel.output.showResultView.lazyBind { [weak self] value in
+            self?.searchView.recentSearch.isHidden = value ? true : false
+            self?.searchView.resultTableView.isHidden = value ? false : true
+        }
+        
+        searchViewModel.output.scrollResultView.lazyBind { [weak self] _ in
+            self?.searchView.resultTableView.scrollToRow(at: IndexPath(row: 0, section: 0),
+                                                         at: .top, animated: false)
+        }
+        
         searchViewModel.output.resignResponder.lazyBind { [weak self] _ in
             self?.searchView.endEditing(true)
         }
-
+        
+        searchViewModel.output.showAlert.lazyBind { [weak self] alertSet in
+            guard let alertSet = alertSet else { return }
+            self?.showAlert(title: alertSet.title, message: alertSet.message)
+        }
+        
+        searchViewModel.output.pushToDetailVC.lazyBind { [weak self] movie in
+            guard let movie = movie else { return }
+            self?.pushToDetailView(movie)
+        }
+        
+        searchViewModel.output.toggleLike.lazyBind { [weak self] index in
+            guard let index = index else { return }
+            let cell = self?.searchView.resultTableView.cellForRow(at: IndexPath(row: index, section: 0)) as? SearchTableViewCell
+            cell?.likeButton.isSelected.toggle()
+        }
     }
 }
 
@@ -72,24 +92,61 @@ extension SearchViewController: UISearchBarDelegate {
         searchView.searchBar.delegate = self
     }
     
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        searchViewModel.input.searchTextDidChange.value = searchText
+    }
+
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let inputText = searchBar.text else { return }
-        print(#file, #function, inputText)
         searchViewModel.input.searchButtonTapped.value = inputText
     }
-    
-//    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-//        <#code#>
-//    }
-    
-//    func searchButtonTapped(_ searchBar: UISearchBar) {
-//        guard let inputText = searchBar.text else { return }
-//        print(#file, #function, inputText)
-//        searchViewModel.input.searchButtonTapped.value = inputText
-//    }
 }
 
-// MARK: - TableView, Pagination
+// MARK: - Recent Search
+extension SearchViewController {
+    
+    func configureRecentView(_ recentList: [String]) {
+        searchView.recentSearch.recentSearchStackView.subviews.forEach {
+            $0.removeFromSuperview()
+        }
+        searchView.recentSearch.recentSearchDeleteButton.addTarget(self, action: #selector(recentDeleteAllTapped), for: .touchUpInside)
+        
+        if recentList.isEmpty {
+            searchView.recentSearch.recentSearchDeleteButton.isHidden = true
+            searchView.recentSearch.recentSearchEmptyView.isHidden = false
+        } else {
+            searchView.recentSearch.recentSearchDeleteButton.isHidden = false
+            searchView.recentSearch.recentSearchEmptyView.isHidden = true
+            for index in 0..<recentList.count {
+                let button = SearchWordSegment(frame: .zero)
+                button.searchButton.setTitle(recentList[index], for: .normal)
+                button.searchButton.tag = index
+                button.searchButton.addTarget(self, action: #selector(recentKeywordTapped), for: .touchUpInside)
+                button.xButton.tag = index
+                button.xButton.addTarget(self, action: #selector(recentKeywordXTapped), for: .touchUpInside)
+                searchView.recentSearch.recentSearchStackView.addArrangedSubview(button)
+            }
+            searchView.layoutSubviews()
+        }
+    }
+    
+    @objc
+    func recentKeywordTapped(_ sender: UIButton) {
+        searchViewModel.input.recentKeywordTapped.value = sender.titleLabel?.text
+    }
+    
+    @objc
+    func recentKeywordXTapped(_ sender: UIButton) {
+        searchViewModel.input.recentKeywordXTapped.value = sender.tag
+    }
+    
+    @objc
+    func recentDeleteAllTapped() {
+        searchViewModel.input.recentDeleteAllTapped.value = ()
+    }
+}
+
+// MARK: - TableView
 extension SearchViewController: UITableViewDelegate, UITableViewDataSource, UITableViewDataSourcePrefetching {
     
     private func configureTableView() {
@@ -137,71 +194,15 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource, UITa
     }
 }
 
-// MARK: - Recent Search
-extension SearchViewController {
-    
-    // [고민] ...심각한디
-    func configureRecentView(_ recentList: [String]) {
-        print(#file, #function)
-
-        searchView.recentSearch.recentSearchStackView.subviews.forEach {
-            $0.removeFromSuperview()
-        }
-        searchView.recentSearch.recentSearchDeleteButton.addTarget(self, action: #selector(deleteAllButtonTapped), for: .touchUpInside)
-        
-        if recentList.isEmpty {
-            print(#function, "recentList.isEmpty")
-
-            searchView.recentSearch.recentSearchDeleteButton.isHidden = true
-            searchView.recentSearch.recentSearchEmptyView.isHidden = false
-
-        } else {
-            print(#function, "!recentList.isEmpty")
-
-            searchView.recentSearch.recentSearchDeleteButton.isHidden = false
-            searchView.recentSearch.recentSearchEmptyView.isHidden = true
-
-            for index in 0..<recentList.count {
-                let button = SearchWordSegment(frame: .zero)
-                button.searchButton.setTitle(recentList[index], for: .normal)
-                button.searchButton.tag = index
-                button.searchButton.addTarget(self, action: #selector(getSearchResult), for: .touchUpInside)
-                button.xButton.tag = index
-                button.xButton.addTarget(self, action: #selector(xButtonTapped), for: .touchUpInside)
-                searchView.recentSearch.recentSearchStackView.addArrangedSubview(button)
-                print(#function, button)
-            }
-            searchView.layoutSubviews()
-        }
-    }
-    
-    @objc
-    func xButtonTapped(_ sender: UIButton) {
-        searchViewModel.input.recentXButtonTapped.value = sender.tag
-        configureRecentView(searchViewModel.output.recentList.value)
-    }
-    
-    @objc
-    func deleteAllButtonTapped() {
-        searchViewModel.input.recentDeleteTapped.value = ()
-        configureRecentView(searchViewModel.output.recentList.value)
-    }
-    
-    @objc
-    func getSearchResult(_ sender: UIButton) {
-        searchView.recentSearch.isHidden = false
-//        callRequest(recentSearchList[sender.tag], 1)
-    }
-}
 // MARK: - Like
 extension SearchViewController {
+    
     @objc
     func likeButtonTapped(_ sender: UIButton) {
-        let movie = searchViewModel.output.resultList.value[sender.tag]
-        User.toggleLike(movie.id)
-        sender.isSelected.toggle()
+        searchViewModel.input.likeButtonTapped.value = sender.tag
     }
     
+    // [TODO] 좋아요 영화랑 플래그 별도 모델링 해서 뷰모델에서 처리해보기
     private func reloadLike() {
         let resultList = searchViewModel.output.resultList.value
         let userLikedMovies = User.likedMovies
