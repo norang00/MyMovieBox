@@ -1,5 +1,5 @@
 //
-//  SearchTableView.swift
+//  SearchResultTableView.swift
 //  MyMovieBox
 //
 //  Created by Kyuhee hong on 1/28/25.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class SearchTableView: UITableView {
+final class SearchResultTableView: UITableView {
     
     override init(frame: CGRect, style: UITableView.Style) {
         super.init(frame: frame, style: style)
