@@ -49,21 +49,21 @@ final class OnboardingView: BaseView {
     override func configureView() {
         super.configureView()
 
-        onboardImageView.image = UIImage(named: ImageName.onboarding.rawValue)
+        onboardImageView.image = UIImage(named: Resources.ImageName.onboarding.rawValue)
         onboardImageView.contentMode = .scaleAspectFit
         
-        onboardingLabel.text = Title.onboarding.rawValue
+        onboardingLabel.text = Resources.Title.onboarding.rawValue
         onboardingLabel.textColor = .white
         onboardingLabel.font = UIFont(name: "HelveticaNeue-BoldItalic", size: 30)
 
-        welcomeLabel.text = Title.welcome.rawValue
+        welcomeLabel.text = Resources.Title.welcome.rawValue
         welcomeLabel.textColor = .white
         welcomeLabel.textAlignment = .center
         welcomeLabel.font = .systemFont(ofSize: 16, weight: .medium)
         welcomeLabel.numberOfLines = 2
         
         startButton.setTitleColor(.accent, for: .normal)
-        startButton.setTitle(Title.start.rawValue, for: .normal)
+        startButton.setTitle(Resources.Title.start.rawValue, for: .normal)
         startButton.titleLabel?.font = .systemFont(ofSize: 16, weight: .bold)
         startButton.layer.cornerRadius = 25
         startButton.layer.borderWidth = 2

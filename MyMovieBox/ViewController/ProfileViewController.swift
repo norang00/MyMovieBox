@@ -10,7 +10,7 @@ import UIKit
 final class ProfileViewController: BaseViewController {
     
     let profileView = ProfileView()
-    private let rowTitles = SettingTitles.allCases.map { $0.rawValue }
+    private let rowTitles = Resources.SettingTitles.allCases.map { $0.rawValue }
     
     override func loadView() {
         view = profileView
@@ -19,7 +19,7 @@ final class ProfileViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        configureNavigation(Title.setting.rawValue)
+        configureNavigation(Resources.Title.setting.rawValue)
         configureTableView()
     }
     
@@ -36,7 +36,7 @@ extension ProfileViewController {
     private func configureProfileCard() {
         profileView.profileCard.profileImageView.image = UIImage(named: User.profileImageName)
         profileView.profileCard.nicknameLabel.text = User.nickname
-        profileView.profileCard.movieBoxLabel.text = "\(User.likedMovies.count)"+Title.likedMovie.rawValue
+        profileView.profileCard.movieBoxLabel.text = "\(User.likedMovies.count)"+Resources.Title.likedMovie.rawValue
         profileView.profileCard.overlayButton.addTarget(self, action: #selector(profileTapped), for: .touchUpInside)
     }
     
@@ -79,15 +79,15 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == 3 {
-            showQuitAlert(title: Title.quitTitle.rawValue,
-                          message: Title.quitDescription.rawValue)
+            showQuitAlert(title: Resources.Alert.Title.quit.rawValue,
+                          message: Resources.Alert.Message.quit.rawValue)
         }
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
     private func showQuitAlert(title: String, message: String) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let confirmAction = UIAlertAction(title: Title.check.rawValue, style: .default) {_ in 
+        let confirmAction = UIAlertAction(title: Resources.Title.check.rawValue, style: .default) {_ in
             User.reset()
             
             guard let windowsScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else { return }
@@ -96,7 +96,7 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
             window?.makeKeyAndVisible()
         }
         
-        let cancelAction = UIAlertAction(title: Title.cancel.rawValue, style: .cancel)
+        let cancelAction = UIAlertAction(title: Resources.Title.cancel.rawValue, style: .cancel)
         alertController.addAction(confirmAction)
         alertController.addAction(cancelAction)
         

@@ -11,7 +11,7 @@ final class LikeButton: UIButton {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setImage(UIImage(systemName: ImageName.unlike.rawValue), for: .normal)
+        setImage(UIImage(systemName: Resources.ImageName.unlike.rawValue), for: .normal)
         imageView?.contentMode = .scaleAspectFit
         tintColor = .accent
     }
@@ -22,7 +22,9 @@ final class LikeButton: UIButton {
     
     override var isSelected: Bool {
         didSet {
-            setImage(UIImage(systemName: isSelected ? ImageName.like.rawValue : ImageName.unlike.rawValue), for: .normal)
+            setImage(UIImage(systemName: isSelected ?
+                             Resources.ImageName.like.rawValue :
+                             Resources.ImageName.unlike.rawValue), for: .normal)
         }
     }
 }

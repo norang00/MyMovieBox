@@ -73,7 +73,7 @@ final class TrendingCollectionViewCell: UICollectionViewCell {
     }
     
     private func configureView() {
-        posterImageView.image = UIImage(systemName: ImageName.film.rawValue)
+        posterImageView.image = UIImage(systemName: Resources.ImageName.film.rawValue)
         posterImageView.contentMode = .scaleAspectFill
         posterImageView.clipsToBounds = true
         posterImageView.layer.cornerRadius = 8

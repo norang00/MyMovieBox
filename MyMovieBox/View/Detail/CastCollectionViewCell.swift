@@ -59,7 +59,7 @@ final class CastCollectionViewCell: UICollectionViewCell {
     }
     
     private func configureView() {
-        castImageView.image = UIImage(systemName: ImageName.fileCircle.rawValue)
+        castImageView.image = UIImage(systemName: Resources.ImageName.fileCircle.rawValue)
         castImageView.contentMode = .scaleAspectFill
         castImageView.layer.cornerRadius = 25
         castImageView.clipsToBounds = true

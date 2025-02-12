@@ -174,7 +174,7 @@ extension DetailViewController {
     func synopsisButtonTapped() {
         let button = detailView.synopsisButton
         button.isSelected.toggle()
-        detailView.synopsisButton.setTitle(button.isSelected ? Title.hide.rawValue : Title.more.rawValue, for: .normal)
+        detailView.synopsisButton.setTitle(button.isSelected ? Resources.Title.hide.rawValue : Resources.Title.more.rawValue, for: .normal)
         detailView.synopsisContentLabel.numberOfLines = button.isSelected ? 0 : 3
     }
 }

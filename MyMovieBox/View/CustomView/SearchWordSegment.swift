@@ -52,7 +52,7 @@ final class SearchWordSegment: BaseView {
         searchButton.backgroundColor = .clear
         searchButton.sizeToFit()
         
-        xButton.setImage(UIImage(systemName: ImageName.cancel.rawValue), for: .normal)
+        xButton.setImage(UIImage(systemName: Resources.ImageName.cancel.rawValue), for: .normal)
         xButton.contentMode = .scaleAspectFit
         xButton.tintColor = .black
         xButton.backgroundColor = .clear

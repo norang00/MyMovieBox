@@ -20,7 +20,7 @@ final class SearchViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        configureNavigation(Title.searchNav.rawValue)
+        configureNavigation(Resources.Title.searchNav.rawValue)
         configureRecentView(searchViewModel.output.recentList.value)
         configureSearchBar()
         configureTableView()
@@ -37,19 +37,24 @@ final class SearchViewController: BaseViewController {
     // MARK: - bindData
     private func bindData() {
         
-        searchViewModel.output.recentList.lazyBind { [weak self] recentList in
+        searchViewModel.output.recentList.bind { [weak self] recentList in
+            print(#file, #function, "recentList", recentList)
             self?.configureRecentView(recentList)
         }
         
+        searchViewModel.output.showResultView.lazyBind { [weak self] _ in
+            self?.searchView.resultTableView.isHidden = false
+        }
+
         searchViewModel.output.reloadResultView.lazyBind { [weak self] _ in
-            self?.searchView.tableView.reloadData()
+            self?.searchView.resultTableView.reloadData()
         }
         
         searchViewModel.output.scrollResultView.lazyBind { [weak self] _ in
-            self?.searchView.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+            self?.searchView.resultTableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
         }
         
-        searchViewModel.output.becomeResponder.lazyBind { [weak self] _ in
+        searchViewModel.output.becomeResponder.bind { [weak self] _ in
             self?.searchView.searchBar.becomeFirstResponder()
         }
         
@@ -67,20 +72,31 @@ extension SearchViewController: UISearchBarDelegate {
         searchView.searchBar.delegate = self
     }
     
-    func searchButtonTapped(_ searchBar: UISearchBar) {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let inputText = searchBar.text else { return }
+        print(#file, #function, inputText)
         searchViewModel.input.searchButtonTapped.value = inputText
     }
+    
+//    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+//        <#code#>
+//    }
+    
+//    func searchButtonTapped(_ searchBar: UISearchBar) {
+//        guard let inputText = searchBar.text else { return }
+//        print(#file, #function, inputText)
+//        searchViewModel.input.searchButtonTapped.value = inputText
+//    }
 }
 
 // MARK: - TableView, Pagination
 extension SearchViewController: UITableViewDelegate, UITableViewDataSource, UITableViewDataSourcePrefetching {
     
     private func configureTableView() {
-        searchView.tableView.delegate = self
-        searchView.tableView.dataSource = self
-        searchView.tableView.prefetchDataSource = self
-        searchView.tableView.keyboardDismissMode = .onDrag
+        searchView.resultTableView.delegate = self
+        searchView.resultTableView.dataSource = self
+        searchView.resultTableView.prefetchDataSource = self
+        searchView.resultTableView.keyboardDismissMode = .onDrag
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -93,7 +109,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource, UITa
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = searchView.tableView.dequeueReusableCell(withIdentifier: SearchTableViewCell.identifier, for: indexPath) as! SearchTableViewCell
+        let cell = searchView.resultTableView.dequeueReusableCell(withIdentifier: SearchTableViewCell.identifier, for: indexPath) as! SearchTableViewCell
         let resultList = searchViewModel.output.resultList.value
         if !resultList.isEmpty {
             let movie = resultList[indexPath.row]
@@ -106,7 +122,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource, UITa
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let resultList = searchViewModel.output.resultList.value
-        searchView.tableView.deselectRow(at: indexPath, animated: true)
+        searchView.resultTableView.deselectRow(at: indexPath, animated: true)
         searchViewModel.input.movieRowTapped.value = resultList[indexPath.row]
     }
     
@@ -126,16 +142,22 @@ extension SearchViewController {
     
     // [고민] ...심각한디
     func configureRecentView(_ recentList: [String]) {
+        print(#file, #function)
+
         searchView.recentSearch.recentSearchStackView.subviews.forEach {
             $0.removeFromSuperview()
         }
         searchView.recentSearch.recentSearchDeleteButton.addTarget(self, action: #selector(deleteAllButtonTapped), for: .touchUpInside)
         
         if recentList.isEmpty {
+            print(#function, "recentList.isEmpty")
+
             searchView.recentSearch.recentSearchDeleteButton.isHidden = true
             searchView.recentSearch.recentSearchEmptyView.isHidden = false
 
         } else {
+            print(#function, "!recentList.isEmpty")
+
             searchView.recentSearch.recentSearchDeleteButton.isHidden = false
             searchView.recentSearch.recentSearchEmptyView.isHidden = true
 
@@ -147,7 +169,9 @@ extension SearchViewController {
                 button.xButton.tag = index
                 button.xButton.addTarget(self, action: #selector(xButtonTapped), for: .touchUpInside)
                 searchView.recentSearch.recentSearchStackView.addArrangedSubview(button)
+                print(#function, button)
             }
+            searchView.layoutSubviews()
         }
     }
     
@@ -183,7 +207,7 @@ extension SearchViewController {
         let userLikedMovies = User.likedMovies
         for index in 0..<resultList.count {
             let movie = resultList[index]
-            let cell = searchView.tableView.cellForRow(at: IndexPath(row: index, section: 0)) as? SearchTableViewCell
+            let cell = searchView.resultTableView.cellForRow(at: IndexPath(row: index, section: 0)) as? SearchTableViewCell
             cell?.likeButton.isSelected = userLikedMovies.contains(movie.id)
         }
     }

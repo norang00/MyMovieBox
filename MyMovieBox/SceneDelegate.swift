@@ -60,12 +60,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         tabBarController.setViewControllers([mainVC, upcomingVC, profileVC], animated: true)
         tabBarController.tabBar.backgroundColor = .black
         tabBarController.tabBar.tintColor = .accent
-        tabBarController.tabBar.items![0].title = Title.firstTab.rawValue
-        tabBarController.tabBar.items![0].image = UIImage(systemName: ImageName.popcorn.rawValue)
-        tabBarController.tabBar.items![1].title = Title.secondTab.rawValue
-        tabBarController.tabBar.items![1].image = UIImage(systemName: ImageName.filmStack.rawValue)
-        tabBarController.tabBar.items![2].title = Title.thirdTab.rawValue
-        tabBarController.tabBar.items![2].image = UIImage(systemName: ImageName.person.rawValue)
+        tabBarController.tabBar.items![0].title = Resources.Title.firstTab.rawValue
+        tabBarController.tabBar.items![0].image = UIImage(systemName: Resources.ImageName.popcorn.rawValue)
+        tabBarController.tabBar.items![1].title = Resources.Title.secondTab.rawValue
+        tabBarController.tabBar.items![1].image = UIImage(systemName: Resources.ImageName.filmStack.rawValue)
+        tabBarController.tabBar.items![2].title = Resources.Title.thirdTab.rawValue
+        tabBarController.tabBar.items![2].image = UIImage(systemName: Resources.ImageName.person.rawValue)
         
         return tabBarController
     }

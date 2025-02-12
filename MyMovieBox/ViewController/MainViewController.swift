@@ -21,7 +21,7 @@ final class MainViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        configureNavigation(Title.mainNav.rawValue)
+        configureNavigation(Resources.Title.mainNav.rawValue)
         configureProfileCard()
         configureCollectionView()
         
@@ -75,7 +75,9 @@ final class MainViewController: BaseViewController {
     override func configureNavigation(_ title: String) {
         super.configureNavigation(title)
         
-        let searchButton = UIBarButtonItem(image: UIImage(systemName: ImageName.search.rawValue), style: .plain, target: self, action: #selector(pushToSearchView))
+        let searchButton = UIBarButtonItem(
+            image: UIImage(systemName: Resources.ImageName.search.rawValue),
+            style: .plain, target: self, action: #selector(pushToSearchView))
         self.navigationItem.rightBarButtonItem = searchButton
     }
     
@@ -99,6 +101,7 @@ extension MainViewController {
     }
     
     // [고민] View 에서 User 를 갖고 오는게 이게 맞나? 나름 저장소인데... 뷰모델에서 UserDefaults 정보 가지고 오고 또 그걸 별도 구조체에 포장해서 전달해줘야 하나?
+    // 유용성 <-> 구조화
     func updateProfileCard() {
         mainView.profileCard.profileImageView.image = UIImage(named: User.profileImageName)
         mainView.profileCard.nicknameLabel.text = User.nickname

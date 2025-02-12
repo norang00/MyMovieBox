@@ -12,17 +12,16 @@ final class SearchView: BaseView {
 
     let searchBar = UISearchBar()
     let recentSearch = RecentSearch()
-    let tableView = SearchTableView()
+    let resultTableView = SearchResultTableView()
 
     override func configureHierarchy() {
         addSubview(searchBar)
         addSubview(recentSearch)
-        addSubview(tableView)
+        addSubview(resultTableView)
     }
     
     override func configureLayout() {
         searchBar.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
             make.top.equalTo(safeAreaLayoutGuide)
             make.horizontalEdges.equalToSuperview().inset(8)
         }
@@ -30,9 +29,10 @@ final class SearchView: BaseView {
         recentSearch.snp.makeConstraints { make in
             make.top.equalTo(searchBar.snp.bottom)
             make.horizontalEdges.equalTo(safeAreaLayoutGuide)
+            make.height.equalTo(100)
         }
 
-        tableView.snp.makeConstraints { make in
+        resultTableView.snp.makeConstraints { make in
             make.top.equalTo(searchBar.snp.bottom)
             make.horizontalEdges.equalTo(safeAreaLayoutGuide)
             make.bottom.equalTo(safeAreaLayoutGuide)
@@ -42,10 +42,10 @@ final class SearchView: BaseView {
     override func configureView() {
         super.configureView()
         
-        searchBar.placeholder = Title.searchPlaceholder.rawValue
+        searchBar.placeholder = Resources.Title.searchPlaceholder.rawValue
         searchBar.searchBarStyle = .minimal
         searchBar.tintColor = .accent
         
-        tableView.isHidden = true
+        resultTableView.isHidden = true
     }
 }

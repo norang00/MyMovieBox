@@ -94,7 +94,7 @@ final class ProfileCard: BaseView {
         SignupDateLabel.textColor = .gray
         SignupDateLabel.font = .systemFont(ofSize: 12, weight: .medium)
         
-        chevronImage.image = UIImage(systemName: ImageName.chevronRight.rawValue)
+        chevronImage.image = UIImage(systemName: Resources.ImageName.chevronRight.rawValue)
         chevronImage.contentMode = .scaleAspectFit
         chevronImage.tintColor = .gray
         

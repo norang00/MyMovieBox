@@ -13,7 +13,7 @@ final class CameraIcon: UIImageView {
         super.init(frame: frame)
         
         let symbolConfig = UIImage.SymbolConfiguration(pointSize: 13)
-        let cameraImage = UIImage(systemName: ImageName.camera.rawValue, withConfiguration: symbolConfig)
+        let cameraImage = UIImage(systemName: Resources.ImageName.camera.rawValue, withConfiguration: symbolConfig)
         image = cameraImage
         contentMode = .center
         tintColor = .white

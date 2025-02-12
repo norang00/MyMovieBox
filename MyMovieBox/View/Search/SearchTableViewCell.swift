@@ -39,7 +39,7 @@ final class SearchTableViewCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         
-        posterImageView.image = UIImage(systemName: ImageName.film.rawValue)
+        posterImageView.image = UIImage(systemName: Resources.ImageName.film.rawValue)
         posterImageView.contentMode = .scaleAspectFit
         titleLabel.text = ""
         dateLabel.text = ""

@@ -45,7 +45,7 @@ final class MainView: BaseView {
     override func configureView() {
         super.configureView()
         
-        trendingLabel.text = Title.trending.rawValue
+        trendingLabel.text = Resources.Title.trending.rawValue
         trendingLabel.font = .systemFont(ofSize: 20, weight: .bold)
     }
     

@@ -35,11 +35,17 @@ final class NicknameSettingViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureNavigation(isNewUser ? Title.profileSetNav.rawValue: Title.profileEditNav.rawValue)
+        configureNavigation(isNewUser ?
+                            Resources.Title.profileSetNav.rawValue:
+                            Resources.Title.profileEditNav.rawValue)
         
         if !isNewUser {
-            saveButton = UIBarButtonItem(title: Title.save.rawValue, style: .done, target: self, action: #selector(confirmButtonTapped))
-            xButton = UIBarButtonItem(image: UIImage(systemName: ImageName.cancel.rawValue), style: .plain, target: self, action: #selector(dismissView))
+            saveButton = UIBarButtonItem(
+                title: Resources.Title.save.rawValue,
+                style: .done, target: self, action: #selector(confirmButtonTapped))
+            xButton = UIBarButtonItem(
+                image: UIImage(systemName: Resources.ImageName.cancel.rawValue),
+                style: .plain, target: self, action: #selector(dismissView))
             self.navigationItem.leftBarButtonItem = xButton
             nicknameSettingView.confirmButton.isHidden = true
             saveButton?.isEnabled = false

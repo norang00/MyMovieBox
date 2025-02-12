@@ -61,15 +61,14 @@ extension TrendingViewModel {
 // MARK: - Network
 extension TrendingViewModel {
     
-    // [고민] Result 타입과 String 타입의 에러메세지를 함께 주려고 하는데 success 에서는 필요하지 않은 값이라 이렇게 전달하는게 맞는지 고민된다. 그렇다고 여기에서 에러 분기처리 (네트워크 매니저의 영역이라고 생각하기 때문에) 를 해주고 싶지는 않은데.
     private func getTrendingMovie() {
-        NetworkManager.shared.callRequest(.trending, Trending.self) { [weak self] response, errorMessage in
+        NetworkManager.shared.callRequest(.trending, Trending.self) { [weak self] response in
             switch response {
             case .success(let value):
                 self?.output.trendingList.value = value.results
-            case .failure(_):
-                guard let errorMessage = errorMessage else { return }
-                let alert = AlertSet(title: Title.warning.rawValue, message: errorMessage)
+            case .failure(let error):
+                let alert = AlertSet(title: Resources.Alert.Title.warning.rawValue,
+                                     message: error.rawValue)
                 self?.output.showAlert.value = alert
             }
         }

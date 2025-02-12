@@ -21,7 +21,7 @@ final class ImageSettingViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureNavigation(isNewUser ? Title.imageSetNav.rawValue : Title.imageEditNav.rawValue)
+        configureNavigation(isNewUser ? Resources.Title.imageSetNav.rawValue : Resources.Title.imageEditNav.rawValue)
 
         configureMainImage()
         configureCollectionView()
