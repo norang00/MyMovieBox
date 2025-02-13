@@ -195,6 +195,7 @@ extension SearchViewModel {
                 let alert = AlertSet(title: Resources.Alert.Title.warning.rawValue,
                                      message: error.rawValue)
                 self?.output.showAlert.value = alert
+                self?.dispatchGroup.leave()
             }
         }
         
@@ -207,8 +208,7 @@ extension SearchViewModel {
             } else {
                 self.output.resultList.value = self.resultList
                 self.output.showResultView.value = true
-                print(#function, "result")
-
+                
                 if page == 1 {
                     self.output.scrollResultView.value = ()
                 }

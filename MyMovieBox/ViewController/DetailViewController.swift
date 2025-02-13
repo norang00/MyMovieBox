@@ -10,17 +10,16 @@ import UIKit
 final class DetailViewController: BaseViewController {
     
     let detailView = DetailView()
-    var movie: Movie?
-
+    let detailViewModel = DetailViewModel()
+    
     var backdropList: [Backdrop] = []
+    var posterList: [Poster] = []
+    var castList: [Cast] = []
     var currentPage: Int = 0 {
         didSet {
             detailView.backdropPageControl.currentPage = currentPage
         }
     }
-    var castList: [Cast] = []
-    var posterList: [Poster] = []
-    let dispatchGroup = DispatchGroup()
     
     override func loadView() {
         view = detailView
@@ -28,34 +27,73 @@ final class DetailViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        configureNavigation(movie!.title)
         configureCollectionView()
-        configureMovieDescription()
-        configureSynopsis()
-        
-//        getData(movie!)
+        bindData()
     }
     
-    override func configureNavigation(_ title: String) {
-        super.configureNavigation(title)
-                
+    // MARK: - bindData
+    private func bindData() {
+        detailViewModel.output.movie.bind { [weak self] movie in
+            guard let movie = movie else { return }
+            self?.configureNavigation(movie)
+        }
+
+        // [TODO] View 에 구현해 놓은 함수도 옮겨오는게 좋을까?
+        detailViewModel.output.movieDescription.bind { [weak self] list in
+            self?.detailView.movieDescriptionLabel.attributedText = self?.detailView.setMovieDescription(list[0], list[1], list[2])
+        }
+        
+        detailViewModel.output.movieSynopsis.bind { [weak self] synopsis in
+            guard let synopsis = synopsis else { return }
+            if synopsis.isEmpty {
+                self?.detailView.synopsisButton.isHidden = true
+            } else {
+                self?.detailView.synopsisContentLabel.text = synopsis
+                self?.detailView.synopsisButton.isHidden = false
+                self?.detailView.synopsisButton.addTarget(self, action: #selector(self?.synopsisButtonTapped), for: .touchUpInside)
+            }
+        }
+        
+        detailViewModel.output.backdropList.bind { [weak self] list in
+            self?.backdropList = list
+            self?.detailView.backdropCollectionView.reloadData()
+            self?.configurePageControl()
+        }
+        
+        detailViewModel.output.castList.bind { [weak self] list in
+            self?.castList = list
+            self?.detailView.castCollectionView.reloadData()
+        }
+        
+        detailViewModel.output.posterList.bind { [weak self] list in
+            self?.posterList = list
+            self?.detailView.posterCollectionView.reloadData()
+        }
+        
+        detailViewModel.output.toggleLike.lazyBind { [weak self] _ in
+                guard let likeButton = self?.navigationItem.rightBarButtonItem?.customView as? LikeButton else { return }
+                likeButton.isSelected.toggle()
+            }
+        
+    }
+    
+    // MARK: - configureNavigation
+    func configureNavigation(_ movie: Movie) {
+        navigationItem.title = movie.title
+        navigationItem.backButtonTitle = ""
+        navigationController?.navigationBar.tintColor = .accent
+        
         let likeButton = LikeButton()
-        likeButton.isSelected = User.checkLike(movie!.id)
+        likeButton.isSelected = User.checkLike(movie.id)
         likeButton.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: likeButton)
-    }
-    
-    @objc
-    func likeButtonTapped(_ sender: UIButton) {
-        User.toggleLike(movie!.id)
-        sender.isSelected.toggle()
     }
 }
 
 // MARK: - CollectionView
 extension DetailViewController: UICollectionViewDelegate, UICollectionViewDataSource {
 
+    // [TODO] delegate 위치 고민해보기
     func configureCollectionView() {
         detailView.backdropCollectionView.delegate = self
         detailView.backdropCollectionView.dataSource = self
@@ -108,13 +146,13 @@ extension DetailViewController: UICollectionViewDelegate, UICollectionViewDataSo
     }
 }
 
-// MARK: - (BackdropCollectionView) PageControl
+// MARK: - Page Control
 extension DetailViewController {
-
     func configurePageControl() {
         detailView.backdropPageControl.numberOfPages = backdropList.count
     }
     
+    // [고민] 이거는 어떻게 옮겨주지?
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView == detailView.backdropCollectionView {
             let width = scrollView.frame.width
@@ -123,53 +161,8 @@ extension DetailViewController {
     }
 }
 
-// MARK: - Movie Description (개봉일, 평점, 장르)
-extension DetailViewController {
-
-    func configureMovieDescription() {
-        guard let movie = movie else { return }
-        
-        let releaseDate: String = movie.releaseDate ?? "-"
-        let voteAverage: String = String(format: "%.1f", movie.voteAverage ?? 0.0)
-        let genres: String = getGenreString(movie)
-        
-        detailView.movieDescriptionLabel.attributedText = detailView.setMovieDescription(releaseDate, voteAverage, genres)
-    }
-    
-    func getGenreString(_ movie: Movie) -> String {
-        let genres = movie.genreIds ?? []
-        var returnString = ""
-
-        if genres.isEmpty {
-            returnString = "-"
-        } else if genres.count == 1 {
-            if let genre = Genre.mapping[genres[0]] {
-                returnString = genre
-            }
-        } else {
-            guard let genre0 = Genre.mapping[genres[0]] else { return "" }
-            returnString = "\(genre0), "
-            guard let genre1 = Genre.mapping[genres[1]] else { return "" }
-            returnString += genre1
-        }
-        return returnString
-    }
-}
-
 // MARK: - Synopsis
 extension DetailViewController {
-    
-    func configureSynopsis() {
-        guard let synopsis = movie?.overview else { return }
-        if synopsis.isEmpty {
-            detailView.synopsisButton.isHidden = true
-        } else {
-            detailView.synopsisContentLabel.text = synopsis
-            detailView.synopsisButton.isHidden = false
-            detailView.synopsisButton.addTarget(self, action: #selector(synopsisButtonTapped), for: .touchUpInside)
-        }
-    }
-    
     @objc
     func synopsisButtonTapped() {
         let button = detailView.synopsisButton
@@ -179,35 +172,10 @@ extension DetailViewController {
     }
 }
 
-// MARK: - Network
+// MARK: - Like
 extension DetailViewController {
-    
-//    func getData(_ movie: Movie) {
-//        dispatchGroup.enter()
-//        NetworkManager.shared.callRequest(.image(query: movie.id), Image.self) { Result in
-//            self.backdropList = Result.backdrops.count > 5 ? Array(Result.backdrops.prefix(5)) : Result.backdrops
-//            self.posterList = Result.posters
-//            self.dispatchGroup.leave()
-//        } failureHandler: { errorMessage in
-//            self.showAlert(title: Title.warning.rawValue, message: errorMessage)
-//            self.dispatchGroup.leave()
-//        }
-//        
-//        dispatchGroup.enter()
-//        NetworkManager.shared.callRequest(.credit(query: movie.id), Credit.self) { Result in
-//            self.castList = Result.cast
-//            self.dispatchGroup.leave()
-//        } failureHandler: { errorMessage in
-//            self.showAlert(title: Title.warning.rawValue, message: errorMessage)
-//            self.dispatchGroup.leave()
-//        }
-//        
-//        dispatchGroup.notify(queue: .main) {
-//            self.detailView.backdropCollectionView.reloadData()
-//            self.configurePageControl()
-//            self.detailView.castCollectionView.reloadData()
-//            self.detailView.layoutSubviews()
-//            self.detailView.posterCollectionView.reloadData()
-//        }
-//    }
+    @objc
+    func likeButtonTapped(_ sender: UIButton) {
+        detailViewModel.input.likeButtonTapped.value = ()
+    }
 }

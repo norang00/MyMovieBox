@@ -189,7 +189,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource, UITa
     
     private func pushToDetailView(_ movie: Movie) {
         let detailVC = DetailViewController()
-        detailVC.movie = movie
+        detailVC.detailViewModel.input.movie.value = movie
         navigationController?.pushViewController(detailVC, animated: true)
     }
 }
